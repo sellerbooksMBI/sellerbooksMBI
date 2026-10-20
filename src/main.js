@@ -10,8 +10,8 @@ let busy = false;
 const words = {
   id: {
     subtitle: 'Sistem manajemen penjualan marketplace', eyebrow: 'MARKETPLACE BUSINESS INTELLIGENCE',
-    headline: 'Kelola penjualan dengan lebih terukur.', intro: 'Pusat akses SellerBooks untuk mengelola akun dan data bisnis Anda.',
-    bullet1: 'Akun dan data setiap client terpisah', bullet2: 'Persetujuan akses oleh Superadmin', bullet3: 'Siap dikembangkan per modul',
+    headline: 'Kelola penjualan dengan lebih terukur.', intro: 'Kelola penjualan, produk, dan laporan marketplace Anda dalam satu aplikasi.',
+    bullet1: 'Data toko dan penjualan Anda tersusun rapi', bullet2: 'Pantau biaya dan keuntungan produk', bullet3: 'Laporan penjualan lebih mudah dipantau',
     login: 'Masuk', register: 'Daftar akun', email: 'Alamat email', password: 'Kata sandi',
     loginIntro: 'Masuk untuk melanjutkan ke SellerBooks.', registerIntro: 'Buat akun baru SellerBooks.',
     continueGoogle: 'Lanjutkan dengan Google', or: 'atau', name: 'Nama pemilik / usaha',
@@ -30,8 +30,8 @@ const words = {
   },
   en: {
     subtitle: 'Marketplace sales management system', eyebrow: 'MARKETPLACE BUSINESS INTELLIGENCE',
-    headline: 'Manage sales with clarity.', intro: 'SellerBooks access center to manage your account and business data.',
-    bullet1: 'Separate accounts and client data', bullet2: 'Access approval by Superadmin', bullet3: 'Ready for modular expansion',
+    headline: 'Manage marketplace sales with clarity.', intro: 'Manage your marketplace sales, products, and reports in one place.',
+    bullet1: 'Keep store and sales data organized', bullet2: 'Track product costs and profit', bullet3: 'Review sales reports more easily',
     login: 'Sign in', register: 'Create account', email: 'Email address', password: 'Password',
     loginIntro: 'Sign in to continue to SellerBooks.', registerIntro: 'Create a new SellerBooks account.',
     continueGoogle: 'Continue with Google', or: 'or', name: 'Owner / business name',
@@ -92,7 +92,7 @@ function renderAuth(initialNotice = '') {
     <section class="auth-layout">
       <div class="hero-copy">
         <span class="eyebrow">${t('eyebrow')}</span>
-        <h1>SellerBooks <span>Core.</span></h1>
+        <h1>SellerBooks</h1>
         <p class="hero-intro">${t('intro')}</p>
         <ul class="benefits"><li>${t('bullet1')}</li><li>${t('bullet2')}</li><li>${t('bullet3')}</li></ul>
       </div>
