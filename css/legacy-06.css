@@ -1,0 +1,17 @@
+
+#sellerBooksAppCSOpen{position:fixed;right:15px;bottom:22px;z-index:9998;width:58px;height:58px;border:1px solid #e5e7eb;border-radius:50%;background:#fff;color:#111827;box-shadow:0 8px 26px rgba(15,23,42,.24);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+#sellerBooksAppCSOpen svg{display:block;width:32px;height:32px}
+#sellerBooksAppCSModal{display:none;position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.58);align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
+#sellerBooksAppCSModal.show{display:flex}
+#sellerBooksAppCSModal .sb-app-cs-card{position:relative;width:min(620px,100%);background:#fff;color:#172433;border-radius:26px;padding:34px;box-shadow:0 25px 80px rgba(0,0,0,.28);box-sizing:border-box}
+#sellerBooksAppCSModal .sb-app-cs-title{font-size:clamp(22px,4vw,30px);font-weight:800;line-height:1.25;letter-spacing:-.6px;margin:0 48px 18px 0}
+#sellerBooksAppCSModal .sb-app-cs-desc{font-size:clamp(15px,2.5vw,19px);line-height:1.65;color:#667085;margin:0 0 24px}
+#sellerBooksAppCSModal .sb-app-cs-options{display:grid;gap:14px;width:100%}
+#sellerBooksAppCSModal .sb-app-cs-option{min-height:90px;padding:16px 20px;border:1px solid #e5e7eb;border-radius:22px;display:flex;align-items:center;gap:16px;text-decoration:none;font-size:clamp(16px,2.7vw,20px);line-height:1.4;font-weight:750;box-sizing:border-box}
+#sellerBooksAppCSModal .sb-app-cs-option>span:first-child{flex:0 0 34px;display:grid;place-items:center;font-size:27px}
+#sellerBooksAppCSModal .sb-app-cs-copy{display:flex;flex-direction:column;gap:5px;min-width:0}
+#sellerBooksAppCSModal .sb-app-cs-copy small{font-size:clamp(14px,2.4vw,18px);font-weight:600;line-height:1.45;overflow-wrap:anywhere;opacity:.82}
+#sellerBooksAppCSModal .sb-app-cs-option.email{background:#172b3d;color:#fff;border-color:#172b3d}
+#sellerBooksAppCSModal .sb-app-cs-option.whatsapp{background:#fff;color:#172433}
+#sellerBooksAppCSModal .sb-app-cs-close{position:absolute;right:18px;top:18px;width:44px;height:44px;border:0;border-radius:50%;background:#f1f4f8;color:#344054;font-size:28px;line-height:1;cursor:pointer;display:grid;place-items:center}
+@media(max-width:600px){#sellerBooksAppCSOpen{right:15px;bottom:20px;width:56px;height:56px}#sellerBooksAppCSOpen svg{width:31px;height:31px}#sellerBooksAppCSModal{padding:18px}#sellerBooksAppCSModal .sb-app-cs-card{padding:34px 22px;border-radius:26px}#sellerBooksAppCSModal .sb-app-cs-title{margin-right:42px;margin-bottom:18px}#sellerBooksAppCSModal .sb-app-cs-option{min-height:88px;padding:16px 18px;gap:14px}#sellerBooksAppCSModal .sb-app-cs-close{right:14px;top:14px;width:40px;height:40px}}

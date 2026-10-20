@@ -1,0 +1,161 @@
+
+/* =====================================================
+   RINCIAN PRODUK - ANALISIS LABA
+===================================================== */
+
+.product-analysis-filter-card{
+    margin-bottom:20px;
+}
+
+.product-analysis-filter-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(180px,1fr));
+    gap:15px;
+    align-items:end;
+}
+
+.product-analysis-filter-grid label,
+.product-analysis-date-grid label{
+    display:block;
+    margin-bottom:7px;
+    font-size:12px;
+    font-weight:600;
+    color:#475569;
+}
+
+.product-analysis-date-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.product-analysis-summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.product-analysis-summary-card{
+    background:#fff;
+    border:1px solid var(--border);
+    padding:18px 20px;
+}
+
+.product-analysis-summary-card span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.product-analysis-summary-card strong{
+    font-size:21px;
+}
+
+.product-analysis-summary-card.danger{
+    border-color:#fecaca;
+    background:#fffafa;
+}
+
+.product-analysis-summary-card.danger strong{
+    color:#dc2626;
+}
+
+.product-analysis-table-wrapper{
+    overflow-x:auto;
+}
+
+.product-analysis-table{
+    min-width:1150px;
+}
+
+.product-analysis-table th{
+    white-space:nowrap;
+}
+
+.product-analysis-table td{
+    vertical-align:middle;
+    white-space:nowrap;
+}
+
+.product-analysis-table .analysis-loss-row{
+    background:#fff1f2;
+}
+
+.product-analysis-table .analysis-loss-value{
+    color:#dc2626;
+    font-weight:700;
+}
+
+.product-analysis-table .analysis-profit-value{
+    color:#16a34a;
+    font-weight:700;
+}
+
+.analysis-status-badge{
+    display:inline-block;
+    padding:5px 9px;
+    font-size:10px;
+    font-weight:700;
+    border:1px solid;
+}
+
+.analysis-status-profit{
+    color:#15803d;
+    background:#f0fdf4;
+    border-color:#bbf7d0;
+}
+
+.analysis-status-loss{
+    color:#b91c1c;
+    background:#fef2f2;
+    border-color:#fecaca;
+}
+
+.analysis-fix-button{
+    border:none;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:7px 10px;
+    font-size:11px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.analysis-fix-button:hover{
+    background:#dbeafe;
+}
+
+.analysis-empty-row td{
+    text-align:center;
+    padding:45px 20px;
+    color:#64748b;
+}
+
+@media(max-width:900px){
+    .product-analysis-summary-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .product-analysis-filter-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-analysis-date-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:600px){
+    .product-analysis-summary-grid{
+        grid-template-columns:1fr;
+    }
+
+    .product-analysis-date-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+
