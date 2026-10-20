@@ -854,6 +854,13 @@ async function sellerBooksCheckApproval(showAlert){
 async function sellerBooksCheckApprovalInternal(showAlert){
     if(!sellerBooksAuthUser)return;
     try{
+        const {data:coreAdmin,error:coreCheckError}=await sellerBooksSupabase.rpc("sellerbooks_is_core_admin");
+        if(coreCheckError)throw coreCheckError;
+        if(coreAdmin===true){
+            sellerBooksProfile=null;
+            sellerBooksShowApproval("Akun ini adalah akun Core. Silakan gunakan akun client SellerBooks untuk masuk.");
+            return;
+        }
         sellerBooksProfile=await sellerBooksLoadProfile(sellerBooksAuthUser);
         if(!sellerBooksProfile){ sellerBooksShowApproval(sellerBooksAccessText("profileMissing")); return; }
         const status=String(sellerBooksProfile.status||"pending").toLowerCase();
