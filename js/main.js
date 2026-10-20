@@ -935,7 +935,7 @@ async function loginGoogle(){
                 provider:"google",
 
                 options:{
-                    redirectTo:"https://sellerbooks.github.io/",
+                    redirectTo:"https://sellerbooksmbi.github.io/",
                     skipBrowserRedirect:true,
                     queryParams:{
                         prompt:"select_account"
@@ -965,7 +965,7 @@ async function loginGoogle(){
             provider:"google",
 
             options:{
-                redirectTo:"https://sellerbooks.github.io/",
+                redirectTo:"https://sellerbooksmbi.github.io/",
 
                 queryParams:{
                     prompt:"select_account"
