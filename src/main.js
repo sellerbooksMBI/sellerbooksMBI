@@ -168,6 +168,47 @@ function renderAuth(initialNotice = '') {
     if (error) message(error.message, 'error');
   });
 }
+function renderClientDashboard(user) {
+  const modules = [
+    { id: 'dashboard', icon: '🏠', title: language === 'id' ? 'Dashboard' : 'Dashboard', desc: language === 'id' ? 'Ringkasan bisnis marketplace Anda' : 'Your marketplace business overview' },
+    { id: 'marketplace', icon: '🏪', title: 'Marketplace', desc: language === 'id' ? 'Kelola marketplace' : 'Manage marketplaces' },
+    { id: 'stores', icon: '🏬', title: language === 'id' ? 'Akun Toko' : 'Store Accounts', desc: language === 'id' ? 'Kelola akun toko' : 'Manage store accounts' },
+    { id: 'products', icon: '📦', title: language === 'id' ? 'Master Produk' : 'Product Master', desc: language === 'id' ? 'Data produk dan HPP' : 'Product and cost data' },
+    { id: 'import', icon: '📥', title: language === 'id' ? 'Import Penjualan' : 'Sales Import', desc: language === 'id' ? 'Impor data penjualan' : 'Import sales data' },
+    { id: 'costs', icon: '💸', title: language === 'id' ? 'Biaya Lain' : 'Other Costs', desc: language === 'id' ? 'Kelola biaya usaha' : 'Manage business costs' },
+    { id: 'productAnalysis', icon: '🔎', title: language === 'id' ? 'Rincian' : 'Details', desc: language === 'id' ? 'Analisis produk terjual' : 'Analyze sold products' },
+    { id: 'reports', icon: '📊', title: language === 'id' ? 'Laporan' : 'Reports', desc: language === 'id' ? 'Laporan penjualan dan laba' : 'Sales and profit reports' },
+    { id: 'settings', icon: '⚙️', title: language === 'id' ? 'Pengaturan' : 'Settings', desc: language === 'id' ? 'Pengaturan aplikasi' : 'Application settings' }
+  ];
+  shell(`
+    <section class="client-dashboard">
+      <div class="client-welcome">
+        <div><span class="eyebrow">${language === 'id' ? 'DASHBOARD SELLERBOOKS' : 'SELLERBOOKS DASHBOARD'}</span>
+          <h1>${language === 'id' ? 'Selamat datang' : 'Welcome'}, ${escapeHtml(user.user_metadata?.owner_name || user.email?.split('@')[0] || 'SellerBooks')}</h1>
+          <p>${language === 'id' ? 'Ringkasan bisnis marketplace Anda' : 'Your marketplace business overview'}</p>
+        </div>
+        <span class="access-pill">${language === 'id' ? 'Akses disetujui' : 'Access approved'}</span>
+      </div>
+      <div class="client-stat-grid">
+        <article class="client-stat"><span>🏪</span><p>${language === 'id' ? 'Akun Toko' : 'Store Accounts'}</p><strong>—</strong><small>${language === 'id' ? 'Data sedang disambungkan' : 'Data connection pending'}</small></article>
+        <article class="client-stat"><span>📦</span><p>${language === 'id' ? 'Produk' : 'Products'}</p><strong>—</strong><small>${language === 'id' ? 'Data sedang disambungkan' : 'Data connection pending'}</small></article>
+        <article class="client-stat"><span>🧾</span><p>${language === 'id' ? 'Transaksi' : 'Transactions'}</p><strong>—</strong><small>${language === 'id' ? 'Data sedang disambungkan' : 'Data connection pending'}</small></article>
+        <article class="client-stat"><span>💰</span><p>${language === 'id' ? 'Laba Bersih' : 'Net Profit'}</p><strong>—</strong><small>${language === 'id' ? 'Data sedang disambungkan' : 'Data connection pending'}</small></article>
+      </div>
+      <div class="client-module-heading"><h2>${language === 'id' ? 'Menu SellerBooks' : 'SellerBooks Menu'}</h2><p>${language === 'id' ? 'Pilih modul yang ingin Anda buka.' : 'Choose a module to open.'}</p></div>
+      <div class="client-module-grid">${modules.map(item => `
+        <button type="button" class="client-module-card" data-module="${item.id}">
+          <span class="client-module-icon">${item.icon}</span><span class="client-module-title">${item.title}</span><span class="client-module-desc">${item.desc}</span><span class="client-module-arrow">→</span>
+        </button>`).join('')}</div>
+      <p class="client-migration-note">${language === 'id' ? 'Dashboard sudah terbuka. Data dan fungsi modul sedang disambungkan dari aplikasi SellerBooks lama; angka tidak ditampilkan sebelum sumber datanya terhubung.' : 'The dashboard is open. Data and module functions are being connected from the legacy SellerBooks app; figures will remain hidden until their data sources are connected.'}</p>
+    </section>`);
+  document.querySelectorAll('[data-module]').forEach(button => button.addEventListener('click', () => {
+    if (button.dataset.module === 'dashboard') return;
+    const labels = modules.find(item => item.id === button.dataset.module);
+    message(language === 'id' ? 'Modul ' + labels.title + ' belum dimigrasikan. Saya tidak akan menampilkan data palsu.' : labels.title + ' has not been migrated yet. No placeholder data will be shown as real data.', 'info');
+    document.querySelector('#notice')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }));
+}
 async function renderDashboard(user) {
   const { data: adminRow, error: adminError } = await supabase.from('sellerbooks_core_admins').select('role,is_active').eq('user_id', user.id).maybeSingle();
   const { data: accessRow, error: accessError } = await supabase.from('sellerbooks_client_access').select('status,requested_at,review_note').eq('user_id', user.id).maybeSingle();
@@ -178,6 +219,10 @@ async function renderDashboard(user) {
   const isAdmin = Boolean(adminRow?.is_active);
   const status = accessRow?.status || 'PENDING';
   const statusKey = status === 'APPROVED' ? 'approved' : status === 'REJECTED' ? 'rejected' : status === 'SUSPENDED' || status === 'REVOKED' ? 'suspended' : 'pending';
+  if (status === 'APPROVED' && !adminRow?.is_active) {
+    renderClientDashboard(user);
+    return;
+  }
   if (!accessRow && !isAdmin) {
     const { error } = await supabase.rpc('sellerbooks_request_access');
     if (error) console.warn('Access request could not be created:', error.message);
