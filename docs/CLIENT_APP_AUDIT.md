@@ -82,3 +82,30 @@ Status: pemetaan awal berdasarkan file sumber lama `index.html` yang diberikan p
 - Performa diuji pada data besar; ID/EN konsisten; tampilan lama dipertahankan.
 
 Catatan: ini adalah peta audit berbasis inspeksi sumber. Ini bukan klaim bahwa semua fitur sudah dites di browser atau seluruh masalah sudah diperbaiki.
+
+
+## Pemeriksaan skema proyek Supabase client baru (2026-10-20)
+
+Tabel yang benar-benar ada di proyek baru meliputi:
+
+- `sellerbooks_user_data(user_id, data jsonb, created_at, updated_at)` — kandidat penyimpanan cloud JSON yang paling dekat dengan model lama.
+- `sellerbooks_profiles` dan `sellerbooks_user_language` — profil dan preferensi bahasa per pengguna.
+- `sellerbooks_stores`, `sellerbooks_marketplaces` — data toko dan marketplace.
+- `sellerbooks_api_connections`, `sellerbooks_api_oauth_states`, `sellerbooks_api_import_queue`, `sellerbooks_sync_runs` — integrasi, antrean, dan audit sinkronisasi.
+- `sellerbooks_orders`, `sellerbooks_order_items` — data order mentah ternormalisasi.
+- `sellerbooks_client_access`, `sellerbooks_access_logs` — status akses dan riwayat keputusan.
+- `sellerbooks_operator_workspaces` — ruang kerja operator.
+
+### Kecocokan yang perlu ditangani
+
+1. Sumber lama menggunakan `sellerbooks_user_data` untuk state cloud JSON, sedangkan skema baru juga menyediakan tabel terpisah untuk toko/order/API. Migrasi harus menentukan apakah modul lama tetap memakai JSON sebagai state utama atau membaca/menulis tabel terstruktur. Jangan menjalankan dua sumber kebenaran untuk data yang sama tanpa aturan sinkronisasi.
+2. RLS pada `sellerbooks_user_data`, toko, order, item order, koneksi API, antrean, dan bahasa membatasi akses berdasarkan `auth.uid()` dan fungsi izin akses client. Tetap perlu uji dua akun nyata; inspeksi kebijakan saja belum membuktikan isolasi end-to-end.
+3. Skema baru tidak menampilkan tabel eksplisit untuk master produk, biaya lain, snapshot finansial, dan seluruh state laporan. Sebagian mungkin disimpan dalam JSON `sellerbooks_user_data.data`; isi dan kontraknya harus diperiksa sebelum membuat adaptor.
+4. `sellerbooks_orders/order_items` saat ini berbentuk data order marketplace mentah. Jangan menganggap tabel tersebut otomatis menggantikan mesin import penjualan lama atau perhitungan laba/snapshot.
+5. Source code aktif di repository ini saat ini baru memiliki login, registrasi, status akses, dan halaman permintaan akses administrator. Belum ada modul Dashboard, Marketplace, Akun Toko, Master Produk, Import Penjualan, Biaya Lain, Piutang, Rincian, dan Laporan yang telah dimigrasikan ke source aktif. Ini adalah gap implementasi, bukan masalah yang bisa diselesaikan hanya dengan mengubah konfigurasi.
+
+## Status setelah commit 2026-10-20
+
+- Commit `54d72dce7542be8da24e79cca7a540ec98839823`: menghapus kata “Core” dari judul login dan mengganti copy promosi menjadi copy aplikasi SellerBooks client.
+- Commit tersebut tidak mengubah Core, skema database, data pengguna, atau rumus keuangan.
+- Migrasi modul client belum selesai. Langkah implementasi berikutnya harus memindahkan kode sumber lama secara lengkap dan menguji setiap modul terhadap skema baru; jangan mengarang ulang perilaku yang tidak terbukti dari sumber lama.
