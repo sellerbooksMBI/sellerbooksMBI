@@ -1,18 +1,4403 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2563eb" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/src/styles/main.css" />
-    <meta name="description" content="SellerBooks — sistem manajemen penjualan marketplace." />
-    <title>SellerBooks</title>
-  </head>
-  <body>
-    <div id="app">
-      <main class="app-shell"><p class="status-message">Memuat SellerBooks…</p></main>
+<head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/src/styles/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SellerBooks | Marketplace Business Intelligence</title>
+
+
+
+
+
+<script src="/src/legacy/scripts/legacy-01.js"></script>
+
+
+
+
+
+
+<script src="/src/legacy/scripts/legacy-02.js"></script>
+
+
+
+
+
+
+
+
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<section id="loginPage">
+
+    <div class="login-wrapper">
+
+
+        <!-- LEFT -->
+
+        <div class="login-brand">
+
+            <div class="login-brand-content">
+
+                <div class="login-logo">
+
+                    <div class="login-logo-icon">
+                        S
+                    </div>
+
+                    <div>
+
+                        <div class="login-logo-name">
+                            SellerBooks
+                        </div>
+
+                        <div class="login-logo-subtitle">
+                            Marketplace Business Intelligence
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-hero">
+
+                    <h1>
+                        Kelola Marketplace Lebih Cerdas.
+                    </h1>
+
+                    <p>
+                        Pantau penjualan, produk keluar,
+                        akun toko dan laba bisnis Anda
+                        dalam satu sistem.
+                    </p>
+
+
+                    <div class="login-features">
+
+                        <div class="login-feature">
+
+                            <div class="check">✓</div>
+
+                            Multi Marketplace
+
+                        </div>
+
+
+                        <div class="login-feature">
+
+                            <div class="check">✓</div>
+
+                            Multi Akun Toko
+
+                        </div>
+
+
+                        <div class="login-feature">
+
+                            <div class="check">✓</div>
+
+                            Analisis Laba Bisnis
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="login-brand-footer">
+
+                MBI — Semua Angka Bisnis, Dalam Satu Kendali.
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT -->
+
+        <div class="login-form-area">
+
+            <div class="login-box">
+
+                <h2>
+                    Selamat Datang 👋
+                </h2>
+
+                <p class="login-description">
+
+                    Masuk menggunakan akun Google
+                    untuk mengakses SellerBooks.
+
+                </p>
+
+
+                <button
+                    class="google-button"
+                    onclick="loginGoogle()"
+                >
+
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                    >
+
+                        <path fill="#4285F4"
+                        d="M21.35 12.27c0-.79-.07-1.55-.21-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.93v2.78h3.14c1.84-1.69 2.92-4.18 2.92-7.02z"/>
+
+                        <path fill="#34A853"
+                        d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.78c-.87.59-1.98.94-3.31.94-2.54 0-4.7-1.72-5.47-4.03H3.28v2.87A9.75 9.75 0 0 0 12 21.75z"/>
+
+                        <path fill="#FBBC05"
+                        d="M6.53 13.52A5.87 5.87 0 0 1 6.23 12c0-.53.09-1.04.3-1.52V7.61H3.28A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.06 1.03 4.39l3.25-2.87z"/>
+
+                        <path fill="#EA4335"
+                        d="M12 6.45c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.84 3.53 14.63 2.25 12 2.25a9.75 9.75 0 0 0-8.72 5.36l3.25 2.87c.77-2.31 2.93-4.03 5.47-4.03z"/>
+
+                    </svg>
+
+                    Masuk dengan Google
+
+                </button>
+
+<button
+    type="button"
+    class="reset-identity-button"
+    onclick="resetIdentity()"
+>
+    🔄 Reset Identitas
+</button>
+                <div class="security-info">
+
+                    <div class="security-icon">
+                        🔐
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Data bisnis Anda terlindungi
+                        </h4>
+
+                        <p>
+                            Setiap pengguna hanya dapat
+                            mengakses data bisnis yang
+                            memiliki izin untuknya.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
     </div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+
+
+</section>
+
+<!-- =====================================================
+     SETUP NAMA PEMILIK
+     LAPISAN TAMBAHAN
+===================================================== -->
+
+<section id="ownerSetupPage">
+
+    <div class="owner-setup-card">
+
+        <div class="owner-setup-icon">
+            👤
+        </div>
+
+        <h2>Lengkapi Data Pemilik</h2>
+
+        <p>
+            Sebelum masuk ke SellerBooks, silakan
+            masukkan nama pemilik atau nama usaha Anda.
+        </p>
+
+
+        <label class="owner-setup-label">
+            Nama Pemilik / Nama Usaha
+        </label>
+
+        <input
+            type="text"
+            id="ownerNameInput"
+            placeholder="Contoh: Adiimasa"
+        >
+
+
+        <button
+            type="button"
+            class="owner-save-button"
+            onclick="saveOwnerName()"
+        >
+            💾 Simpan & Masuk SellerBooks
+        </button>
+
+
+        <div class="owner-setup-note">
+            Data ini akan digunakan sebagai identitas
+            pemilik akun SellerBooks Anda.
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     MAIN APPLICATION
+===================================================== -->
+
+<section id="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+
+        <div class="sidebar-brand">
+
+            <div class="sidebar-logo">
+                S
+            </div>
+
+            <div>
+
+                <div class="sidebar-brand-name">
+                    SellerBooks
+                </div>
+
+                <div class="sidebar-brand-subtitle">
+                    Marketplace Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MENU -->
+
+        <nav class="sidebar-menu">
+
+
+            <div class="menu-title">
+                Menu Utama
+            </div>
+
+
+            <button
+                class="menu-item active"
+                onclick="showView('dashboard',this)"
+            >
+
+                <span class="menu-icon">🏠</span>
+
+                Dashboard
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('marketplace',this)"
+            >
+
+                <span class="menu-icon">🏪</span>
+
+                Marketplace
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('stores',this)"
+            >
+
+                <span class="menu-icon">🏬</span>
+
+                Akun Toko
+
+            </button>
+
+
+
+            <div class="menu-title">
+                Data Bisnis
+            </div>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('products',this)"
+            >
+
+                <span class="menu-icon">📦</span>
+
+                Master Produk
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('import',this)"
+            >
+
+                <span class="menu-icon">📥</span>
+
+                Import Penjualan
+
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('costs',this)"
+            >
+
+                <span class="menu-icon">💸</span>
+
+                Biaya Lain
+
+            </button>
+
+
+
+            <div class="menu-title">
+                Analisis
+            </div>
+
+            <button
+                class="menu-item"
+                onclick="showView('productAnalysis',this)"
+            >
+                <span class="menu-icon">🔎</span>
+                Rincian
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('reports',this)"
+            >
+
+                <span class="menu-icon">📊</span>
+
+                Laporan
+
+            </button>
+
+
+
+            <div class="menu-title">
+                Sistem
+            </div>
+
+
+            <button
+                class="menu-item"
+                onclick="showView('settings',this)"
+            >
+
+                <span class="menu-icon">⚙️</span>
+
+                Pengaturan
+
+            </button>
+
+
+        </nav>
+
+
+
+        <!-- USER -->
+
+        <div class="sidebar-user">
+
+            <div class="user-card">
+
+                <div class="avatar" id="userAvatar">
+                    U
+                </div>
+
+                <div>
+
+                    <div class="user-name" id="userName">
+                        User SellerBooks
+                    </div>
+
+                    <div class="user-email" id="userEmail">
+                        adiimasatest@gmail.com
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+<!-- TOMBOL LOGOUT -->
+
+    <button
+        type="button"
+        class="logout-button"
+        onclick="logoutSellerBooks()"
+    >
+        🚪 <span>Logout</span>
+    </button>
+
+</div>
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main-app">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+
+                <button
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+
+                <div class="page-title">
+
+                    <h1 id="topTitle">
+                        Dashboard
+                    </h1>
+
+                    <p id="topSubtitle">
+                        Ringkasan bisnis marketplace Anda
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <select
+    class="period-select"
+    id="dashboardPeriod"
+    onchange="changeDashboardPeriod()"
+>
+
+    <option value="month">
+        Bulan Ini
+    </option>
+
+    <option value="week">
+        Minggu Ini
+    </option>
+
+    <option value="today">
+        Hari Ini
+    </option>
+
+    <option value="year">
+        Tahun Ini
+    </option>
+
+</select>
+
+
+                <div class="notification-wrapper">
+
+    <button
+        class="top-button"
+        id="notificationButton"
+        onclick="toggleNotifications()"
+        title="Notifikasi"
+    >
+        🔔
+
+        <span
+            id="notificationBadge"
+            class="notification-badge"
+        >
+            0
+        </span>
+
+    </button>
+
+
+    <div
+        id="notificationPanel"
+        class="notification-panel"
+    >
+
+        <div class="notification-header">
+
+            <strong>Notifikasi</strong>
+
+            <button
+                onclick="closeNotifications()"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="notificationList"
+            class="notification-list"
+        >
+
+            <!-- NOTIFIKASI AKAN MUNCUL DI SINI -->
+
+        </div>
+
+    </div>
+
+</div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="app-content">
+
+
+            <!-- =====================================
+                 DASHBOARD VIEW
+            ====================================== -->
+
+            <section
+                id="dashboard"
+                class="view active"
+            >
+
+
+                <div class="welcome-card">
+
+                    <h2>
+                        Selamat Datang di SellerBooks 👋
+                    </h2>
+
+                    <p>
+                        Kelola seluruh penjualan marketplace,
+                        produk, akun toko, dan laba bisnis
+                        Anda dalam satu sistem.
+                    </p>
+
+                </div>
+
+
+
+                <div class="stats-grid">
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-label">
+                                TOTAL PENJUALAN
+                            </div>
+
+                            <div class="stat-icon">
+                                💰
+                            </div>
+
+                        </div>
+
+                        <div class="stat-number" id="dashboardTotalSales">
+                            Rp0
+                        </div>
+
+                        <div class="stat-info">
+                            Belum ada data penjualan
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-label">
+                                PRODUK TERJUAL
+                            </div>
+
+                            <div class="stat-icon">
+                                📦
+                            </div>
+
+                        </div>
+
+                        <div class="stat-number" id="dashboardTotalQty">
+                            0 PCS
+                        </div>
+
+                        <div class="stat-info">
+                            Total produk keluar
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-label">
+                                LABA BERSIH
+                            </div>
+
+                            <div class="stat-icon">
+                                📈
+                            </div>
+
+                        </div>
+
+                        <div class="stat-number" id="dashboardNetProfit">
+                            Rp0
+                        </div>
+
+                        <div class="stat-info">
+                            Setelah seluruh biaya
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+
+                            <div class="stat-label">
+                                MARGIN BERSIH
+                            </div>
+
+                            <div class="stat-icon">
+                                📊
+                            </div>
+
+                        </div>
+
+                        <div class="stat-number" id="dashboardMargin">
+                            0%
+                        </div>
+
+                        <div class="stat-info">
+                            Performa keuntungan bisnis
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="content-section">
+
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <h3>
+                                Performa Marketplace
+                            </h3>
+
+                            <p>
+                                Ringkasan seluruh marketplace
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="secondary-button"
+                            onclick="showView('marketplace')"
+                        >
+                            Lihat Marketplace →
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Marketplace</th>
+
+                                    <th>Akun Toko</th>
+
+                                    <th>Penjualan</th>
+
+                                    <th>Laba Bersih</th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="performanceMarketplaceBody">
+
+    <!-- Marketplace aktif akan muncul otomatis di sini -->
+
+</tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+
+<!-- =====================================
+     MARKETPLACE VIEW
+===================================== -->
+
+<section
+    id="marketplace"
+    class="view"
+>
+
+    <div class="page-header">
+
+        <h2>Marketplace</h2>
+
+        <p>
+            Kelola marketplace yang digunakan
+            oleh bisnis Anda.
+        </p>
+
+    </div>
+
+
+    <div class="marketplace-toolbar">
+
+        <div class="marketplace-summary">
+
+            <span id="marketplaceCount">
+                0 Marketplace
+            </span>
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            onclick="openMarketplaceModal()"
+        >
+            + Tambah Marketplace
+        </button>
+
+    </div>
+
+
+    <div
+        class="marketplace-grid"
+        id="marketplaceGrid"
+    >
+
+        <!-- MARKETPLACE AKAN DIBUAT JAVASCRIPT -->
+
+    </div>
+
+</section>
+
+
+
+            <!-- =====================================
+     AKUN TOKO
+===================================== -->
+
+<section
+    id="stores"
+    class="view"
+>
+
+    <div class="page-header">
+
+        <h2>
+            Akun Toko
+        </h2>
+
+        <p>
+            Kelola seluruh akun toko dari marketplace
+            yang aktif di bisnis Anda.
+        </p>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="store-toolbar">
+
+        <div class="store-summary">
+
+            <span id="storeCount">
+                0 Akun Toko
+            </span>
+
+        </div>
+
+
+        <button
+            class="primary-button"
+            onclick="openStoreModal()"
+        >
+            + Tambah Akun Toko
+        </button>
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="store-filter">
+
+        <select
+            id="storeMarketplaceFilter"
+            class="form-control"
+            onchange="renderStores()"
+        >
+
+            <option value="all">
+
+                Semua Marketplace
+
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- LIST TOKO -->
+
+    <div
+        class="stores-grid"
+        id="storesGrid"
+    >
+
+        <!-- DATA TOKO AKAN DIBUAT JAVASCRIPT -->
+
+    </div>
+
+
+</section>
+
+
+
+            <!-- =====================================
+     MASTER PRODUK
+===================================== -->
+
+<section
+    id="products"
+    class="view"
+>
+
+    <div class="page-header">
+
+        <h2>
+            Master Produk
+        </h2>
+
+        <p>
+            Kelola seluruh produk, SKU, modal,
+            dan data dasar produk bisnis Anda.
+        </p>
+
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="product-toolbar">
+
+
+        <div class="product-toolbar-left">
+
+            <div
+                class="product-summary"
+                id="productCount"
+            >
+
+                0 Produk
+
+            </div>
+
+        </div>
+
+
+        <div class="product-toolbar-right">
+
+
+            <button
+                class="secondary-button"
+                onclick="document.getElementById('productImportFile').click()"
+            >
+
+                📥 Import Excel
+
+            </button>
+
+
+            <button
+                class="secondary-button"
+                onclick="exportProducts()"
+            >
+
+                📤 Export Excel
+
+            </button>
+
+
+            <button
+                class="primary-button"
+                onclick="openProductModal()"
+            >
+
+                + Tambah Produk
+
+            </button>
+
+
+            <button
+                class="product-bulk-delete-button"
+                id="deleteSelectedProductsButton"
+                onclick="deleteSelectedProducts()"
+                style="display:none"
+            >
+
+                🗑️ Hapus Terpilih (<span id="selectedProductCount">0</span>)
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FILE IMPORT -->
+
+    <input
+        type="file"
+        id="productImportFile"
+        accept=".xlsx,.xls,.csv"
+        style="display:none"
+        onchange="importProducts(this)"
+    >
+
+
+    <!-- SEARCH & FILTER -->
+
+    <div class="product-filter-bar">
+
+
+        <div class="product-search">
+
+            <input
+                type="text"
+                id="productSearch"
+                class="form-control"
+                placeholder="🔍 Cari SKU atau nama produk..."
+                oninput="renderProducts()"
+            >
+
+        </div>
+
+
+        <div class="product-filter">
+
+            <select
+                id="productStatusFilter"
+                class="form-control"
+                onchange="renderProducts()"
+            >
+
+                <option value="all">
+                    Semua Status
+                </option>
+
+                <option value="active">
+                    Aktif
+                </option>
+
+                <option value="inactive">
+                    Tidak Aktif
+                </option>
+
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="product-table-wrapper">
+
+        <table class="product-table">
+
+
+            <thead>
+
+                <tr>
+
+                    <th class="product-select-column">
+
+                        <input
+                            type="checkbox"
+                            id="selectAllProducts"
+                            class="product-select-checkbox"
+                            onchange="toggleSelectAllProducts(this)"
+                        >
+
+                    </th>
+
+                    <th>SKU</th>
+
+                    <th>Nama Produk</th>
+
+                    <th>Kategori</th>
+
+                    <th>Harga Jual</th>
+
+                    <th>HPP / Modal</th>
+                    
+                    <th>Stok</th>
+
+                    <th>Status</th>
+
+                    <th>Aksi</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="productsTableBody"
+            >
+
+                <!-- PRODUK DIBUAT JAVASCRIPT -->
+
+            </tbody>
+
+
+        </table>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================
+     IMPORT PENJUALAN
+===================================== -->
+
+<section
+    id="import"
+    class="view"
+>
+
+    <div class="page-header">
+
+        <h2>
+            Import Penjualan
+        </h2>
+
+        <p>
+            Upload laporan penjualan marketplace.
+            SellerBooks akan membaca struktur file
+            dan mencari SKU serta QTY secara otomatis.
+        </p>
+
+    </div>
+
+
+    <!-- INFO FORMAT -->
+
+    <div class="import-info-card">
+
+        <div class="import-info-icon">
+            🤖
+        </div>
+
+        <div>
+
+            <h3>
+                SellerBooks Smart File Analyzer
+            </h3>
+
+            <p>
+                Upload file dari marketplace tanpa
+                perlu memilih marketplace terlebih dahulu.
+                Sistem akan menganalisis struktur data
+                secara otomatis.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- UPLOAD AREA -->
+
+    <div
+        class="import-upload-box"
+        onclick="document.getElementById('salesImportFile').click()"
+    >
+
+        <div class="import-upload-icon">
+
+            📂
+
+        </div>
+
+
+        <h3>
+
+            Upload Laporan Penjualan
+
+        </h3>
+
+
+        <p>
+
+            Klik di sini untuk memilih file
+
+        </p>
+
+
+        <div class="import-formats">
+
+            XLSX
+
+            <span>•</span>
+
+            XLS
+
+            <span>•</span>
+
+            CSV
+
+        </div>
+
+
+        <button
+            type="button"
+            class="primary-button"
+        >
+
+            + Pilih File
+
+        </button>
+
+
+    </div>
+
+
+    <!-- INPUT FILE -->
+
+    <input
+        type="file"
+        id="salesImportFile"
+        accept=".xlsx,.xls,.csv"
+        style="display:none"
+        onchange="analyzeSalesFile(this)"
+    >
+
+
+    <!-- HASIL ANALISIS -->
+
+    <div
+        class="import-analysis"
+        id="salesImportAnalysis"
+        style="display:none"
+    >
+
+
+        <div class="analysis-header">
+
+            <div>
+
+                <h3>
+
+                    Hasil Analisis File
+
+                </h3>
+
+                <p>
+
+                    SellerBooks telah membaca struktur file Anda.
+
+                </p>
+
+            </div>
+
+
+            <div
+                class="analysis-status"
+                id="analysisStatus"
+            >
+
+                Menunggu Analisis
+
+            </div>
+
+        </div>
+
+
+        <!-- FILE INFO -->
+
+        <div class="file-info-grid">
+
+
+            <div class="file-info-item">
+
+                <span>
+                    Nama File
+                </span>
+
+                <strong
+                    id="analysisFileName"
+                >
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="file-info-item">
+
+                <span>
+                    Format
+                </span>
+
+                <strong
+                    id="analysisFileType"
+                >
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="file-info-item">
+
+                <span>
+                    Jumlah Baris
+                </span>
+
+                <strong
+                    id="analysisRowCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="file-info-item">
+
+                <span>
+                    Jumlah Kolom
+                </span>
+
+                <strong
+                    id="analysisColumnCount"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- RECOGNITION -->
+
+        <div class="recognition-grid">
+
+
+            <!-- SKU -->
+
+            <div class="recognition-card">
+
+                <div class="recognition-title">
+
+                    <span class="recognition-icon">
+
+                        🏷️
+
+                    </span>
+
+                    SKU Recognition
+
+                </div>
+
+
+                <div
+                    class="recognition-result"
+                    id="skuRecognitionResult"
+                >
+
+                    Belum ditemukan
+
+                </div>
+
+
+                <div
+                    class="recognition-confidence"
+                    id="skuRecognitionConfidence"
+                >
+
+                    Menunggu analisis
+
+                </div>
+
+            </div>
+
+
+            <!-- QTY -->
+
+            <div class="recognition-card">
+
+                <div class="recognition-title">
+
+                    <span class="recognition-icon">
+
+                        📦
+
+                    </span>
+
+                    QTY Recognition
+
+                </div>
+
+
+                <div
+                    class="recognition-result"
+                    id="qtyRecognitionResult"
+                >
+
+                    Belum ditemukan
+
+                </div>
+
+
+                <div
+                    class="recognition-confidence"
+                    id="qtyRecognitionConfidence"
+                >
+
+                    Menunggu analisis
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- SEMUA HEADER -->
+
+        <div class="headers-section">
+
+            <h4>
+
+                Kolom yang Ditemukan
+
+            </h4>
+
+
+            <div
+                class="headers-list"
+                id="detectedHeaders"
+            >
+
+            </div>
+
+        </div>
+
+
+        <!-- KONFIRMASI -->
+
+        <div class="analysis-footer">
+
+
+            <button
+                class="secondary-button"
+                onclick="resetSalesImport()"
+            >
+
+                ✕ Batalkan
+
+            </button>
+
+
+            <button
+                class="primary-button"
+                id="continueSalesImportButton"
+                onclick="continueSalesImport()"
+                disabled
+            >
+
+                Lanjutkan Import →
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+<!-- =====================================
+     FASE 2 - MODAL PREVIEW IMPORT PENJUALAN
+===================================== -->
+
+<div id="salesPreviewModal" class="sales-preview-modal">
+
+    <div class="sales-preview-container">
+
+        <!-- HEADER -->
+        <div class="sales-preview-header">
+
+            <div>
+                <h2>Preview & Konfirmasi Data</h2>
+
+                <p>
+                    Pastikan SellerBooks membaca kolom SKU
+                    dan QTY dengan benar sebelum melanjutkan.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="sales-preview-close"
+                onclick="closeSalesPreview()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- INFO FILE -->
+        <div class="preview-file-info">
+
+            <div>
+                <span>File</span>
+
+                <strong id="previewFileName">
+                    -
+                </strong>
+            </div>
+
+
+            <div>
+                <span>Jumlah Data</span>
+
+                <strong id="previewRowCount">
+                    0
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- PILIH KOLOM -->
+        <div class="column-selection-grid">
+
+
+            <!-- SKU -->
+            <div class="column-selection-card">
+
+                <label>
+                    🏷️ Pilih Kolom SKU
+                </label>
+
+
+                <select
+                    id="manualSkuColumn"
+                    onchange="updatePreviewColumns()"
+                >
+
+                    <option value="">
+                        -- Pilih Kolom SKU --
+                    </option>
+
+                </select>
+
+
+                <small>
+                    Pilih kolom yang berisi SKU atau kode produk.
+                </small>
+
+            </div>
+
+
+
+            <!-- QTY -->
+            <div class="column-selection-card">
+
+                <label>
+                    📦 Pilih Kolom QTY
+                </label>
+
+
+                <select
+                    id="manualQtyColumn"
+                    onchange="updatePreviewColumns()"
+                >
+
+                    <option value="">
+                        -- Pilih Kolom QTY --
+                    </option>
+
+                </select>
+
+
+                <small>
+                    Pilih kolom yang berisi jumlah produk terjual.
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MARKETPLACE & AKUN TOKO -->
+        <div class="column-selection-grid" style="margin-top:16px;">
+            <div class="column-selection-card">
+                <label>🏪 Marketplace Terdeteksi</label>
+                <input type="text" id="detectedMarketplaceName" class="form-control" value="Belum terdeteksi" readonly>
+                <small>SellerBooks menentukan marketplace dari struktur/header file.</small>
+            </div>
+            <div class="column-selection-card">
+                <label>👤 Pilih Akun Toko</label>
+                <select id="salesStoreAccount" class="form-control" onchange="updatePackingCalculation()"><option value="">-- Pilih Akun Toko --</option></select>
+                <small id="salesStoreAccountInfo">Akun toko wajib dipilih sebelum data disimpan.</small>
+            </div>
+        </div>
+        <div class="column-selection-grid" style="margin-top:16px;">
+            <div class="column-selection-card">
+                <label>📦 Biaya Packing / 1 Order</label>
+                <input type="number" id="packingCostPerOrder" class="form-control" min="0" step="1" placeholder="Contoh: 1500" oninput="updatePackingCalculation()">
+                <small>Nominal dapat diubah dan disimpan untuk import berikutnya.</small>
+            </div>
+            <div class="column-selection-card" style="background:#f8fafc;">
+                <label>🧮 Hasil Perhitungan Packing</label>
+                <div style="font-size:13px;line-height:1.8;">Order/Resi unik: <strong id="uniquePackingCount">0</strong><br>Total biaya packing: <strong id="totalPackingImportCost">Rp 0</strong></div>
+                <small id="packingIdentifierInfo">Identitas packing akan dipilih otomatis sesuai marketplace.</small>
+            </div>
+        </div>
+
+        <!-- STATUS VALIDASI -->
+        <div
+            id="previewValidationStatus"
+            class="preview-validation-status"
+        >
+
+            Pilih kolom SKU dan QTY untuk melanjutkan.
+
+        </div>
+
+
+        <!-- TABLE PREVIEW -->
+        <div class="preview-table-wrapper">
+
+            <table class="preview-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+
+                        <th id="previewSkuHeader">
+                            SKU
+                        </th>
+
+                        <th id="previewQtyHeader">
+                            QTY
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="previewTableBody"
+                >
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+
+        <div class="preview-limit-info" style="display:none;">
+            Semua baris transaksi ditampilkan.
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="sales-preview-footer">
+
+
+            <button
+                type="button"
+                class="secondary-button"
+                onclick="closeSalesPreview()"
+            >
+
+                ← Kembali
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="primary-button"
+                id="confirmSalesColumnsButton"
+                onclick="confirmSalesColumns()"
+                disabled
+            >
+
+                ✓ Konfirmasi Data
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+ <!-- =====================================
+     BIAYA LAIN
+====================================== -->
+
+<section
+    id="costs"
+    class="view"
+>
+
+    <div class="page-header">
+
+        <div>
+            <h2>
+                Biaya Lain
+            </h2>
+
+            <p>
+                Catat biaya tambahan yang mempengaruhi laba bisnis.
+            </p>
+        </div>
+
+        <button
+            type="button"
+            class="primary-button"
+            onclick="openCostModal()"
+        >
+            + Tambah Biaya
+        </button>
+
+    </div>
+
+
+    <!-- TOTAL BIAYA -->
+
+    <div
+        class="content-section"
+        style="
+            margin-bottom:20px;
+            background:linear-gradient(135deg,#fff7ed,#fffbeb);
+            border:1px solid #fed7aa;
+        "
+    >
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:20px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <div>
+
+                <div
+                    style="
+                        font-size:14px;
+                        color:#64748b;
+                        margin-bottom:6px;
+                    "
+                >
+                    Total Biaya Lain
+                </div>
+
+                <div
+                    id="costTotal"
+                    style="
+                        font-size:28px;
+                        font-weight:800;
+                        color:#dc2626;
+                    "
+                >
+                    Rp 0
+                </div>
+
+            </div>
+
+
+            <div
+                style="
+                    font-size:40px;
+                "
+            >
+                💸
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DAFTAR BIAYA -->
+
+    <div class="content-section">
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+                margin-bottom:18px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <div>
+
+                <h3
+                    style="
+                        margin:0 0 5px 0;
+                    "
+                >
+                    Daftar Biaya
+                </h3>
+
+                <p
+                    style="
+                        margin:0;
+                        color:#64748b;
+                        font-size:14px;
+                    "
+                >
+                    Semua biaya tambahan yang telah dicatat.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="costEmptyState"
+            class="empty-state"
+            style="display:none;"
+        >
+
+            <div class="empty-state-icon">
+                💸
+            </div>
+
+            <h3>
+                Belum Ada Biaya Tambahan
+            </h3>
+
+            <p>
+                Tambahkan biaya seperti packing,
+                iklan, transport, operasional atau biaya lainnya.
+            </p>
+
+        </div>
+
+
+        <div
+            id="costTableWrapper"
+            style="
+                overflow-x:auto;
+                display:none;
+            "
+        >
+
+            <table
+                class="product-table"
+                style="min-width:1050px;"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Tanggal
+                        </th>
+
+                        <th>
+                            Marketplace
+                        </th>
+
+                        <th>
+                            Akun Toko
+                        </th>
+
+                        <th>
+                            Kategori
+                        </th>
+
+                        <th>
+                            Keterangan
+                        </th>
+
+                        <th>
+                            Nominal
+                        </th>
+
+                        <th>
+                            Catatan
+                        </th>
+
+                        <th>
+                            Aksi
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="costTableBody"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+            
+<!-- =====================================
+     RINCIAN PRODUK / ANALISIS LABA
+====================================== -->
+<section
+    id="productAnalysis"
+    class="view"
+>
+    <div class="page-header">
+        <h2>Rincian Produk</h2>
+        <p>
+            Analisis laba setiap SKU untuk mendeteksi produk yang minus
+            dan mengetahui produk mana yang perlu diperbaiki.
+        </p>
+    </div>
+
+    <!-- FILTER RINCIAN -->
+    <div class="content-section product-analysis-filter-card">
+        <div style="padding:20px 23px;">
+            <h3 style="margin:0 0 6px;">Filter Rincian</h3>
+            <p style="margin:0 0 18px;color:#64748b;font-size:12px;">
+                Pilih periode, marketplace, dan akun toko untuk mengetahui produk minus secara lebih spesifik.
+            </p>
+
+            <div class="product-analysis-filter-grid">
+                <div>
+                    <label>Periode</label>
+                    <select
+                        id="productAnalysisPeriod"
+                        class="form-control"
+                        onchange="applyProductAnalysisFilters()"
+                    >
+                        <option value="today">Hari Ini</option>
+                        <option value="yesterday">Kemarin</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="lastWeek">Minggu Lalu</option>
+                        <option value="month">Bulan Ini</option>
+                        <option value="lastMonth">Bulan Lalu</option>
+                        <option value="last3Months">3 Bulan Terakhir</option>
+                        <option value="year">Tahun Ini</option>
+                        <option value="custom">Pilih Tanggal</option>
+                        <option value="all">Semua Periode</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Marketplace</label>
+                    <select
+                        id="productAnalysisMarketplace"
+                        class="form-control"
+                        onchange="onProductAnalysisMarketplaceChange()"
+                    >
+                        <option value="all">Semua Marketplace</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Akun Toko</label>
+                    <select
+                        id="productAnalysisStore"
+                        class="form-control"
+                        onchange="applyProductAnalysisFilters()"
+                    >
+                        <option value="all">Semua Akun Toko</option>
+                    </select>
+                </div>
+
+                <div
+                    id="productAnalysisCustomDateRange"
+                    style="display:none;"
+                >
+                    <div class="product-analysis-date-grid">
+                        <div>
+                            <label>Dari Tanggal</label>
+                            <input
+                                type="date"
+                                id="productAnalysisDateFrom"
+                                class="form-control"
+                                onchange="applyProductAnalysisFilters()"
+                            >
+                        </div>
+
+                        <div>
+                            <label>Sampai Dengan</label>
+                            <input
+                                type="date"
+                                id="productAnalysisDateTo"
+                                class="form-control"
+                                onchange="applyProductAnalysisFilters()"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="productAnalysisFilterInfo"
+                style="margin-top:14px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;font-size:12px;color:#475569;"
+            >
+                Periode: <strong>Bulan Ini</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- RINGKASAN ANALISIS -->
+    <div class="product-analysis-summary-grid">
+        <div class="product-analysis-summary-card">
+            <span>Total Produk</span>
+            <strong id="productAnalysisTotalProducts">0</strong>
+        </div>
+
+        <div class="product-analysis-summary-card">
+            <span>Produk Untung</span>
+            <strong id="productAnalysisProfitProducts">0</strong>
+        </div>
+
+        <div class="product-analysis-summary-card danger">
+            <span>Produk Minus</span>
+            <strong id="productAnalysisLossProducts">0</strong>
+        </div>
+
+        <div class="product-analysis-summary-card">
+            <span>Total Laba Produk</span>
+            <strong id="productAnalysisTotalProfit">Rp0</strong>
+        </div>
+    </div>
+
+    <!-- TABEL RINCIAN -->
+    <div class="content-section">
+        <div class="section-header">
+            <div>
+                <h3>Rincian Penjualan Per Produk</h3>
+                <p>
+                    Produk minus ditampilkan paling atas agar mudah diperbaiki.
+                </p>
+            </div>
+        </div>
+
+        <div class="table-wrapper product-analysis-table-wrapper">
+            <table class="product-analysis-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>SKU</th>
+                        <th>Nama Produk</th>
+                        <th>QTY</th>
+                        <th>Harga Jual</th>
+                        <th>Total Penjualan</th>
+                        <th>HPP</th>
+                        <th>Admin Marketplace</th>
+                        <th>Laba Produk</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="productAnalysisTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================
+     LAPORAN BISNIS
+====================================== -->
+<section
+    id="reports"
+    class="view"
+>
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <h2>
+            Laporan Bisnis
+        </h2>
+
+        <p>
+            Analisis penjualan, biaya, dan laba
+            seluruh marketplace serta akun toko.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         FILTER LAPORAN
+    ====================================== -->
+    <div
+        class="content-section"
+        style="
+            margin-bottom:20px;
+        "
+    >
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:15px;
+                margin-bottom:18px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <div>
+
+                <h3
+                    style="
+                        margin:0 0 5px 0;
+                    "
+                >
+                    Filter Laporan
+                </h3>
+
+                <p
+                    style="
+                        margin:0;
+                        color:#64748b;
+                        font-size:14px;
+                    "
+                >
+                    Pilih periode, marketplace, dan akun toko.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTER GRID -->
+        <div
+            style="
+                display:grid;
+                grid-template-columns:
+                    repeat(3, minmax(0,1fr));
+                gap:15px;
+            "
+            class="report-filter-grid"
+        >
+
+            <!-- PERIODE -->
+            <div>
+
+                <label
+                    style="
+                        display:block;
+                        margin-bottom:7px;
+                        font-weight:600;
+                        font-size:14px;
+                    "
+                >
+                    Periode
+                </label>
+
+                <select
+                    id="reportPeriod"
+                    class="form-control"
+                    onchange="applyReportFilters()"
+                >
+                    <option value="today">Hari Ini</option>
+                    <option value="yesterday">Kemarin</option>
+                    <option value="week">Minggu Ini</option>
+                    <option value="lastWeek">Minggu Lalu</option>
+                    <option value="month">Bulan Ini</option>
+                    <option value="lastMonth">Bulan Lalu</option>
+                    <option value="last3Months">3 Bulan Terakhir</option>
+                    <option value="year">Tahun Ini</option>
+                    <option value="custom">Pilih Tanggal</option>
+                    <option value="all">Semua Periode</option>
+                </select>
+
+                <div id="reportCustomDateRange" style="display:none;margin-top:10px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                        <div>
+                            <label style="display:block;margin-bottom:6px;font-size:12px;color:#64748b;">Dari Tanggal</label>
+                            <input type="date" id="reportDateFrom" class="form-control" onchange="applyReportFilters()">
+                        </div>
+                        <div>
+                            <label style="display:block;margin-bottom:6px;font-size:12px;color:#64748b;">Sampai Dengan</label>
+                            <input type="date" id="reportDateTo" class="form-control" onchange="applyReportFilters()">
+                        </div>
+                    </div>
+                    <small id="reportDateRangeInfo" style="display:block;margin-top:6px;color:#64748b;">Maksimal rentang tanggal 3 bulan terakhir.</small>
+                </div>
+
+            </div>
+
+
+            <!-- MARKETPLACE -->
+            <div>
+
+                <label
+                    style="
+                        display:block;
+                        margin-bottom:7px;
+                        font-weight:600;
+                        font-size:14px;
+                    "
+                >
+                    Marketplace
+                </label>
+
+                <select
+                    id="reportMarketplace"
+                    class="form-control"
+                    onchange="onReportMarketplaceChange()"
+                >
+
+                    <option value="all">
+                        Semua Marketplace
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- AKUN TOKO -->
+            <div>
+
+                <label
+                    style="
+                        display:block;
+                        margin-bottom:7px;
+                        font-weight:600;
+                        font-size:14px;
+                    "
+                >
+                    Akun Toko
+                </label>
+
+                <select
+                    id="reportStore"
+                    class="form-control"
+                    onchange="applyReportFilters()"
+                >
+
+                    <option value="all">
+                        Semua Akun Toko
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTER INFO -->
+        <div
+            id="reportFilterInfo"
+            style="
+                margin-top:16px;
+                padding:12px 14px;
+                background:#f8fafc;
+                border:1px solid #e2e8f0;
+                border-radius:10px;
+                color:#64748b;
+                font-size:13px;
+            "
+        >
+            Menampilkan semua data penjualan.
+        </div>
+
+    </div>
+
+
+
+        <!-- HAPUS LAPORAN BERDASARKAN TANGGAL + MARKETPLACE + AKUN TOKO -->
+    <div class="content-section" style="margin-top:16px;padding:16px;background:#fff7ed;border:1px solid #fed7aa;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:260px;">
+                <h3 style="margin:0 0 5px 0;">Hapus Laporan</h3>
+                <p style="margin:0;color:#64748b;font-size:13px;">
+                    Hapus data import penjualan secara spesifik berdasarkan tanggal, marketplace, dan akun toko.
+                </p>
+            </div>
+
+            <div id="deleteReportFiltersGrid" style="display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:10px;align-items:end;flex:1;min-width:700px;">
+                <div>
+                    <label style="display:block;margin-bottom:6px;font-size:12px;font-weight:600;">Dari Tanggal</label>
+                    <input type="date" id="deleteReportDateFrom" class="form-control">
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:6px;font-size:12px;font-weight:600;">Sampai Dengan</label>
+                    <input type="date" id="deleteReportDateTo" class="form-control">
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:6px;font-size:12px;font-weight:600;">Marketplace</label>
+                    <select id="deleteReportMarketplace" class="form-control" onchange="loadDeleteReportStoreFilter()">
+                        <option value="all">Semua Marketplace</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display:block;margin-bottom:6px;font-size:12px;font-weight:600;">Akun Toko</label>
+                    <select id="deleteReportStore" class="form-control">
+                        <option value="all">Semua Akun Toko</option>
+                    </select>
+                </div>
+
+                <button type="button" class="secondary-button" onclick="deleteReportsByDateRange()" style="grid-column:1 / -1;justify-self:start;color:#dc2626;border-color:#fecaca;white-space:nowrap;">
+                    🗑️ Hapus Laporan
+                </button>
+            </div>
+        </div>
+
+        <small style="display:block;margin-top:8px;color:#9a3412;">
+            Penghapusan hanya menyentuh laporan yang sesuai dengan tanggal + marketplace + akun toko yang dipilih.
+            Master Produk, Marketplace, Akun Toko, dan Biaya Lain tidak ikut dihapus.
+            Stok Master Produk akan otomatis dikembalikan sesuai QTY yang sebelumnya dipotong oleh laporan yang dihapus.
+        </small>
+    </div>
+
+    <!-- =====================================
+         RINGKASAN LAPORAN
+    ====================================== -->
+    <div
+        class="stats-grid"
+        id="reportStatsGrid"
+    >
+
+        <!-- TOTAL PENJUALAN -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    TOTAL PENJUALAN
+                </div>
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportTotalSales"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+                id="reportSalesInfo"
+            >
+                Belum ada data
+            </div>
+
+        </div>
+
+
+        <!-- PENJUALAN BERSIH -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    PENJUALAN BERSIH
+                </div>
+
+                <div class="stat-icon">
+                    💵
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportNetSales"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Setelah potongan marketplace
+            </div>
+
+        </div>
+
+
+        <!-- PRODUK TERJUAL -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    PRODUK TERJUAL
+                </div>
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportTotalProducts"
+            >
+                0 PCS
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Total produk terjual
+            </div>
+
+        </div>
+
+
+        <!-- PACKING -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    TOTAL PACKING
+                </div>
+
+                <div class="stat-icon">
+                    📦
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportTotalPacking"
+            >
+                0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Jumlah order/packing
+            </div>
+
+        </div>
+
+
+        <!-- HPP -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    TOTAL HPP
+                </div>
+
+                <div class="stat-icon">
+                    🧾
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportTotalHpp"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Modal produk terjual
+            </div>
+
+        </div>
+
+
+        <!-- BIAYA LAIN -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    BIAYA LAIN
+                </div>
+
+                <div class="stat-icon">
+                    💸
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportOtherCosts"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Biaya tambahan bisnis
+            </div>
+
+        </div>
+
+
+        <!-- LABA KOTOR -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    LABA KOTOR
+                </div>
+
+                <div class="stat-icon">
+                    📈
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportGrossProfit"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Setelah HPP dan packing
+            </div>
+
+        </div>
+
+
+        <!-- LABA BERSIH -->
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    LABA BERSIH
+                </div>
+
+                <div class="stat-icon">
+                    💎
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="reportNetProfit"
+            >
+                Rp0
+            </div>
+
+            <div
+                class="stat-info"
+            >
+                Setelah seluruh biaya
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         MARGIN PROFIT
+    ====================================== -->
+    <div
+        class="content-section"
+        style="
+            margin-top:20px;
+        "
+    >
+
+        <div
+            style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:20px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <div>
+
+                <h3
+                    style="
+                        margin:0 0 5px 0;
+                    "
+                >
+                    Margin Profit
+                </h3>
+
+                <p
+                    style="
+                        margin:0;
+                        color:#64748b;
+                        font-size:14px;
+                    "
+                >
+                    Persentase laba bersih terhadap penjualan.
+                </p>
+
+            </div>
+
+
+            <div
+                id="reportProfitMargin"
+                style="
+                    font-size:32px;
+                    font-weight:700;
+                "
+            >
+                0%
+            </div>
+
+        </div>
+
+    </div>
+
+<!-- =====================================
+     SKU BELUM DITEMUKAN DI MASTER PRODUK
+====================================== -->
+<div
+    class="content-section"
+    id="reportUnmatchedSkuSection"
+    style="
+        margin-top:20px;
+        display:none;
+    "
+>
+    <div class="section-header">
+        <div>
+            <h3>
+                SKU Belum Ditemukan di Master Produk
+            </h3>
+
+            <p>
+                Daftar SKU transaksi yang belum memiliki
+                pasangan pada Master Produk.
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="table-wrapper"
+        style="
+            overflow-x:auto;
+        "
+    >
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        SKU
+                    </th>
+
+                    <th>
+                        Jumlah Baris
+                    </th>
+
+                    <th>
+                        Total QTY
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody
+                id="reportUnmatchedSkuBody"
+            >
+                <tr>
+                    <td
+                        colspan="3"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            color:#64748b;
+                        "
+                    >
+                        Tidak ada SKU yang belum ditemukan.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <!-- =====================================
+         RINGKASAN MARKETPLACE
+    ====================================== -->
+    <div
+        class="content-section"
+        style="
+            margin-top:20px;
+        "
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h3>
+                    Performa Marketplace
+                </h3>
+
+                <p>
+                    Ringkasan performa berdasarkan marketplace.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="table-wrapper"
+            style="
+                overflow-x:auto;
+            "
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Marketplace
+                        </th>
+
+                        <th>
+                            Akun Toko
+                        </th>
+
+                        <th>
+                            Penjualan
+                        </th>
+
+                        <th>
+                            Penjualan Bersih
+                        </th>
+
+                        <th>
+                            Produk Terjual
+                        </th>
+
+                        <th>
+                            Packing
+                        </th>
+
+                        <th>
+                            Laba Bersih
+                        </th>
+
+                        <th>
+                            Margin
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="reportMarketplaceBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            style="
+                                text-align:center;
+                                padding:35px;
+                                color:#64748b;
+                            "
+                        >
+                            Belum ada data laporan.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         RINGKASAN AKUN TOKO
+    ====================================== -->
+    <div
+        class="content-section"
+        style="
+            margin-top:20px;
+        "
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h3>
+                    Performa Akun Toko
+                </h3>
+
+                <p>
+                    Ringkasan performa masing-masing akun toko.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="table-wrapper"
+            style="
+                overflow-x:auto;
+            "
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Marketplace
+                        </th>
+
+                        <th>
+                            Akun Toko
+                        </th>
+
+                        <th>
+                            Penjualan
+                        </th>
+
+                        <th>
+                            Penjualan Bersih
+                        </th>
+
+                        <th>
+                            Produk Terjual
+                        </th>
+
+                        <th>
+                            Packing
+                        </th>
+
+                        <th>
+                            Laba Bersih
+                        </th>
+
+                        <th>
+                            Margin
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="reportStoreBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            style="
+                                text-align:center;
+                                padding:35px;
+                                color:#64748b;
+                            "
+                        >
+                            Belum ada data laporan.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================
+         DETAIL TRANSAKSI
+    ====================================== -->
+    <div
+        class="content-section"
+        style="
+            margin-top:20px;
+        "
+    >
+
+        <div class="section-header">
+
+            <div>
+
+                <h3>
+                    Detail Penjualan
+                </h3>
+
+                <p>
+                    Daftar transaksi berdasarkan filter yang dipilih.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="table-wrapper"
+            style="
+                overflow-x:auto;
+            "
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Tanggal
+                        </th>
+
+                        <th>
+                            Marketplace
+                        </th>
+
+                        <th>
+                            Akun Toko
+                        </th>
+
+                        <th>
+                            Order
+                        </th>
+
+                        <th>
+                            SKU
+                        </th>
+
+                        <th>
+                            QTY
+                        </th>
+
+                        <th>
+                            Penjualan
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="reportTransactionBody"
+                >
+
+                    <tr>
+
+                        <td
+                            colspan="8"
+                            style="
+                                text-align:center;
+                                padding:35px;
+                                color:#64748b;
+                            "
+                        >
+                            Belum ada data penjualan.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+            <!-- =====================================
+                 SETTINGS
+            ====================================== -->
+
+            <section
+                id="settings"
+                class="view"
+            >
+
+                <div class="page-header">
+
+                    <h2>
+                        Pengaturan
+                    </h2>
+
+                    <p>
+                        Kelola konfigurasi bisnis dan preferensi
+                        SellerBooks Anda.
+                    </p>
+
+                </div>
+
+                <div class="settings-grid">
+
+                    <!-- 1. NAMA BISNIS -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">🏢</div>
+                            <div>
+                                <h3>Nama Bisnis</h3>
+                                <p>Atur nama bisnis yang digunakan sebagai identitas usaha.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsBusinessName">Nama Bisnis</label>
+                            <input
+                                type="text"
+                                id="settingsBusinessName"
+                                class="form-control"
+                                placeholder="Contoh: PT Adiimasa Distribusi Indonesia"
+                            >
+                        </div>
+
+                        <div class="settings-card-footer">
+                            <span class="settings-save-info" id="settingsBusinessNameInfo">
+                                Belum ada perubahan.
+                            </span>
+                            <button
+                                type="button"
+                                class="primary-button"
+                                onclick="saveSellerBooksSettings()"
+                            >
+                                💾 Simpan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. LOGO BISNIS -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">🖼️</div>
+                            <div>
+                                <h3>Logo Bisnis</h3>
+                                <p>Gunakan logo bisnis sebagai identitas visual SellerBooks.</p>
+                            </div>
+                        </div>
+
+                        <div class="settings-logo-area">
+                            <div
+                                class="settings-logo-preview"
+                                id="settingsLogoPreview"
+                            >
+                                S
+                            </div>
+
+                            <div class="settings-logo-actions">
+                                <input
+                                    type="file"
+                                    id="settingsLogoInput"
+                                    accept="image/png,image/jpeg,image/webp"
+                                    hidden
+                                    onchange="handleSettingsLogoUpload(this)"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="secondary-button"
+                                    onclick="document.getElementById('settingsLogoInput').click()"
+                                >
+                                    📁 Pilih Logo
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="settings-remove-button"
+                                    onclick="removeSettingsLogo()"
+                                >
+                                    Hapus Logo
+                                </button>
+
+                                <small>
+                                    PNG, JPG atau WEBP. Maksimal 1 MB.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. MATA UANG -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">💰</div>
+                            <div>
+                                <h3>Mata Uang</h3>
+                                <p>Atur mata uang yang digunakan untuk tampilan nilai laporan.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsCurrency">Mata Uang</label>
+                            <select
+                                id="settingsCurrency"
+                                class="form-control"
+                                onchange="saveSellerBooksSettings()"
+                            >
+                                <option value="IDR">IDR — Rupiah Indonesia</option>
+                                <option value="USD">USD — US Dollar</option>
+                                <option value="SGD">SGD — Singapore Dollar</option>
+                                <option value="MYR">MYR — Malaysian Ringgit</option>
+                            </select>
+                        </div>
+
+                        <div class="settings-exchange-rate-box">
+                            <div class="settings-exchange-rate-title">
+                                <strong>Atur Kurs Manual</strong>
+                                <span>Kurs yang digunakan untuk konversi dari IDR.</span>
+                            </div>
+
+                            <div class="settings-exchange-rate-grid">
+                                <div class="form-group">
+                                    <label for="settingsRateUSD">1 USD = Rp</label>
+                                    <input
+                                        type="number"
+                                        id="settingsRateUSD"
+                                        class="form-control"
+                                        min="0.000001"
+                                        step="0.01"
+                                        placeholder="Contoh: 16500"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="settingsRateSGD">1 SGD = Rp</label>
+                                    <input
+                                        type="number"
+                                        id="settingsRateSGD"
+                                        class="form-control"
+                                        min="0.000001"
+                                        step="0.01"
+                                        placeholder="Contoh: 12900"
+                                    >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="settingsRateMYR">1 MYR = Rp</label>
+                                    <input
+                                        type="number"
+                                        id="settingsRateMYR"
+                                        class="form-control"
+                                        min="0.000001"
+                                        step="0.01"
+                                        placeholder="Contoh: 3900"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="settings-note">
+                                💱 Masukkan nilai rupiah untuk 1 unit mata uang asing. Contoh: jika 1 USD = Rp16.500, isi <strong>16500</strong>. Perubahan kurs akan digunakan untuk seluruh nominal yang ditampilkan.
+                            </div>
+
+                            <div class="settings-card-footer">
+                                <span class="settings-save-info" id="settingsCurrencyInfo">
+                                    Kurs tersimpan digunakan untuk konversi.
+                                </span>
+                                <button
+                                    type="button"
+                                    class="primary-button"
+                                    onclick="saveSellerBooksSettings()"
+                                >
+                                    💾 Simpan Kurs
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="settings-note">
+                            ℹ️ Semua data disimpan dalam IDR sebagai nilai dasar. Saat mata uang diganti, seluruh nominal otomatis dikonversi ke kurs tampilan.
+                        </div>
+                    </div>
+
+                    <!-- 4. BIAYA PACKING DEFAULT -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">📦</div>
+                            <div>
+                                <h3>Biaya Packing Default</h3>
+                                <p>Nilai ini otomatis menjadi biaya packing per 1 order saat import penjualan.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsPackingCost">Biaya Packing per Order</label>
+                            <input
+                                type="number"
+                                id="settingsPackingCost"
+                                class="form-control"
+                                min="0"
+                                step="1"
+                                placeholder="Contoh: 850"
+                            >
+                        </div>
+
+                        <div class="settings-card-footer">
+                            <span class="settings-save-info" id="settingsPackingInfo">
+                                Nilai tersimpan digunakan sebagai default import.
+                            </span>
+                            <button
+                                type="button"
+                                class="primary-button"
+                                onclick="saveSellerBooksSettings()"
+                            >
+                                💾 Simpan
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. PEMBULATAN -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">🔢</div>
+                            <div>
+                                <h3>Pembulatan</h3>
+                                <p>Atur pembulatan nilai uang yang ditampilkan di SellerBooks.</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="settingsRounding">Pembulatan Nilai</label>
+                            <select
+                                id="settingsRounding"
+                                class="form-control"
+                                onchange="saveSellerBooksSettings()"
+                            >
+                                <option value="none">Tanpa Pembulatan</option>
+                                <option value="10">Ke Rp10 terdekat</option>
+                                <option value="100">Ke Rp100 terdekat</option>
+                                <option value="1000">Ke Rp1.000 terdekat</option>
+                            </select>
+                        </div>
+
+                        <div class="settings-note">
+                            ℹ️ Pembulatan hanya memengaruhi tampilan angka, bukan data transaksi yang tersimpan.
+                        </div>
+                    </div>
+
+                    <!-- 6. BACKUP & RESTORE -->
+                    <div class="content-section settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-card-icon">💾</div>
+                            <div>
+                                <h3>Backup & Restore Data</h3>
+                                <p>Simpan seluruh data SellerBooks ke file atau pulihkan dari file backup.</p>
+                            </div>
+                        </div>
+
+                        <div class="backup-actions">
+                            <button
+                                type="button"
+                                class="primary-button"
+                                onclick="backupSellerBooksData()"
+                            >
+                                ⬇️ Backup Data
+                            </button>
+
+                            <input
+                                type="file"
+                                id="settingsRestoreInput"
+                                accept=".json,application/json"
+                                hidden
+                                onchange="restoreSellerBooksData(this)"
+                            >
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                onclick="document.getElementById('settingsRestoreInput').click()"
+                            >
+                                ⬆️ Restore Data
+                            </button>
+                        </div>
+
+                        <div class="settings-note settings-danger-note">
+                            ⚠️ Restore akan mengganti data SellerBooks saat ini dengan isi file backup.
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+    </main>
+
+
+</section>
+<!-- =====================================================
+     STORE MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="storeModal"
+>
+
+    <div class="modal">
+
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <h3 id="storeModalTitle">
+
+                Tambah Akun Toko
+
+            </h3>
+
+
+            <button
+                class="modal-close"
+                onclick="closeStoreModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="modal-body">
+
+
+            <!-- MARKETPLACE -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Marketplace
+
+                </label>
+
+
+                <select
+                    id="storeMarketplace"
+                    class="form-control"
+                >
+
+                    <option value="">
+
+                        Pilih Marketplace
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NAMA TOKO -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Nama Akun Toko
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="storeName"
+                    class="form-control"
+                    placeholder="Contoh: Adimasa Official Store"
+                >
+
+            </div>
+
+
+            <!-- KODE TOKO -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Kode Toko
+                    <span style="color:#94a3b8;">
+                        (Opsional)
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="storeCode"
+                    class="form-control"
+                    placeholder="Contoh: SHOPEE-001"
+                >
+
+            </div>
+
+<!-- BIAYA ADMIN MARKETPLACE -->
+<div class="form-group">
+
+    <label>
+        Biaya Admin Marketplace (%)
+    </label>
+
+    <div style="position:relative;">
+
+        <input
+            type="number"
+            id="storeFeePercent"
+            class="form-control"
+            min="0"
+            max="100"
+            step="0.01"
+            placeholder="Masukkan persentase admin"
+        >
+
+        <span style="
+            position:absolute;
+            right:14px;
+            top:50%;
+            transform:translateY(-50%);
+            color:#64748b;
+            font-weight:600;
+        ">
+            %
+        </span>
+
+    </div>
+
+    <small style="
+        display:block;
+        margin-top:6px;
+        color:#64748b;
+        line-height:1.5;
+    ">
+        Isi sesuai biaya admin akun toko ini.
+    </small>
+
+</div>
+
+            <!-- DESKRIPSI -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Keterangan
+                    <span style="color:#94a3b8;">
+                        (Opsional)
+                    </span>
+
+                </label>
+
+
+                <textarea
+                    id="storeDescription"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Contoh: Akun utama Shopee"
+                ></textarea>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Status Akun Toko
+
+                </label>
+
+
+                <select
+                    id="storeStatus"
+                    class="form-control"
+                >
+
+                    <option value="active">
+
+                        Aktif
+
+                    </option>
+
+
+                    <option value="inactive">
+
+                        Tidak Aktif
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-footer">
+
+
+            <button
+                class="cancel-button"
+                onclick="closeStoreModal()"
+            >
+
+                Batal
+
+            </button>
+
+
+            <button
+                class="primary-button"
+                onclick="saveStore()"
+            >
+
+                Simpan Akun Toko
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+<!-- =====================================================
+     PRODUCT MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="productModal"
+>
+
+    <div class="modal">
+
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <h3
+                id="productModalTitle"
+            >
+
+                Tambah Produk
+
+            </h3>
+
+
+            <button
+                class="modal-close"
+                onclick="closeProductModal()"
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="modal-body">
+
+
+            <!-- SKU -->
+
+            <div class="form-group">
+
+                <label>
+
+                    SKU Produk *
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="productSKU"
+                    class="form-control"
+                    placeholder="Contoh: TAS-BIRU-001"
+                >
+
+            </div>
+
+
+            <!-- NAMA PRODUK -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Nama Produk *
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="productName"
+                    class="form-control"
+                    placeholder="Contoh: Tas Biru Premium"
+                >
+
+            </div>
+
+
+            <!-- KATEGORI -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Kategori
+
+                    <span style="color:#94a3b8;">
+                        (Opsional)
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="productCategory"
+                    class="form-control"
+                    placeholder="Contoh: Tas"
+                >
+
+            </div>
+
+
+            <!-- HARGA JUAL -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Harga Jual
+
+                    <span style="color:#94a3b8;">
+                        (Opsional)
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="productPrice"
+                    class="form-control"
+                    placeholder="Contoh: 50000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- HPP -->
+
+            <div class="form-group">
+
+                <label>
+
+                    HPP / Modal Produk *
+
+                </label>
+
+
+                <input
+                    type="number"
+                    id="productCost"
+                    class="form-control"
+                    placeholder="Contoh: 25000"
+                    min="0"
+                >
+<!-- STOK -->
+<div class="form-group">
+
+    <label>
+        Stok Produk
+    </label>
+
+    <input
+        type="number"
+        id="productStock"
+        class="form-control"
+        placeholder="Contoh: 100"
+        min="0"
+    >
+
+</div>
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="form-group">
+
+                <label>
+
+                    Status Produk
+
+                </label>
+
+
+                <select
+                    id="productStatus"
+                    class="form-control"
+                >
+
+                    <option value="active">
+
+                        Aktif
+
+                    </option>
+
+
+                    <option value="inactive">
+
+                        Tidak Aktif
+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-footer">
+
+
+            <button
+                class="cancel-button"
+                onclick="closeProductModal()"
+            >
+
+                Batal
+
+            </button>
+
+
+            <button
+                class="primary-button"
+                onclick="saveProduct()"
+            >
+
+                Simpan Produk
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     BIAYA PACKING MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="packingModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Pengaturan Biaya Packing
+            </h3>
+
+            <button
+                class="modal-close"
+                onclick="closePackingModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <p style="
+                margin-bottom:20px;
+                color:#64748b;
+                line-height:1.6;
+            ">
+                Masukkan biaya setiap komponen packing.
+                Total akan dihitung otomatis sebagai biaya
+                packing per transaksi.
+            </p>
+
+            <div class="form-group">
+
+                <label>
+                    Thermal
+                </label>
+
+                <input
+                    type="number"
+                    id="packingThermal"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Lakban
+                </label>
+
+                <input
+                    type="number"
+                    id="packingLakban"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Plastik
+                </label>
+
+                <input
+                    type="number"
+                    id="packingPlastik"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Bubble
+                </label>
+
+                <input
+                    type="number"
+                    id="packingBubble"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                >
+
+            </div>
+
+
+            <div style="
+                margin-top:20px;
+                padding:16px;
+                border-radius:12px;
+                background:#f8fafc;
+                border:1px solid #e2e8f0;
+            ">
+
+                <div style="
+                    font-size:13px;
+                    color:#64748b;
+                    margin-bottom:5px;
+                ">
+                    Total Biaya Packing / Transaksi
+                </div>
+
+                <div
+                    id="packingTotalPreview"
+                    style="
+                        font-size:24px;
+                        font-weight:700;
+                        color:#0f172a;
+                    "
+                >
+                    Rp0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-button"
+                onclick="closePackingModal()"
+            >
+                Batal
+            </button>
+
+            <button
+                class="primary-button"
+                onclick="savePackingSettings()"
+            >
+                Simpan
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="/src/legacy/scripts/legacy-03.js"></script>
+
+<!-- =====================================================
+     MARKETPLACE MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="marketplaceModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="marketplaceModalTitle">
+                Tambah Marketplace
+            </h3>
+
+
+            <button
+                class="modal-close"
+                onclick="closeMarketplaceModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <div class="form-group">
+
+                <label>
+                    Nama Marketplace
+                </label>
+
+                <input
+                    type="text"
+                    id="marketplaceName"
+                    class="form-control"
+                    placeholder="Contoh: Shopee"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Status
+                </label>
+
+                <select
+                    id="marketplaceStatus"
+                    class="form-control"
+                >
+
+                    <option value="active">
+                        Aktif
+                    </option>
+
+                    <option value="inactive">
+                        Tidak Aktif
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="cancel-button"
+                onclick="closeMarketplaceModal()"
+            >
+                Batal
+            </button>
+
+
+            <button
+                class="primary-button"
+                onclick="saveMarketplace()"
+            >
+                Simpan Marketplace
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ENGINE PEMBACA FILE SELLERBOOKS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+<!-- =====================================================
+     COST MODAL
+===================================================== -->
+
+<div
+    class="modal-overlay"
+    id="costModal"
+>
+
+    <div class="modal">
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <h3
+                id="costModalTitle"
+            >
+                Tambah Biaya
+            </h3>
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeCostModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- BODY -->
+
+        <div class="modal-body">
+
+
+            <!-- TANGGAL -->
+
+            <div class="form-group">
+
+                <label>
+                    Tanggal *
+                </label>
+
+                <input
+                    type="date"
+                    id="costDate"
+                    class="form-control"
+                >
+
+            </div>
+
+
+            <!-- MARKETPLACE -->
+
+            <div class="form-group">
+
+                <label>
+                    Marketplace *
+                </label>
+
+                <select
+                    id="costMarketplace"
+                    class="form-control"
+                    onchange="loadCostStoreOptions()"
+                >
+                    <option value="">
+                        -- Pilih Marketplace --
+                    </option>
+                </select>
+
+                <small style="color:#64748b;">
+                    Pilih marketplace tempat biaya ini terjadi.
+                </small>
+
+            </div>
+
+
+            <!-- AKUN TOKO -->
+
+            <div class="form-group">
+
+                <label>
+                    Akun Toko *
+                </label>
+
+                <select
+                    id="costStore"
+                    class="form-control"
+                >
+                    <option value="">
+                        -- Pilih Akun Toko --
+                    </option>
+                </select>
+
+                <small style="color:#64748b;">
+                    Hanya akun dari marketplace yang dipilih yang ditampilkan.
+                </small>
+
+            </div>
+
+
+            <!-- KATEGORI -->
+
+            <div class="form-group">
+
+                <label>
+                    Kategori Biaya *
+                </label>
+
+                <select
+                    id="costCategory"
+                    class="form-control"
+                >
+
+                    <option value="">
+                        -- Pilih Kategori --
+                    </option>
+
+                    <option value="Iklan">
+                        Iklan
+                    </option>
+
+                    <option value="Transport">
+                        Transport
+                    </option>
+
+                    <option value="Operasional">
+                        Operasional
+                    </option>
+
+                    <option value="Lainnya">
+                        Lainnya
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- KETERANGAN -->
+
+            <div class="form-group">
+
+                <label>
+                    Keterangan *
+                </label>
+
+                <input
+                    type="text"
+                    id="costDescription"
+                    class="form-control"
+                    placeholder="Contoh: Biaya iklan TikTok bulan ini"
+                >
+
+            </div>
+
+
+            <!-- NOMINAL -->
+
+            <div class="form-group">
+
+                <label>
+                    Nominal Biaya *
+                </label>
+
+                <input
+                    type="number"
+                    id="costAmount"
+                    class="form-control"
+                    placeholder="Contoh: 50000"
+                    min="0"
+                >
+
+            </div>
+
+
+            <!-- CATATAN -->
+
+            <div class="form-group">
+
+                <label>
+                    Catatan
+                    <span
+                        style="color:#94a3b8;"
+                    >
+                        (Opsional)
+                    </span>
+                </label>
+
+                <textarea
+                    id="costNotes"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Catatan tambahan..."
+                ></textarea>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:flex-end;
+                    gap:10px;
+                    margin-top:20px;
+                "
+            >
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closeCostModal()"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="saveCost()"
+                >
+                    Simpan Biaya
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="/src/legacy/scripts/legacy-04.js"></script>
+
+
+<footer class="app-footer">
+    © 2026 All Rights Reserved by
+    <strong>PT Adiimasa Distribusi Indonesia</strong>
+</footer>
+</body>
 </html>

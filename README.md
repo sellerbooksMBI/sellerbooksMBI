@@ -1,17 +1,15 @@
 # SellerBooks
 
-Kerangka baru SellerBooks yang dipisahkan dari repository SellerBooks Core.
+Repository aplikasi SellerBooks di root domain GitHub Pages: https://sellerbooksMBI.github.io/
 
-## Prinsip pemisahan
-- `index.html`: kerangka halaman.
-- `src/styles/`: CSS tampilan.
-- `src/core/`: konfigurasi dan fondasi inti.
-- `src/modules/`: modul fitur aplikasi.
-- `src/services/`: integrasi layanan/API.
-- `src/main.js`: entry point aplikasi.
+## Struktur pemisahan awal
 
-## Penting
-- Repository ini berdiri sendiri dan tidak mengubah repository `sellerbookscore`.
-- Belum ada fitur SellerBooks lama yang dipindahkan atau diaktifkan pada tahap kerangka ini.
-- Supabase baru akan dikonfigurasi melalui environment variable; jangan menaruh service-role key di frontend.
-- Sebelum memindahkan engine lama, kode akan dipetakan dan dipisahkan bertahap agar alur penjualan, impor, sinkronisasi, dan snapshot tidak berubah tanpa pengujian.
+- `index.html` — markup dan susunan halaman aplikasi lama.
+- `src/styles/main.css` — seluruh blok CSS lama digabung ke satu stylesheet.
+- `src/legacy/scripts/` — JavaScript inline dipisahkan menjadi file-file berurutan; setiap file dipanggil pada posisi asalnya agar urutan eksekusi dipertahankan.
+- `public/` — aset statis seperti favicon.
+- `src/core/`, `src/modules/`, dan `src/services/` — tujuan refactor lanjutan.
+
+## Batas tahap ini
+
+Ini pemisahan mekanis, bukan perubahan logika. Alur import, laporan, biaya, dan penyimpanan belum diubah. Sebelum mengalihkan penyimpanan ke Supabase atau mengaktifkan API marketplace multi-client, masing-masing modul harus diaudit dan diuji. File JavaScript lama tetap berjalan sebagai script klasik karena markup menggunakan handler global.
