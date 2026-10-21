@@ -40,13 +40,35 @@ The following is the first-pass domain map from named section markers/functions 
 | CSS | `css/base.css`, `css/layout.css`, `css/components/*.css`, `css/pages/*.css` | First map selectors and duplicate/override rules; preserve current six-file cascade before consolidating. |
 | HTML | `index.html` plus optional reusable templates only where safe | Keep IDs/data attributes used by JS. Avoid a redesign or changing login markup while refactoring. |
 
-## Legacy file mapping still to confirm
+## Legacy file mapping (function inventory pass)
 
-- `legacy-01.js`: report filters and report initialization (confirmed from function names).
-- `legacy-02.js`: large report/data/snapshot helper region (confirmed cache and snapshot identifiers); inspect full boundaries before moving.
-- `legacy-03.js`: small standalone helper; identify consumers before assigning a permanent name.
-- `legacy-04.js`: Excel library loader/fallback helper.
-- `legacy-05.js` to `legacy-09.js`: function-level mapping not yet complete; do not rename based only on file number.
+| Current file | Confirmed role | Suggested target |
+|---|---|---|
+| `js/legacy-01.js` | Custom dialog queue + report marketplace/store filters and report initialization (12 named functions) | `js/modules/ui/dialogs.js`, `js/modules/reports/report-filters.js` (split only after checking shared dialog dependencies) |
+| `js/legacy-02.js` | Report transaction data, caches, date helpers, report rendering/deletion, fees/costs, daily snapshots (65 named functions) | `js/modules/reports/*`, `js/modules/snapshots/daily-snapshots.js`, `js/services/report-data.js` |
+| `js/legacy-03.js` | Packing material modal/settings: `openPackingModal`, `closePackingModal`, `updatePackingPreview`, `savePackingSettings` | `js/modules/sales/packing-settings.js` |
+| `js/legacy-04.js` | Dynamic library loader/fallback (`loadScript`) for Excel libraries | `js/services/library-loader.js` |
+| `js/legacy-05.js` | Client/device/browser/referrer/session analytics and tracking | `js/modules/analytics/client-analytics.js` |
+| `js/legacy-06.js` | Large ID/EN translation map and language-driven UI text updates (no named function declarations found; likely executes as a script) | `js/modules/settings/translations.js` with a small compatibility entry point |
+| `js/legacy-07.js` | Piutang/receivables local storage, totals, rendering, payment form helpers, dashboard refresh | `js/modules/receivables/receivables-ui.js` |
+| `js/legacy-08.js` | Piutang cloud data, local migration, Supabase/realtime polling and refresh | `js/modules/receivables/receivables-cloud.js`, `js/services/realtime.js` |
+| `js/legacy-09.js` | Contact/help modal language updates (`updateLanguage`) | `js/modules/ui/contact-modal.js` or merge into translations after checking selector ownership |
+| `js/main.js` | Main engine (~21,685 lines; 318 named function declarations; broad global state) | Extract by domain table above, not as one file |
+
+This pass confirms the roles from function names and section markers, not full runtime behavior. Some files contain many top-level variables created inside callbacks, so simple variable counts are not counts of true global declarations. A scope-aware parser pass is still required before code movement.
+
+## CSS inventory (first pass)
+
+- `css/legacy-01.css` (~50 KB / 4,524 lines): primary stylesheet with login, marketplace, and broad app styling.
+- `css/legacy-02.css` (~7 KB / 270 lines), `legacy-03.css` (~2.8 KB / 162 lines), `legacy-04.css` (~8.4 KB / 373 lines), `legacy-05.css` (~4.9 KB / 94 lines), and `legacy-06.css` (~2.7 KB / 18 lines): supplemental layers and/or late overrides. Exact selector ownership and duplicate rules still need a selector inventory. Keep the current order until that inventory is complete.
+
+## Findings that affect the refactor
+
+1. The HTML uses classic `<script>` tags and inline event attributes (for example, `onclick="loginGoogle()"` and `onchange="sellerBooksSetLoginLanguage(this.value)"`). Module conversion must preserve public global function names or add explicit `window` compatibility wrappers.
+2. The script order is not arbitrary: report scripts run before the main engine; Supabase JS is loaded before `main.js`; additional feature scripts run afterward. Avoid `async` or parallel script loading until dependency edges are mapped.
+3. `main.js` and `legacy-02.js` both contain report/snapshot-related logic. Audit duplicate declarations and call sites before extracting shared code to prevent double initialization or shadowing.
+4. The receivables feature spans two files: UI/local logic in `legacy-07.js` and cloud/realtime logic in `legacy-08.js`. Keep migration and ownership behavior explicit when separating them.
+5. The existing repository contains Vite scripts, but the current production page still loads static root-relative assets. Avoid mixing a build-system migration with the first domain extraction; keep each change reviewable.
 
 ## Recommended extraction order
 
