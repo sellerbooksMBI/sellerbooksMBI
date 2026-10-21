@@ -13,21 +13,20 @@ The current app still uses ordered classic scripts and shared globals. Keep each
 
 ## Current script-loading contract
 
-The following are loaded in `index.html`; order is significant:
-1. `js/legacy-01.js`
-2. `js/legacy-02.js`
-3. `js/legacy-03.js` (deprecated inert compatibility file)
-4. Spreadsheet vendor scripts (XLSX / ExcelJS)
-5. `js/legacy-04.js`
-6. Supabase browser CDN
-7. `js/main.js`
-8. `js/legacy-05.js)
-9. `js/modules/receivables-language/index.js)
-10. `js/legacy-07.js) and `js/legacy-08.js`
-11. `js/modules/customer-service/index.js` near the customer-service widget markup
-12. `js/modules/packing/index.js` at the former packing script position
-
-**Risk:** `package.json` declares `"type": "module"`, but this page relies on classic-script globals. Vite build success alone does not prove browser behavior is unchanged.
+The following scripts are loaded by `index.html`; their order is significant:
+1. `js/modules/dialogs/index.js`
+2. `js/modules/report-filters/index.js`
+3. `js/legacy-02.js` (report calculations, rendering, and snapshot logic)
+4. `js/legacy-03.js` (deprecated inert compatibility file)
+5. Spreadsheet vendor scripts (XLSX / ExcelJS)
+6. `js/legacy-04.js`
+7. Supabase browser CDN
+8. `js/main.js` (cross-cutting persistence/core)
+9. `js/legacy-05.js`
+10. `js/modules/receivables-language/index.js`
+11. `js/legacy-07.js` and `js/legacy-08.js` (receivables UI and cloud sync)
+12. `js/modules/customer-service/index.js` near its widget markup
+13. `js/modules/packing/index.js` at the former packing script position
 
 ## Feature folder inventory
 
