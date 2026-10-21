@@ -59,3 +59,16 @@ Start with a small, self-contained helper only after confirming all callers and 
 - Smoke test login, language, import, report, snapshots, marketplace pulling, and multi-client behavior.
 - Review the diff for business-logic changes; pure extraction should not change formulas or persistence behavior.
 - Merge only after review; keep `main` unchanged until then.
+
+
+## Implemented extraction in phase 1
+- New file: `js/modules/packing.js`.
+- `js/legacy-03.js` is now a compatibility entrypoint that inserts the new feature script during HTML parsing. The existing `index.html` script tag and its placement were preserved.
+- The packing implementation remains a classic script and continues to use the existing global dependencies (`packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`). This deliberately avoids converting the entire application to ES modules in one step.
+- Build workflow added at `.github/workflows/build-check.yml` to run `npm install` and `npm run build` for this branch and pull requests to `main`.
+
+## Verification status
+- Source-level extraction and repository commits: complete.
+- Automated Vite build: workflow started; do not consider passed until GitHub Actions reports success.
+- Browser smoke tests: not yet run.
+- Business behavior validation: not yet run. This extraction is intentionally limited to the packing feature.
