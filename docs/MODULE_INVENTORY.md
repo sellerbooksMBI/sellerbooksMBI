@@ -7,6 +7,7 @@ New feature extractions must live in their own directory under `js/modules/<feat
 Example:
 - `js/modules/packing/index.js`
 - `js/modules/customer-service/index.js`
+- `js/modules/analytics/index.js`
 - `js/modules/receivables-language/index.js`
 
 The current app still uses ordered classic scripts and shared globals. Keep each extracted entry as a classic script for now; do not switch individual entries to ES modules until the shared-global dependency contract is mapped. Folder separation improves ownership, but true runtime isolation requires later removing shared mutable globals and adding explicit interfaces.
@@ -22,7 +23,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 6. `js/legacy-04.js`
 7. Supabase browser CDN
 8. `js/main.js` (cross-cutting persistence/core)
-9. `js/legacy-05.js`
+9. `js/modules/analytics/index.js`
 10. `js/modules/receivables-language/index.js`
 11. `js/legacy-07.js` and `js/legacy-08.js` (receivables UI and cloud sync)
 12. `js/modules/customer-service/index.js` near its widget markup
@@ -37,6 +38,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 | --- | --- | --- | --- |
 | `js/modules/packing/index.js` | Packing settings modal, preview, save action | Existing globals: `packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`; no persistence logic moved | Low/medium |
 | `js/modules/customer-service/index.js` | Customer-service floating button and modal interactions | Owns widget listeners; reads `sellerBooksCurrentLanguage()` or sessionStorage fallback; widget markup remains in `index.html` | Low |
+| `js/modules/analytics/index.js` | Platform analytics visitor/session/device detection and RPC tracking | Uses Supabase client global; analytics errors are caught so they do not block app behavior | Medium |
 | `js/modules/receivables-language/index.js` | Indonesian/English text map and receivables DOM localization | Exposes `window.sbPiutangText` and `window.sbPiutangApplyLanguage`; expects `sellerBooksCurrentLanguage()` and receivables DOM | Medium |
 | `js/legacy-01.js` | Dialog/alert helpers and report initialization | Shared globals; legacy | High |
 | `js/legacy-02.js` | Report filters, transaction cache, financial calculations, snapshots, report rendering | Shared sales data and accounting semantics; legacy | Very high |
