@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SellerBooks - Lazada</title>
+<style>
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#0f172a}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{text-align:center;padding:32px 24px;max-width:430px}
+.icon{width:58px;height:58px;border-radius:50%;margin:0 auto 18px;background:#dcfce7;color:#15803d;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold}
+.icon.error{background:#fee2e2;color:#b91c1c}
+h1{font-size:25px;margin:0 0 10px}
+p{font-size:14px;line-height:1.6;color:#64748b;margin:0}
+</style>
+</head>
+<body>
+<div class="box" id="box">
+    <div class="icon" id="icon">✓</div>
+    <h1 id="title">Lazada berhasil terhubung</h1>
+    <p id="message">Mengembalikan Anda ke SellerBooks...</p>
+</div>
+<script>
+(function(){
+    const params=new URLSearchParams(window.location.search);
+    const result=params.get("sellerbooks_lazada_oauth")||"error";
+    const reason=params.get("reason")||"OAUTH_FAILED";
+    const connectionId=params.get("connection_id")||"";
+    const target=window.location.origin;
+
+    let payload;
+
+    if(result==="success"){
+        payload={
+            source:"sellerbooks-lazada-oauth",
+            status:"success",
+            connection_id:connectionId
+        };
+    }else{
+        payload={
+            source:"sellerbooks-lazada-oauth",
+            status:"error",
+            reason:reason
+        };
+
+        document.getElementById("icon").textContent="!";
+        document.getElementById("icon").classList.add("error");
+
+        if(reason==="LAZADA_ACCOUNT_ALREADY_CONNECTED"){
+            document.getElementById("title").textContent="Akun Lazada sudah terhubung";
+            document.getElementById("message").textContent=
+                "Akun Lazada ini sudah terhubung ke akun atau toko SellerBooks lain.";
+        }else{
+            document.getElementById("title").textContent="Integrasi Lazada gagal";
+            document.getElementById("message").textContent="Kode: "+reason;
+        }
+    }
+
+    // Browser desktop/web: pertahankan mekanisme popup lama.
+    // APK: OAuth dibuka dari Chrome, sehingga tidak memiliki window.opener.
+    try{
+        if(window.opener && !window.opener.closed){
+            window.opener.postMessage(payload,target);
+
+            setTimeout(function(){
+                try{ window.close(); }catch(e){}
+            },1800);
+
+            return;
+        }
+    }catch(e){}
+
+    // Tidak ada opener = kemungkinan OAuth berasal dari APK SellerBooks.
+    setTimeout(function(){
+        var deepLink =
+            "sellerbooks://oauth-callback" +
+            "?marketplace=lazada" +
+            "&status=" + encodeURIComponent(payload.status || "error");
+
+        if(payload.connection_id){
+            deepLink += "&connection_id=" + encodeURIComponent(payload.connection_id);
+        }
+
+        if(payload.reason){
+            deepLink += "&reason=" + encodeURIComponent(payload.reason);
+        }
+
+        window.location.href = deepLink;
+    },250);
+})();
+</script>
+</body>
+</html>
