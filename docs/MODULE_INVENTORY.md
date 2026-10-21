@@ -63,7 +63,7 @@ Start with a small, self-contained helper only after confirming all callers and 
 
 ## Implemented extraction in phase 1
 - New file: `js/modules/packing.js`.
-- `js/legacy-03.js` is now a compatibility entrypoint that inserts the new feature script during HTML parsing. The existing `index.html` script tag and its placement were preserved.
+- `index.html` now loads `js/modules/packing.js` directly at the same position where the old packing script was loaded. `js/legacy-03.js` is an inert deprecated file, preventing duplicate global declarations if a stale page still references it.
 - The packing implementation remains a classic script and continues to use the existing global dependencies (`packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`). This deliberately avoids converting the entire application to ES modules in one step.
 - Build workflow added at `.github/workflows/build-check.yml` to run `npm install` and `npm run build` for this branch and pull requests to `main`.
 
