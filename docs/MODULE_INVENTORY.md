@@ -1,74 +1,62 @@
 # SellerBooks Module Inventory (Phase 1)
 
-This inventory records observed boundaries and risks before any code extraction. It is not a claim that these modules have already been separated.
+## Architecture rule: one feature per folder
 
-## Script loading contract
-The current page uses ordered classic scripts and shared globals. Keep this order unchanged until dependencies are mapped:
+New feature extractions must live in their own directory under `js/modules/<feature-name>/`, with `index.js` as the browser entry point and feature-owned assets/tests nearby when practical. A fix inside one feature should not require editing another feature's implementation.
+
+Example:
+- `js/modules/packing/index.js`
+- `js/modules/customer-service/index.js`
+- `js/modules/receivables-language/index.js`
+
+The current app still uses ordered classic scripts and shared globals. Keep each extracted entry as a classic script for now; do not switch individual entries to ES modules until the shared-global dependency contract is mapped. Folder separation improves ownership, but true runtime isolation requires later removing shared mutable globals and adding explicit interfaces.
+
+## Current script-loading contract
+
+The following are loaded in `index.html`; order is significant:
 1. `js/legacy-01.js`
 2. `js/legacy-02.js`
-3. `js/legacy-03.js`
-4. spreadsheet vendor scripts (XLSX / ExcelJS)
+3. `js/legacy-03.js` (deprecated inert compatibility file)
+4. Spreadsheet vendor scripts (XLSX / ExcelJS)
 5. `js/legacy-04.js`
 6. Supabase browser CDN
 7. `js/main.js`
-8. `js/legacy-05.js` through `js/legacy-09.js`
+8. `js/legacy-05.js)
+9. `js/modules/receivables-language/index.js)
+10. `js/legacy-07.js) and `js/legacy-08.js`
+11. `js/modules/customer-service/index.js` near the customer-service widget markup
+12. `js/modules/packing/index.js` at the former packing script position
 
-**Risk:** `package.json` declares `"type": "module"`, but the HTML script chain appears to rely on classic-script globals. A future refactor must not blindly convert tags to `type="module"` or add imports without confirming how Vite currently builds/serves the page.
+**Risk:** `package.json` declares `"type": "module"`, but this page relies on classic-script globals. Vite build success alone does not prove browser behavior is unchanged.
 
-## Observed ownership candidates
+## Feature folder inventory
 
-| Candidate module | Current location | Observed responsibility | Extraction risk |
+| Module folder / entry | Responsibility | Dependencies / boundaries | Risk |
 | --- | --- | --- | --- |
-| Report profiling + import read cache | `js/legacy-02.js` (top section) | temporary profiler, `getSalesImportsData()`, flatten/cache via `getAllReportTransactions()` | Medium: shared data and invalidation behavior |
-| Report date/time filters | `js/legacy-02.js` | WIB timezone helpers and report period filtering | Medium: affects all financial totals |
-| Report UI/filter helpers | `js/legacy-01.js`, `js/legacy-02.js` | dialogs, marketplace/store filters, report initialization and rendering | High: cross-file DOM/global references |
-| Financial calculations + daily snapshots | `js/legacy-02.js` and possibly `js/main.js` | profit/fee logic and snapshot-related logic | High: must preserve accounting behavior |
-| Cloud state + conflict resolution | `js/main.js` (top section) | Supabase config/client, cloud state, dirty keys, conflict merge, save queue | Very high: data-loss and multi-client risks |
-| Storage compatibility layer | `js/main.js` (top section) | localStorage-compatible wrapper, local migration, IndexedDB fast cache | High: many callers expect synchronous localStorage semantics |
-| Packing UI/settings | `js/legacy-03.js` | packing modal and settings | Low/medium: check global callers first |
-| Script loading helper | `js/legacy-04.js` | dynamic script loader | Low, after callers are checked |
-| Device/analytics | `js/legacy-05.js` | browser/device detection and activity analytics | Medium: external calls/privacy/initialization order |
-| Feature logic for other areas | `js/legacy-06.js` | not yet fully inventoried | Unknown: inspect before moving |
-| Receivables UI/local state | `js/legacy-07.js` | piutang rendering and local behavior | Medium: shared storage and DOM |
-| Receivables cloud sync | `js/legacy-08.js` | piutang cloud sync/realtime/polling | High: race conditions and cross-client state |
-| Localization helpers | `js/legacy-09.js` | `updateLanguage()`, `hide()` | Medium: may be called by inline HTML and many features |
+| `js/modules/packing/index.js` | Packing settings modal, preview, save action | Existing globals: `packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`; no persistence logic moved | Low/medium |
+| `js/modules/customer-service/index.js` | Customer-service floating button and modal interactions | Owns widget listeners; reads `sellerBooksCurrentLanguage()` or sessionStorage fallback; widget markup remains in `index.html` | Low |
+| `js/modules/receivables-language/index.js` | Indonesian/English text map and receivables DOM localization | Exposes `window.sbPiutangText` and `window.sbPiutangApplyLanguage`; expects `sellerBooksCurrentLanguage()` and receivables DOM | Medium |
+| `js/legacy-01.js` | Dialog/alert helpers and report initialization | Shared globals; legacy | High |
+| `js/legacy-02.js` | Report filters, transaction cache, financial calculations, snapshots, report rendering | Shared sales data and accounting semantics; legacy | Very high |
+| `js/main.js` | Supabase client, cloud state, storage compatibility, persistence, save queue, migration, import identity/merge | Cross-cutting shared state; legacy | Very high |
+| `js/legacy-04.js` | Spreadsheet/file-picker loader helper | Vendor script loading and file picker integration | Low/medium |
+| `js/legacy-05.js` | Device/browser analytics | External calls and initialization ordering | Medium |
+| `js/legacy-07.js` | Receivables UI and local behavior | Shared storage and DOM | Medium |
+| `js/legacy-08.js` | Receivables cloud sync, realtime and polling | Race conditions and cross-client state | High |
+| `js/legacy-09.js` | Deprecated inert compatibility file; implementation moved to customer-service folder | Keep inert to avoid duplicate listeners on stale references | None |
+| `js/legacy-06.js` | Deprecated only after script switch; implementation moved to receivables-language folder | Keep inert to avoid duplicate global API declarations | None |
 
-## Cloud/storage behavior observed in `js/main.js`
-- Supabase client is created from `window.supabase.createClient(...)`.
-- The cloud state is exposed through shared global variables.
-- The storage wrapper intentionally keeps a localStorage-like synchronous API while writing changes to cloud state and queuing saves.
-- Sales-import identity/merge code protects against duplicate rows and detects some delete/edit conflicts.
-- IndexedDB is used as a fast-start cache, while Supabase is described in comments as the authoritative source.
+## Data integrity guardrails
 
-**Do not move these functions as a first extraction.** First identify every storage wrapper caller, initialization boundary, realtime callback, and save-queue dependency.
-
-## Report behavior observed in `js/legacy-02.js`
-- A temporary profiler tracks storage read, JSON parsing, transaction flattening, filtering, financial calculations, rendering, and counts.
-- `getSalesImportsData()` caches parsed import data based on the cloud-state source value.
-- `getAllReportTransactions()` caches flattened transactions based on the import-array object identity.
-- Date helpers explicitly enforce `Asia/Jakarta`/WIB semantics.
-
-**Do not alter cache invalidation, date rules, transaction identity, or calculation formulas during structural extraction.**
-
-## Recommended first code extraction
-Start with a small, self-contained helper only after confirming all callers and whether any inline HTML invokes it. Keep the old global function as a compatibility wrapper if needed. Avoid starting with Supabase/storage, report financial calculations, or marketplace integrations.
+- Do not change transaction identity, deduplication, merge behavior, financial formulas, snapshots, or date/WIB rules during structural extraction.
+- Do not move Supabase/storage code until every wrapper caller, initialization boundary, realtime callback, and save-queue dependency is mapped.
+- Do not change the existing ID/EN language contract or its Supabase persistence as part of module organization.
+- Keep old compatibility paths inert once the new folder entry is loaded, to prevent duplicate listeners or global declarations.
 
 ## Validation gate before merging
-- `npm run build` succeeds in the repository environment.
-- Verify the built page actually resolves every CSS, JS, Supabase, and spreadsheet asset.
-- Smoke test login, language, import, report, snapshots, marketplace pulling, and multi-client behavior.
-- Review the diff for business-logic changes; pure extraction should not change formulas or persistence behavior.
-- Merge only after review; keep `main` unchanged until then.
 
-
-## Implemented extraction in phase 1
-- New file: `js/modules/packing.js`.
-- `index.html` now loads `js/modules/packing.js` directly at the same position where the old packing script was loaded. `js/legacy-03.js` is an inert deprecated file, preventing duplicate global declarations if a stale page still references it.
-- The packing implementation remains a classic script and continues to use the existing global dependencies (`packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`). This deliberately avoids converting the entire application to ES modules in one step.
-- Build workflow added at `.github/workflows/build-check.yml` to run `npm install` and `npm run build` for this branch and pull requests to `main`.
-
-## Verification status
-- Source-level extraction and repository commits: complete.
-- Automated Vite build: workflow started; do not consider passed until GitHub Actions reports success.
-- Browser smoke tests: not yet run.
-- Business behavior validation: not yet run. This extraction is intentionally limited to the packing feature.
+- GitHub Actions `npm run build` succeeds.
+- Verify all JS/CSS/vendor assets resolve in the built page.
+- Smoke test login, language switching, packing settings, customer-service popup, receivables, import, reports, snapshots, marketplace pulling, and multi-client behavior.
+- Review the diff for business-logic changes; a pure extraction should not change formulas or persistence.
+- Do not merge until browser smoke tests and business-behavior checks are complete.
