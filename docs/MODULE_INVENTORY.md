@@ -9,6 +9,7 @@ Example:
 - `js/modules/customer-service/index.js`
 - `js/modules/analytics/index.js`
 - `js/modules/receivables-language/index.js`
+- `js/modules/file-import/index.js`
 
 The current app still uses ordered classic scripts and shared globals. Keep each extracted entry as a classic script for now; do not switch individual entries to ES modules until the shared-global dependency contract is mapped. Folder separation improves ownership, but true runtime isolation requires later removing shared mutable globals and adding explicit interfaces.
 
@@ -20,7 +21,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 3. `js/legacy-02.js` (report calculations, rendering, and snapshot logic)
 4. `js/legacy-03.js` (deprecated inert compatibility file)
 5. Spreadsheet vendor scripts (XLSX / ExcelJS)
-6. `js/legacy-04.js`
+6. `js/modules/file-import/index.js` (file picker / spreadsheet loaders)
 7. Supabase browser CDN
 8. `js/main.js` (cross-cutting persistence/core)
 9. `js/modules/analytics/index.js`
@@ -36,6 +37,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 
 | Module folder / entry | Responsibility | Dependencies / boundaries | Risk |
 | --- | --- | --- | --- |
+| `js/modules/file-import/index.js` | File picker helper and lazy XLSX / ExcelJS loaders | Preserves `window.sellerBooksOpenFilePicker`, `window.sellerBooksEnsureXLSX`, and `window.sellerBooksEnsureExcelJS`; loaded at the same position as the former helper script | Low/medium |
 | `js/modules/packing/index.js` | Packing settings modal, preview, save action | Existing globals: `packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`; no persistence logic moved | Low/medium |
 | `js/modules/customer-service/index.js` | Customer-service floating button and modal interactions | Owns widget listeners; reads `sellerBooksCurrentLanguage()` or sessionStorage fallback; widget markup remains in `index.html` | Low |
 | `js/modules/analytics/index.js` | Platform analytics visitor/session/device detection and RPC tracking | Uses Supabase client global; analytics errors are caught so they do not block app behavior | Medium |
@@ -43,7 +45,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 | `js/legacy-01.js` | Dialog/alert helpers and report initialization | Shared globals; legacy | High |
 | `js/legacy-02.js` | Report filters, transaction cache, financial calculations, snapshots, report rendering | Shared sales data and accounting semantics; legacy | Very high |
 | `js/main.js` | Supabase client, cloud state, storage compatibility, persistence, save queue, migration, import identity/merge | Cross-cutting shared state; legacy | Very high |
-| `js/legacy-04.js` | Spreadsheet/file-picker loader helper | Vendor script loading and file picker integration | Low/medium |
+| `js/legacy-04.js` | Deprecated inert compatibility file; implementation moved to file-import folder | Keep inert to prevent duplicate globals | None |
 | `js/legacy-05.js` | Device/browser analytics | External calls and initialization ordering | Medium |
 | `js/legacy-07.js` | Receivables UI and local behavior | Shared storage and DOM | Medium |
 | `js/legacy-08.js` | Receivables cloud sync, realtime and polling | Race conditions and cross-client state | High |
