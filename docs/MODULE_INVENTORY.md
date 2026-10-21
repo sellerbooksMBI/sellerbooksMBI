@@ -31,6 +31,9 @@ The following are loaded in `index.html`; order is significant:
 
 ## Feature folder inventory
 
+| `js/modules/dialogs/index.js` | Custom alert/confirm queue and bilingual dialog controls | Exposes `window.sellerBooksAlert` and `window.sellerBooksConfirm`; DOM markup and language helper remain shared | Medium |
+| `js/modules/report-filters/index.js` | Report marketplace/store filters, filter summary, report initialization | Uses `sellerBooksStorage`, deferred-render helper, report functions and globals defined by report/core scripts; script order preserved | High |
+
 | Module folder / entry | Responsibility | Dependencies / boundaries | Risk |
 | --- | --- | --- | --- |
 | `js/modules/packing/index.js` | Packing settings modal, preview, save action | Existing globals: `packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`; no persistence logic moved | Low/medium |
