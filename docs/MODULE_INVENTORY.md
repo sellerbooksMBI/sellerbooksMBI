@@ -10,6 +10,7 @@ Example:
 - `js/modules/analytics/index.js`
 - `js/modules/receivables-language/index.js`
 - `js/modules/file-import/index.js`
+- `js/modules/report-profiler/index.js`
 
 The current app still uses ordered classic scripts and shared globals. Keep each extracted entry as a classic script for now; do not switch individual entries to ES modules until the shared-global dependency contract is mapped. Folder separation improves ownership, but true runtime isolation requires later removing shared mutable globals and adding explicit interfaces.
 
@@ -18,17 +19,18 @@ The current app still uses ordered classic scripts and shared globals. Keep each
 The following scripts are loaded by `index.html`; their order is significant:
 1. `js/modules/dialogs/index.js`
 2. `js/modules/report-filters/index.js`
-3. `js/legacy-02.js` (report calculations, rendering, and snapshot logic)
-4. `js/legacy-03.js` (deprecated inert compatibility file)
-5. Spreadsheet vendor scripts (XLSX / ExcelJS)
-6. `js/modules/file-import/index.js` (file picker / spreadsheet loaders)
-7. Supabase browser CDN
-8. `js/main.js` (cross-cutting persistence/core)
-9. `js/modules/analytics/index.js`
-10. `js/modules/receivables-language/index.js`
-11. `js/legacy-07.js` and `js/legacy-08.js` (receivables UI and cloud sync)
-12. `js/modules/customer-service/index.js` near its widget markup
-13. `js/modules/packing/index.js` at the former packing script position
+3. `js/modules/report-profiler/index.js` (diagnostic only)
+4. `js/legacy-02.js` (report calculations, rendering, and snapshot logic)
+5. `js/legacy-03.js` (deprecated inert compatibility file)
+6. Spreadsheet vendor scripts (XLSX / ExcelJS)
+7. `js/modules/file-import/index.js` (file picker / spreadsheet loaders)
+8. Supabase browser CDN
+9. `js/main.js` (cross-cutting persistence/core)
+10. `js/modules/analytics/index.js`
+11. `js/modules/receivables-language/index.js`
+12. `js/legacy-07.js` and `js/legacy-08.js` (receivables UI and cloud sync)
+13. `js/modules/customer-service/index.js` near its widget markup
+14. `js/modules/packing/index.js` at the former packing script position
 
 ## Feature folder inventory
 
@@ -37,6 +39,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 
 | Module folder / entry | Responsibility | Dependencies / boundaries | Risk |
 | --- | --- | --- | --- |
+| `js/modules/report-profiler/index.js` | Optional report performance instrumentation; logs timing/counts only when explicitly activated | Exposes `window.sellerBooksReportProfiler`; does not change financial/report data | Low |
 | `js/modules/file-import/index.js` | File picker helper and lazy XLSX / ExcelJS loaders | Preserves `window.sellerBooksOpenFilePicker`, `window.sellerBooksEnsureXLSX`, and `window.sellerBooksEnsureExcelJS`; loaded at the same position as the former helper script | Low/medium |
 | `js/modules/packing/index.js` | Packing settings modal, preview, save action | Existing globals: `packingCosts`, `savePackingCosts()`, `formatRupiah()`, `sellerBooksAlert()`; no persistence logic moved | Low/medium |
 | `js/modules/customer-service/index.js` | Customer-service floating button and modal interactions | Owns widget listeners; reads `sellerBooksCurrentLanguage()` or sessionStorage fallback; widget markup remains in `index.html` | Low |
@@ -46,7 +49,7 @@ The following scripts are loaded by `index.html`; their order is significant:
 | `js/legacy-02.js` | Report filters, transaction cache, financial calculations, snapshots, report rendering | Shared sales data and accounting semantics; legacy | Very high |
 | `js/main.js` | Supabase client, cloud state, storage compatibility, persistence, save queue, migration, import identity/merge | Cross-cutting shared state; legacy | Very high |
 | `js/legacy-04.js` | Deprecated inert compatibility file; implementation moved to file-import folder | Keep inert to prevent duplicate globals | None |
-| `js/legacy-05.js` | Device/browser analytics | External calls and initialization ordering | Medium |
+| `js/legacy-05.js` | Deprecated inert compatibility file; implementation moved to analytics folder | Keep inert to prevent duplicate tracking | None |
 | `js/legacy-07.js` | Receivables UI and local behavior | Shared storage and DOM | Medium |
 | `js/legacy-08.js` | Receivables cloud sync, realtime and polling | Race conditions and cross-client state | High |
 | `js/legacy-09.js` | Deprecated inert compatibility file; implementation moved to customer-service folder | Keep inert to avoid duplicate listeners on stale references | None |
