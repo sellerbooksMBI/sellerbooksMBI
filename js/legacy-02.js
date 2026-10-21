@@ -4377,6 +4377,33 @@ function changeReportSoldProductPageSize(value){
     renderReportSoldProductTable();
 }
 
+function updateReportSoldProductLabels(isEN){
+        const labels = {
+            title: isEN ? "Sold Product Details" : "Detail Produk Terjual",
+            description: isEN ? "Summary of quantity, COGS, and profit by product category." : "Ringkasan jumlah produk, HPP, dan laba berdasarkan kategori produk.",
+            name: isEN ? "Product Name" : "Nama Produk",
+            qty: isEN ? "Total Products" : "Total Produk",
+            hpp: isEN ? "COGS" : "HPP",
+            profit: isEN ? "Profit" : "Laba",
+            averageProfit: isEN ? "Average Profit per Product" : "Rata-rata Laba per Produk",
+            hppPerPcs: isEN ? "COGS per Unit" : "HPP per PCS"
+        };
+        const labelMap = {
+            reportSoldProductTitle:labels.title,
+            reportSoldProductDescription:labels.description,
+            reportSoldProductNameHeader:labels.name,
+            reportSoldProductQtyHeader:labels.qty,
+            reportSoldProductHppHeader:labels.hpp,
+            reportSoldProductProfitHeader:labels.profit,
+            reportSoldProductAverageProfitHeader:labels.averageProfit,
+            reportSoldProductHppPerPcsHeader:labels.hppPerPcs
+        };
+        Object.keys(labelMap).forEach(function(id){
+            const el=document.getElementById(id);
+            if(el)el.textContent=labelMap[id];
+        });
+}
+
 function renderReportSoldProductTable(){
     const body = document.getElementById("reportSoldProductBody");
     const pagination = document.getElementById("reportSoldProductPagination");
@@ -4385,6 +4412,7 @@ function renderReportSoldProductTable(){
     if(!body) return;
 
     const isEN = String(typeof sellerBooksCurrentLanguage === "function" ? sellerBooksCurrentLanguage() : "id").toLowerCase() === "en";
+    updateReportSoldProductLabels(isEN);
     const transactions = getFilteredReportTransactions();
     const filterKey = [
         document.getElementById("reportPeriod")?.value || "",
@@ -4464,30 +4492,8 @@ function renderReportSoldProductTable(){
         controls.innerHTML = controlsHtml;
     }
 
-    const labels = {
-        title: isEN ? "Sold Product Details" : "Detail Produk Terjual",
-        description: isEN ? "Summary of quantity, COGS, and profit by product category." : "Ringkasan jumlah produk, HPP, dan laba berdasarkan kategori produk.",
-        name: isEN ? "Product Name" : "Nama Produk",
-        qty: isEN ? "Total Products" : "Total Produk",
-        hpp: isEN ? "COGS" : "HPP",
-        profit: isEN ? "Profit" : "Laba",
-        averageProfit: isEN ? "Average Profit per Product" : "Rata-rata Laba per Produk",
-        hppPerPcs: isEN ? "COGS per Unit" : "HPP per PCS"
-    };
-    const labelMap = {
-        reportSoldProductTitle:labels.title,
-        reportSoldProductDescription:labels.description,
-        reportSoldProductNameHeader:labels.name,
-        reportSoldProductQtyHeader:labels.qty,
-        reportSoldProductHppHeader:labels.hpp,
-        reportSoldProductProfitHeader:labels.profit,
-        reportSoldProductAverageProfitHeader:labels.averageProfit,
-        reportSoldProductHppPerPcsHeader:labels.hppPerPcs
-    };
-    Object.keys(labelMap).forEach(function(id){
-        const el=document.getElementById(id);
-        if(el)el.textContent=labelMap[id];
-    });
+    updateReportSoldProductLabels(isEN);
+
 }
 
 /* =========================================================
