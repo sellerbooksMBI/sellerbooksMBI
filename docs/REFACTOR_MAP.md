@@ -101,3 +101,9 @@ This pass confirms the roles from function names and section markers, not full r
 Completed: inventory of HTML/CSS/JS files; script/style load order; first-pass domain mapping for the large engine; role mapping for all nine legacy scripts; initial static ID/function reference scan; documented refactor guardrails.
 
 Next, before extraction: (1) inspect the two `loadScript` implementations and all call sites; (2) map the two `sellerBooksReadDailySnapshots` declarations and determine whether one is nested or intentionally shadowed; (3) inspect dynamic DOM creation for the 14 flagged IDs; (4) build a scope-aware global/function dependency inventory; (5) map CSS selector duplication and ownership. Then propose the first low-risk extraction without changing deployed behavior.
+
+## Follow-up checks on initial scan
+
+- All 14 IDs flagged by the HTML-vs-JavaScript scan are present as string literals in JavaScript. The approval UI, Blibli help/modal, and import-progress overlay appear to be created dynamically. They are not confirmed missing DOM elements; keep them in the dynamic-DOM map.
+- `sellerBooksReadDailySnapshots` is declared twice at top level in `legacy-02.js`. The second declaration is the cache-enhanced version and overwrites the first in classic-script scope. The first implementation appears redundant, but removal is deferred until the function and cache write/invalidation call sites are verified.
+- A lightweight CSS selector scan covered approximately 499 selector strings and flagged cross-file duplicates for `#reports .content-section` (legacy-01/02) and `.product-analysis-filter-grid` (legacy-01/03). This scanner is approximate because nested at-rules, grouped selectors, and comments can distort parsing; these are review targets, not instructions to delete rules.
