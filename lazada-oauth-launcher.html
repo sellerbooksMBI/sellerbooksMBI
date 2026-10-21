@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SellerBooks - Login Lazada</title>
+<style>
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#0f172a}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{text-align:center;padding:32px 24px;max-width:430px}
+.spinner{width:34px;height:34px;border:4px solid #e2e8f0;border-top-color:#0f172a;border-radius:50%;margin:0 auto 20px;animation:spin .8s linear infinite}
+h1{font-size:25px;margin:0 0 12px}
+p{font-size:14px;line-height:1.6;color:#64748b;margin:0}
+.error{display:none}
+.error h1{color:#b91c1c}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="box" id="loading">
+    <div class="spinner"></div>
+    <h1>Menghubungkan ke Lazada</h1>
+    <p>Menyiapkan halaman login resmi Lazada...</p>
+</div>
+<div class="box error" id="errorBox">
+    <h1>Login Lazada gagal dimulai</h1>
+    <p id="errorText">OAuth service configuration error.</p>
+</div>
+<script>
+(function(){
+    const SUPABASE_URL="https://fysaxpqpqexjnlpkbwap.supabase.co";
+    const SUPABASE_KEY="sb_publishable_DWRaEZTcNMjhglwN3nqCOw_pua8rsjD";
+
+    function showError(message){
+        document.getElementById("loading").style.display="none";
+        document.getElementById("errorBox").style.display="block";
+        document.getElementById("errorText").textContent=message||"OAuth service configuration error.";
+    }
+
+    async function start(){
+        try{
+            if(!window.supabase){
+                throw new Error("Supabase client tidak tersedia.");
+            }
+
+            const params=new URLSearchParams(window.location.search);
+            const storeId=params.get("store_id")||"";
+            const marketplaceId=params.get("marketplace_id")||"";
+
+            if(!storeId || !marketplaceId){
+                throw new Error("store_id dan marketplace_id tidak tersedia.");
+            }
+
+            const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+            const sessionResult=await client.auth.getSession();
+            const session=sessionResult?.data?.session;
+
+            if(!session?.access_token){
+                throw new Error("Sesi SellerBooks tidak tersedia. Silakan login kembali.");
+            }
+
+            const response=await fetch(
+                SUPABASE_URL+"/functions/v1/sellerbooks-lazada-oauth?action=init",
+                {
+                    method:"POST",
+                    headers:{
+                        "apikey":SUPABASE_KEY,
+                        "Authorization":"Bearer "+session.access_token,
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        store_id:storeId,
+                        marketplace_id:marketplaceId
+                    })
+                }
+            );
+
+            const data=await response.json().catch(function(){return {};});
+
+            if(!response.ok || !data.authorization_url){
+                throw new Error(
+                    data.error ||
+                    "OAuth Lazada tidak dapat dimulai."
+                );
+            }
+
+            // Lazada OAuth harus berjalan di browser top-level.
+            // Android WebView (APK) tidak dipakai untuk mempertahankan session Seller Center,
+            // karena pada WebView Lazada dapat mengembalikan user langsung ke Seller Center/Produk.
+            // Buka URL OAuth yang sama di Chrome Android dari WebView; Chrome/desktop
+            // tetap memakai alur normal tanpa perubahan.
+            const ua=navigator.userAgent||"";
+            const isAndroidWebView=/Android/i.test(ua)&&/(;\\s*wv\\)|\\bwv\\b|SellerBooksAPK/i.test(ua);
+
+            if(isAndroidWebView){
+                const encodedAuthUrl=encodeURIComponent(data.authorization_url);
+                const intentUrl=
+                    "intent://"+data.authorization_url.replace(/^https?:\\/\\//,"")+
+                    "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url="+
+                    encodedAuthUrl+";end";
+
+                // First attempt: Android Chrome intent. If the host blocks intent URLs,
+                // fall back to the normal top-level navigation.
+                let launched=false;
+                const fallbackTimer=setTimeout(function(){
+                    if(!launched){
+                        window.location.href=data.authorization_url;
+                    }
+                },1200);
+
+                const onVisibility=function(){
+                    launched=true;
+                    clearTimeout(fallbackTimer);
+                    document.removeEventListener("visibilitychange",onVisibility);
+                };
+                document.addEventListener("visibilitychange",onVisibility);
+
+                window.location.href=intentUrl;
+            }else if(/Android/i.test(ua) && /Chrome\\//i.test(ua)){
+                // Mobile Chrome: keep the server-side state/callback exactly the same,
+                // but do not force-refresh Lazada's browser cookie on every mobile
+                // authorization start. Lazada documents force_auth as optional.
+                // Desktop remains completely unchanged.
+                let mobileChromeUrl=data.authorization_url;
+                try{
+                    const u=new URL(data.authorization_url);
+                    u.searchParams.delete("force_auth");
+                    mobileChromeUrl=u.toString();
+                }catch(_){}
+                window.location.replace(mobileChromeUrl);
+            }else{
+                // Desktop and non-Chrome clients keep the existing OAuth handoff unchanged.
+                window.location.replace(data.authorization_url);
+            }
+
+        }catch(error){
+            console.error(error);
+            showError(error?.message||"OAuth service configuration error.");
+        }
+    }
+
+    const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+    s.onload=start;
+    s.onerror=function(){showError("Supabase client gagal dimuat.");};
+    document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
