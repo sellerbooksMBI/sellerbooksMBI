@@ -87,3 +87,17 @@ This pass confirms the roles from function names and section markers, not full r
 - Keep manual Excel import as the dedupe engine; marketplace API sync should not silently become a second import engine.
 - Maintain ID/EN language consistency and account-scoped cloud data.
 - The user plans to do full manual acceptance testing only after the refactor is declared ready. Until then, keep the work in audit/refactor stages and clearly distinguish verified checks from user acceptance testing.
+
+## Static reference scan (2026-10-21)
+
+- HTML contains 276 literal `id=` attributes. JavaScript contains 259 unique literal `getElementById("...")` references.
+- A simple static comparison flagged 14 IDs absent from literal HTML: `sellerbooksApprovalPage`, `sellerbooksApprovalEmail`, `sellerbooksApprovalText`, `sellerbooks-blibli-modal`, `sellerbooks-blibli-modal-style`, `sellerbooks-blibli-help`, and eight `sellerBooksImportProgress...` elements. This is **not yet a confirmed defect**: some may be created/injected by JavaScript or an integration module. Verify creation paths before treating any as missing.
+- Duplicate named function declarations were found for `sellerBooksReadDailySnapshots` (twice within `legacy-02.js`) and `loadScript` (in both `legacy-02.js` and `legacy-04.js`). The `loadScript` implementations have different signatures: legacy-02 accepts a callback, while legacy-04 returns a Promise. Because classic scripts share global scope and load order, this is a priority dependency to map before moving either implementation.
+- The HTML has 75 unique function-like names extracted from inline event attributes. Some apparent misses from a naive regex may be object methods, inline expressions, or runtime-generated functions; verify before changing global exposure.
+- No application JavaScript was moved or edited during this audit pass. Changes so far are documentation/mapping commits only.
+
+## Current status / next audit tasks
+
+Completed: inventory of HTML/CSS/JS files; script/style load order; first-pass domain mapping for the large engine; role mapping for all nine legacy scripts; initial static ID/function reference scan; documented refactor guardrails.
+
+Next, before extraction: (1) inspect the two `loadScript` implementations and all call sites; (2) map the two `sellerBooksReadDailySnapshots` declarations and determine whether one is nested or intentionally shadowed; (3) inspect dynamic DOM creation for the 14 flagged IDs; (4) build a scope-aware global/function dependency inventory; (5) map CSS selector duplication and ownership. Then propose the first low-risk extraction without changing deployed behavior.
