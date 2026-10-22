@@ -232,6 +232,17 @@ const salesImportProgressPosition = index.indexOf('src="/js/modules/sales/import
 const salesImportProgressMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (salesImportProgressPosition < 0 || salesImportProgressMainScriptPosition < 0 || salesImportProgressPosition > salesImportProgressMainScriptPosition) fail("Sales import progress module must load before main.js");
 
+
+const navigationViewModule = read("js/modules/navigation/view-router.js");
+for (const name of ["showView","toggleSidebar"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(navigationViewModule)) fail(`Missing navigation function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Navigation function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Navigation function"))) pass("Navigation functions are isolated from main.js");
+const navigationModulePosition = index.indexOf('src="/js/modules/navigation/view-router.js"');
+const navigationMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (navigationModulePosition < 0 || navigationMainScriptPosition < 0 || navigationModulePosition > navigationMainScriptPosition) fail("Navigation module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

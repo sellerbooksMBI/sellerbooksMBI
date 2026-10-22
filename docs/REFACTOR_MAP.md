@@ -367,3 +367,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The existing global progress flags, delete start/finish flow, cloud persistence/verification steps, Excel import engine, before-unload protection, and progress calls remain semantically unchanged; only the UI helper definitions and before-unload listener were relocated.
 - The module loads before `main.js` so both the existing product-deletion workflow and Excel import workflow continue to resolve the same global function names.
 - CI checks module ownership and load order. No import parsing, deduplication, stock, HPP, or profit calculations were changed.
+
+
+## Navigation and mobile sidebar extraction (2026-10-22, continued)
+
+- Moved `showView()`, `toggleSidebar()`, and the existing mobile outside-click sidebar listener into `js/modules/navigation/view-router.js`.
+- Navigation history, page title/subtitle behavior, responsive sidebar closing, deferred render dispatch, language application, and existing view refresh calls were moved unchanged.
+- Shared page metadata and application state remain in `main.js`. The module is loaded before `main.js`; its listener only registers at load and runs on later user interaction.
+- CI checks both function declarations and the module's load order. No data calculations or marketplace API flows were changed.
