@@ -386,6 +386,18 @@ const currencyFormattingPosition = index.indexOf('src="/js/modules/settings/curr
 const currencyFormattingMainPosition = index.indexOf('src="/js/main.js"');
 if (currencyFormattingPosition < 0 || currencyFormattingMainPosition < 0 || currencyFormattingPosition > currencyFormattingMainPosition) fail("Currency formatting module must load before main.js");
 
+
+const authSessionModule = read("js/modules/auth/session-lifecycle.js");
+const authSessionFunctions = ["sellerBooksLoadProfile","sellerBooksCheckApproval","sellerBooksCheckApprovalInternal","sellerBooksOpenApplication","loginGoogle","sellerBooksHandleAuthSession","sellerBooksRefreshActiveView","sellerBooksRefreshAllViewsFromCloud","sellerBooksStopDataRealtime","sellerBooksStartDataRealtime","sellerBooksApplyRealtimeCloudData","sellerBooksStopAccountRealtime","sellerBooksHandleRealtimeAccountAction","sellerBooksStartAccountRealtime","sellerBooksStartAccountPolling","sellerBooksStopAccountPolling","sellerBooksLogout"];
+for (const name of authSessionFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(authSessionModule)) fail(`Missing auth/session function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Auth/session function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Auth/session function"))) pass("Auth/session lifecycle functions are isolated from main.js");
+const authSessionPosition = index.indexOf('src="/js/modules/auth/session-lifecycle.js"');
+const authSessionMainPosition = index.indexOf('src="/js/main.js"');
+if (authSessionPosition < 0 || authSessionMainPosition < 0 || authSessionPosition > authSessionMainPosition) fail("Auth/session module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

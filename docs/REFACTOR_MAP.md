@@ -471,3 +471,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Function bodies are unchanged. The existing exchange-rate defaults, rounding order, IDR base-currency assumption, currency locales, and display formatting are preserved exactly.
 - The module is loaded before `main.js`; it continues to read the existing settings through `getSellerBooksSettings()`. No sales, HPP, profit, import, or snapshot formulas were changed.
 - CI checks function ownership and script order. Financial display still warrants manual verification for IDR/USD/SGD/MYR and each rounding setting.
+
+
+## Auth/session lifecycle extraction (2026-10-22)
+
+- Moved 17 existing functions into `js/modules/auth/session-lifecycle.js`: profile loading, approval checks, login/session handling, active-view refresh, data/account realtime handlers, account polling, and logout.
+- All function bodies were copied unchanged. The Supabase client initialization, shared auth/cloud state declarations, and both top-level `onAuthStateChange` subscriptions remain in `main.js` at their original execution points. This avoids moving initialization side effects ahead of the Supabase client.
+- The new classic script is loaded immediately before `main.js`; CI verifies all 17 functions have one owner and that load order is correct.
+- Static checks cannot prove OAuth redirects or realtime timing in a live session; those remain required runtime regression tests.
