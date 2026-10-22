@@ -216,8 +216,8 @@ if (!failures.some((message) => message.includes("Dashboard period control funct
 
 
 const deferredRenderModule = read("js/services/deferred-render.js");
-if (!/function\\s+sellerBooksScheduleDeferredRender\\s*\\(/.test(deferredRenderModule)) fail("Missing deferred-render helper: sellerBooksScheduleDeferredRender");
-if (/function\\s+sellerBooksScheduleDeferredRender\\s*\\(/.test(mainSource)) fail("Deferred-render helper still declared in main.js");
+if (!/function\s+sellerBooksScheduleDeferredRender\s*\(/.test(deferredRenderModule)) fail("Missing deferred-render helper: sellerBooksScheduleDeferredRender");
+if (/function\s+sellerBooksScheduleDeferredRender\s*\(/.test(mainSource)) fail("Deferred-render helper still declared in main.js");
 if (!failures.some((message) => message.includes("Deferred-render helper"))) pass("Deferred rendering helper is isolated from main.js");
 
 if (failures.length) {
