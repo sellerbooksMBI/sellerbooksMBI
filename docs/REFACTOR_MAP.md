@@ -431,3 +431,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The same raw/runtime cache sources, map-building behavior, and SKU lookup logic are preserved unchanged. Stock reduction/restoration and Sales Import transaction processing remain in `main.js`.
 - The module initializes only cache variables and declarations before `main.js`; the same global function names remain available to the import and report code.
 - CI checks function/state ownership and load order.
+
+
+## Sales transaction processing extraction (2026-10-22, continued)
+
+- Moved 11 existing Sales Import processing functions into `js/modules/sales/transaction-processing.js`: stock deduction/restoration, sales amount/date helpers, clean sales rows, packing calculations, import fingerprinting, and transaction persistence.
+- The function bodies are unchanged. No SKU matching rules, deduplication criteria, stock formulas, transaction totals, packing costs, HPP, profit, or snapshot semantics were edited.
+- The module is declaration-only at load time and is loaded before `main.js`, preserving the existing global names used by the import preview and report code.
+- CI verifies function ownership and load order. This area remains a high-priority target for manual regression checks with imported marketplace files and deleted/re-imported transactions.
