@@ -183,7 +183,7 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 ## Main engine domain map (first pass)
 
-The current `js/main.js` is about 655 KB / 21,685 lines. A fresh scan counted 316 top-level `function`/`async function` declarations and found no duplicate names among those declarations. Extraction needs dependency boundaries rather than moving arbitrary line ranges.
+The current `js/main.js` is about 654 KB / 21,639 lines after the first internal extraction. A fresh scan counted 314 top-level `function`/`async function` declarations and found no duplicate names among those declarations. Extraction needs dependency boundaries rather than moving arbitrary line ranges.
 
 | Approx. lines | Domain block | Refactor caution |
 |---|---|---|
@@ -215,3 +215,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The report engine currently has one declaration of `sellerBooksReadDailySnapshots` (around line 286); the other occurrences in that file are call sites, not duplicate declarations. Do not rewrite its cache behavior without tracing invalidation paths.
 - The `loadScript(src, done)` occurrence around line 3543 is nested inside the PDF-library loader's Promise callback; it is not the global Promise-based library loader in `js/services/library-loader.js`. Keep them separate unless a later scope audit proves a safe unification.
 - The structure audit is a static guard only. It does not replace a production Vite build, browser/WebView checks, marketplace OAuth tests, or financial/import regression tests.
+
+
+## Cost formatting helper extraction (2026-10-22)
+
+- Extracted only `formatCostCurrency(value)` and `formatCostDate(dateString)` from `js/main.js` into `js/modules/costs/cost-formatters.js`.
+- Loaded the new classic script immediately before `main.js`. This keeps the helpers available as global functions when the main engine and inline UI handlers execute; the functions themselves have no top-level side effects.
+- The currency helper still delegates to the existing `formatRupiah(value)` implementation. Currency conversion, rounding, date formatting, cost calculations, and snapshot rules were not rewritten.
+- The structure audit now asserts that these two functions exist in the new file and are no longer declared in `main.js`.
+- This is the first internal extraction from the main engine. Continue with similarly small, dependency-light helpers before attempting any data, snapshot, import, or marketplace logic.
