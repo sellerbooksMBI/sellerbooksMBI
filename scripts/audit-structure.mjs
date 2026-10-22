@@ -432,6 +432,31 @@ const storeConnectionActionsPosition = index.indexOf('src="/js/modules/marketpla
 const storeConnectionActionsMainPosition = index.indexOf('src="/js/main.js"');
 if (storeConnectionActionsPosition < 0 || storeConnectionActionsMainPosition < 0 || storeConnectionActionsPosition > storeConnectionActionsMainPosition) fail("Store connection actions module must load before main.js");
 
+
+const salesImportDispatchQueueModule = read("js/modules/sales/import-dispatch-queue.js");
+const salesImportDispatchQueueFunctions = ["sellerBooksGetQueueSession","sellerBooksQueueRequest","sellerBooksApiImportProfile","sellerBooksDispatchExcelToImportPenjualan","sellerBooksDispatchExcelQueue","startSellerBooksExcelDispatchWorker","startSellerBooksTikTokApiQueueWorker"];
+for (const name of salesImportDispatchQueueFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(salesImportDispatchQueueModule)) fail(`Missing salesImportDispatchQueue function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`salesImportDispatchQueue function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("salesImportDispatchQueue function"))) pass("SELLERBOOKS SALES IMPORT DISPATCH QUEUE functions are isolated from main.js");
+const salesImportDispatchQueuePosition = index.indexOf('src="js/modules/sales/import-dispatch-queue.js"');
+const salesImportDispatchQueueMainPosition = index.indexOf('src="/js/main.js"');
+if (salesImportDispatchQueuePosition < 0 || salesImportDispatchQueueMainPosition < 0 || salesImportDispatchQueuePosition > salesImportDispatchQueueMainPosition) fail("SELLERBOOKS SALES IMPORT DISPATCH QUEUE module must load before main.js");
+
+
+
+const marketplaceOrderPullModule = read("js/modules/marketplaces/order-pull.js");
+const marketplaceOrderPullFunctions = ["sellerBooksSetPullOrderBusy","syncTikTokOrdersNowInternal","syncTikTokOrdersNow","syncShopeeOrdersNowInternal","syncShopeeOrdersNow","syncLazadaOrdersNowInternal","syncLazadaOrdersNow","syncBlibliOrdersNowInternal","syncBlibliOrdersNow"];
+for (const name of marketplaceOrderPullFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(marketplaceOrderPullModule)) fail(`Missing marketplaceOrderPull function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`marketplaceOrderPull function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("marketplaceOrderPull function"))) pass("SELLERBOOKS MARKETPLACE ORDER PULL functions are isolated from main.js");
+const marketplaceOrderPullPosition = index.indexOf('src="js/modules/marketplaces/order-pull.js"');
+const marketplaceOrderPullMainPosition = index.indexOf('src="/js/main.js"');
+if (marketplaceOrderPullPosition < 0 || marketplaceOrderPullMainPosition < 0 || marketplaceOrderPullPosition > marketplaceOrderPullMainPosition) fail("SELLERBOOKS MARKETPLACE ORDER PULL module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

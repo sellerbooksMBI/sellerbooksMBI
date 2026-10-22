@@ -501,3 +501,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved four existing functions into `js/modules/marketplaces/store-connection-actions.js`: store disconnection, ensuring the cloud store record, manual Blibli connection, and generic marketplace account integration.
 - Function bodies were relocated unchanged. No Blibli signature/header, OAuth, connection ownership, multi-client lookup, API request, or marketplace state logic was edited.
 - The new classic script is loaded before `main.js`; CI checks function ownership, script order, and JavaScript syntax. Live multi-account Blibli and concurrent-client tests remain mandatory before final production sign-off.
+
+
+## Marketplace order-pull and import-dispatch extraction (2026-10-22)
+
+- Moved the existing queue session/request helpers, marketplace import-column profile, raw-file-to-manual-import bridge, queue dispatcher, and queue worker declarations into `js/modules/sales/import-dispatch-queue.js`.
+- Moved the existing per-store busy-state helper and TikTok, Shopee, Lazada, and Blibli order-pull handlers into `js/modules/marketplaces/order-pull.js`.
+- All moved function bodies are unchanged. Marketplace endpoints, request headers, time windows, response parsing, store identity checks, queue rules, deduplication behavior, and manual-import engine logic were not edited.
+- The modules load before `main.js`; CI checks ownership, script order, and syntax. Because these functions sit on the marketplace API/import boundary, live multi-client and representative-order regression tests remain required before final production sign-off.
