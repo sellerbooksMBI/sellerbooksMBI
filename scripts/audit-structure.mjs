@@ -350,6 +350,22 @@ const salesImportWorkflowPosition = index.indexOf('src="/js/modules/sales/import
 const salesImportWorkflowMainPosition = index.indexOf('src="/js/main.js"');
 if (salesImportWorkflowPosition < 0 || salesImportWorkflowMainPosition < 0 || salesImportWorkflowPosition > salesImportWorkflowMainPosition) fail("Sales Import workflow module must load before main.js");
 
+
+const storeIntegrationModule = read("js/modules/marketplaces/store-integration-state.js");
+const storeIntegrationFunctions = ["sellerBooksStoreConnectionKey","sellerBooksConnectionMarketplaceKey","refreshStoreIntegrationStates","sellerBooksCanonicalMarketplaceId","getStoreIntegrationConnection","sellerBooksStartIntegrationStatusPolling","sellerBooksStopIntegrationStatusPolling","sellerBooksMarkIntegrationSuccessNotice","sellerBooksShouldShowIntegrationSuccessNotice","sellerBooksStopIntegrationRealtime","sellerBooksIntegrationRealtimeSuppressMarketplace","sellerBooksIntegrationRealtimeSuppressSuccess","sellerBooksIntegrationMarketplaceLabel","sellerBooksApplyOAuthConnectionState","sellerBooksHandleIntegrationRealtimePayload","sellerBooksStartIntegrationRealtime","sellerBooksRetryStoreConnections"];
+for (const name of storeIntegrationFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(storeIntegrationModule)) fail(`Missing store integration function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Store integration function still declared in main.js: ${name}`);
+}
+for (const name of ["sellerBooksStoreConnections","sellerBooksStoreConnectionsUserId","sellerBooksStoreConnectionsLoading","sellerBooksStoreConnectionsQueued","sellerBooksStoreConnectionsInitialized","sellerBooksIntegrationStatusPollingTimer","sellerBooksIntegrationRealtimeChannel","sellerBooksIntegrationRealtimeSuppress","sellerBooksIntegrationSuccessNoticeAt"]) {
+  if (!new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(storeIntegrationModule)) fail(`Missing store integration state: ${name}`);
+  if (new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(mainSource)) fail(`Store integration state still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Store integration"))) pass("Store integration state and helpers are isolated from main.js");
+const storeIntegrationPosition = index.indexOf('src="/js/modules/marketplaces/store-integration-state.js"');
+const storeIntegrationMainPosition = index.indexOf('src="/js/main.js"');
+if (storeIntegrationPosition < 0 || storeIntegrationMainPosition < 0 || storeIntegrationPosition > storeIntegrationMainPosition) fail("Store integration module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

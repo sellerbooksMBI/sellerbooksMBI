@@ -447,3 +447,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Function bodies and current UI/event callback logic were relocated unchanged. Existing import state, marketplace column configuration, stock adjustment, transaction persistence, and marketplace API workers remain in their current owners.
 - No deduplication criteria, transaction totals, stock/HPP/profit formulas, or API request behavior was intentionally changed.
 - CI checks function ownership and script order. Because this module contains the import preview and duplicate-check flow, browser regression tests with representative marketplace Excel files are still required before final sign-off.
+
+
+## Store integration state extraction (2026-10-22)
+
+- Moved the store-integration connection cache/state and its existing lifecycle helpers into `js/modules/marketplaces/store-integration-state.js`.
+- The moved block is copied verbatim; it includes the connection-state maps, refresh/status polling, marketplace ID normalization, OAuth connection-state updates, realtime handlers, and retry helper.
+- API order-pull functions, OAuth callback parsing, and marketplace request payloads remain in `main.js`; no API semantics or multi-client behavior was intentionally changed.
+- The module is loaded immediately before `main.js`, after the other domain modules. The functions continue to use the existing global classic-script environment.
+- CI checks all moved function/state declarations and verifies script order. Live OAuth/realtime behavior still needs runtime regression testing.
