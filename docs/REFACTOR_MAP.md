@@ -4,10 +4,10 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 ## Current inventory (main)
 
-- `index.html`: 5,131 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,132 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
 - `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~540 KB / 18,721 lines after extracting Cost management, Notifications, language text dictionaries/UI appliers, and business-logo settings; it remains the largest application engine with global functions/state.
+- `js/main.js`: ~536 KB / 18,557 lines after extracting Cost management, Notifications, language text dictionaries/UI appliers, business-logo settings, and data backup/restore; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -268,3 +268,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The module is loaded after the language modules and before `main.js`. The four functions remain classic-script globals for existing settings initialization and inline file-input handlers.
 - Logo persistence, upload conversion, removal behavior, UI selectors, and error messages were not rewritten.
 - CI checks the four functions' module ownership, validates active JavaScript syntax, and runs the Vite build.
+
+
+## Settings backup/restore extraction (2026-10-22, continued)
+
+- Moved `backupSellerBooksData()` and `restoreSellerBooksData(input)` to `js/modules/settings/data-backup.js`.
+- The module is loaded before `main.js` so the existing inline Settings buttons continue to find these global functions.
+- The backup JSON shape, storage iteration, restore confirmation, file reading, and alerts were moved unchanged. No backup keys or restore semantics were modified.
+- The automated audit checks both function declarations and their removal from `main.js`.
