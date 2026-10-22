@@ -136,3 +136,9 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 - Moved the client analytics/tracking script entry to `js/modules/analytics/client-analytics.js` and changed its HTML reference in place, preserving the script's original execution order.
 - The file remains a classic script and its contents are copied verbatim. The original `js/legacy-05.js` remains as an unreferenced rollback copy for this stage.
 - No analytics payload, event naming, storage behavior, or tracking conditions were intentionally changed.
+
+
+## Receivables language helper extraction (2026-10-22)
+
+- Moved the `sbPiutangText` language helper script to `js/modules/receivables/piutang-language.js`, preserving its exact contents and the script's original position in `index.html`.
+- Kept it as a classic script so its `window.sbPiutangText` API remains available to later receivables scripts. The legacy source is retained as an unreferenced rollback copy.
