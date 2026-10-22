@@ -129,3 +129,10 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 - Moved the existing classic-script loader entry from `js/legacy-04.js` to `js/services/library-loader.js` and updated its HTML reference in place, preserving the original execution order.
 - The script still defines the same `window.sellerBooksOpenFilePicker`, `window.sellerBooksEnsureXLSX`, and `window.sellerBooksEnsureExcelJS` functions. Its internal Promise-based fallback loader remains inside the same IIFE.
 - The legacy file is retained as an unreferenced rollback copy. This is a file-ownership/path extraction only; library URLs, fallbacks, and alert messages were not changed.
+
+
+## Analytics script extraction (2026-10-22)
+
+- Moved the client analytics/tracking script entry to `js/modules/analytics/client-analytics.js` and changed its HTML reference in place, preserving the script's original execution order.
+- The file remains a classic script and its contents are copied verbatim. The original `js/legacy-05.js` remains as an unreferenced rollback copy for this stage.
+- No analytics payload, event naming, storage behavior, or tracking conditions were intentionally changed.
