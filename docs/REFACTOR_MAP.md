@@ -4,10 +4,10 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 ## Current inventory (main)
 
-- `index.html`: 5,129 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,130 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
 - `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~582 KB / 19,650 lines after extracting Cost management, Notifications, and language text dictionaries; it remains the largest application engine with global functions/state.
+- `js/main.js`: ~544 KB / 18,889 lines after extracting Cost management, Notifications, language text dictionaries, and language UI appliers; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -251,3 +251,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - These functions retain the existing `sellerBooksCurrentLanguage()` lookup and return the same Indonesian/English dictionary values. No account-language persistence, Supabase sync, language-selection logic, or DOM application code was changed.
 - The new module loads before `main.js` so the classic-script global functions remain available when the existing UI and language application code invokes them.
 - The automated audit now verifies that all 11 text functions exist in the module, are absent from `main.js`, and that the module is loaded before `main.js`.
+
+
+## Language UI extraction (2026-10-22, continued)
+
+- Moved eight DOM-only language application functions into `js/modules/i18n/language-ui.js`: Login, Stores, Marketplaces, Dashboard, Reports, Settings, owner setup, and date-input labels.
+- The central language orchestrator, language selection/save flow, account persistence, Supabase synchronization, and global language state remain in `main.js`.
+- The UI module loads after the translation dictionaries and before `main.js`, preserving classic-script global function compatibility.
+- No labels, translations, DOM selectors, or language persistence logic were intentionally changed; this was a relocation of existing function bodies.
+- The CI audit now verifies these eight functions are in the UI module and absent from `main.js`.
