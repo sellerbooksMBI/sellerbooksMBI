@@ -183,7 +183,7 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 ## Main engine domain map (first pass)
 
-The current `js/main.js` is about 655 KB / 21,685 lines. It contains roughly 259 ordinary function declarations plus async functions, so extraction needs dependency boundaries rather than moving arbitrary line ranges.
+The current `js/main.js` is about 655 KB / 21,685 lines. A fresh scan counted 316 top-level `function`/`async function` declarations and found no duplicate names among those declarations. Extraction needs dependency boundaries rather than moving arbitrary line ranges.
 
 | Approx. lines | Domain block | Refactor caution |
 |---|---|---|
@@ -206,3 +206,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved `css/legacy-02.css` to `css/modules/reports/report-overrides.css` and `css/legacy-03.css` to `css/modules/reports/product-analysis.css` with their contents copied verbatim.
 - Updated only the two stylesheet paths in `index.html`. Their relative cascade order remains unchanged: the general legacy layer loads first, then report overrides, then product analysis styles. Old CSS files remain unreferenced rollback copies.
 - Other CSS files remain in their existing order pending a fuller selector ownership audit; no rules were merged or deleted.
+
+
+## Automated structure guard (2026-10-22)
+
+- Added `scripts/audit-structure.mjs` and the `npm run audit:structure` command.
+- The audit checks that local JS/CSS references in `index.html` are unique and resolve to files, that the nine relocated JS files and two relocated CSS files remain byte-for-byte identical to their rollback copies, and that `index.html` no longer points at `js/legacy-01.js` through `js/legacy-09.js`.
+- The report engine currently has one declaration of `sellerBooksReadDailySnapshots` (around line 286); the other occurrences in that file are call sites, not duplicate declarations. Do not rewrite its cache behavior without tracing invalidation paths.
+- The `loadScript(src, done)` occurrence around line 3543 is nested inside the PDF-library loader's Promise callback; it is not the global Promise-based library loader in `js/services/library-loader.js`. Keep them separate unless a later scope audit proves a safe unification.
+- The structure audit is a static guard only. It does not replace a production Vite build, browser/WebView checks, marketplace OAuth tests, or financial/import regression tests.
