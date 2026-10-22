@@ -409,6 +409,17 @@ const packingCostsPosition = index.indexOf('src="/js/modules/sales/packing-costs
 const packingCostsMainPosition = index.indexOf('src="/js/main.js"');
 if (packingCostsPosition < 0 || packingCostsMainPosition < 0 || packingCostsPosition > packingCostsMainPosition) fail("Packing costs module must load before main.js");
 
+
+const profileManagementModule = read("js/modules/auth/profile-management.js");
+for (const name of ["saveOwnerName", "resetIdentity"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(profileManagementModule)) fail(`Missing profile management function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Profile management function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Profile management function"))) pass("Owner profile save/reset functions are isolated from main.js");
+const profileManagementPosition = index.indexOf('src="/js/modules/auth/profile-management.js"');
+const profileManagementMainPosition = index.indexOf('src="/js/main.js"');
+if (profileManagementPosition < 0 || profileManagementMainPosition < 0 || profileManagementPosition > profileManagementMainPosition) fail("Profile management module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

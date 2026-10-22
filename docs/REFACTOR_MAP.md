@@ -486,3 +486,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved `getPackingCostPerOrder()` and `getTotalPackingCost()` into `js/modules/sales/packing-costs.js`.
 - Both functions were relocated unchanged: the first reads the configured per-order packing cost, and the second totals the saved import records' existing `totalPackingCost` values.
 - No packing-cost formula, transaction data, HPP, profit, or snapshot behavior was changed. CI verifies function ownership and script order.
+
+
+## Owner profile management extraction (2026-10-22)
+
+- Moved `saveOwnerName()` and `resetIdentity()` into `js/modules/auth/profile-management.js`.
+- Both function bodies are unchanged. They continue to use the existing Supabase profile operations, owner setup UI, approval/session state, and localized messages.
+- The module is loaded before `main.js`; no profile schema, approval status, login session, or owner identity policy was modified.
+- CI verifies function ownership and script order. Manual verification of owner setup, saving a name, and resetting identity remains necessary before final production sign-off.
