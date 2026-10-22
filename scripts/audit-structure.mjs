@@ -90,6 +90,10 @@ for (const name of costFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Cost management function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Cost management function"))) pass("Cost management functions are isolated from main.js");
+for (const stateName of ["costs", "editingCostId"]) {
+  if (!new RegExp(`^(?:let|const|var)\\s+${stateName}\\b`, "m").test(mainSource)) fail(`Shared Cost state must remain in main.js: ${stateName}`);
+}
+if (!failures.some((message) => message.includes("Shared Cost state"))) pass("Shared Cost state remains in main.js for existing Dashboard dependencies");
 
 const notificationModule = read("js/modules/notifications/notifications.js");
 const notificationFunctions = [
