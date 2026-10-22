@@ -76,16 +76,18 @@ const languageUiPosition = index.indexOf('src="/js/modules/i18n/language-ui.js"'
 const businessLogoPosition = index.indexOf('src="/js/modules/settings/business-logo.js"');
 const dataBackupPosition = index.indexOf('src="/js/modules/settings/data-backup.js"');
 const settingsCorePosition = index.indexOf('src="/js/modules/settings/settings-core.js"');
+const productAnalysisPosition = index.indexOf('src="/js/modules/reports/product-analysis.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
 if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 ||
     textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 ||
-    dataBackupPosition < 0 || settingsCorePosition < 0 || mainScriptPosition < 0 ||
+    dataBackupPosition < 0 || settingsCorePosition < 0 || productAnalysisPosition < 0 || mainScriptPosition < 0 ||
     formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
     notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > languageUiPosition ||
     languageUiPosition > businessLogoPosition || businessLogoPosition > dataBackupPosition ||
-    dataBackupPosition > settingsCorePosition || settingsCorePosition > mainScriptPosition) {
-  fail("Cost, notification, language, and settings modules must load in order before main.js");
-} else pass("Cost, notification, language, and settings modules load in order before main.js");
+    dataBackupPosition > settingsCorePosition || settingsCorePosition > productAnalysisPosition ||
+    productAnalysisPosition > mainScriptPosition) {
+  fail("Organized feature modules must load in order before main.js");
+} else pass("Organized feature modules load in order before main.js");
 
 const costManagement = read("js/modules/costs/cost-management.js");
 const costFunctions = [
@@ -156,6 +158,14 @@ for (const name of settingsCoreFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Settings-core function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Settings-core function"))) pass("Settings core functions are isolated from main.js");
+
+const productAnalysisModule = read("js/modules/reports/product-analysis.js");
+const productAnalysisFunctions = ["getProductAnalysisDateRange","isTransactionInProductAnalysisPeriod","updateProductAnalysisDateUI","loadProductAnalysisMarketplaceFilter","loadProductAnalysisStoreFilter","onProductAnalysisMarketplaceChange","getProductAnalysisTransactions","calculateProductAnalysisRows","formatProductAnalysisCurrency","downloadProductAnalysisPDF","renderProductAnalysis","goToProductAnalysisPage","changeProductAnalysisPageSize","escapeHtmlProductAnalysis","updateProductAnalysisFilterInfo","applyProductAnalysisFilters","initializeProductAnalysis","fixProductFromAnalysis"];
+for (const name of productAnalysisFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(productAnalysisModule)) fail(`Missing product analysis function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Product analysis function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Product analysis function"))) pass("Product analysis functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
