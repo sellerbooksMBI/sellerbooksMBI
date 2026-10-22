@@ -277,18 +277,6 @@ function getIndonesiaDateString(value){
 const SELLERBOOKS_DAILY_SNAPSHOT_KEY = "sellerbooks_daily_snapshots_v1";
 let sellerBooksDailySnapshotTimer = null;
 
-function sellerBooksReadDailySnapshots(){
-    try{
-        const raw = sellerBooksStorage.getItem(SELLERBOOKS_DAILY_SNAPSHOT_KEY) || "{}";
-        const parsed = JSON.parse(raw);
-        if(parsed && typeof parsed === "object"){
-            if(!parsed.days || typeof parsed.days !== "object") parsed.days = {};
-            return parsed;
-        }
-    }catch(error){}
-    return {version:1,days:{}};
-}
-
 /* PATCH O: cache snapshot laporan agar JSON snapshot tidak di-parse
    ulang untuk setiap transaksi historis. Cache ini hanya mempercepat
    pembacaan data yang sama; tidak mengubah isi atau rumus bisnis. */

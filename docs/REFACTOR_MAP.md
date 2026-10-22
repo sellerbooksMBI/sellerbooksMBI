@@ -115,3 +115,10 @@ Next, before extraction: (1) inspect the two `loadScript` implementations and al
 - The extracted file remains a **classic script**, so `openPackingModal`, `closePackingModal`, `updatePackingPreview`, and `savePackingSettings` continue to be global functions for inline handlers. No module/bundler conversion was introduced.
 - The old `js/legacy-03.js` file is intentionally retained as an unreferenced rollback copy for this stage; it is not loaded by `index.html`.
 - Logic and calculations were copied verbatim; this is a path/ownership extraction only. Static verification checks are required before considering it ready for user acceptance testing.
+
+
+## Snapshot duplicate cleanup (2026-10-22)
+
+- Removed the first, uncached top-level declaration of `sellerBooksReadDailySnapshots` from `js/legacy-02.js`. The later cache-aware declaration has the same name and, as a top-level classic-script function declaration in the same scope, was the effective implementation already.
+- The retained implementation still reads the same storage key and synchronizes its read cache in `sellerBooksWriteDailySnapshots`. This cleanup does not change snapshot schema, formulas, day boundaries, or write behavior.
+- Static call-site inventory found seven calls to `sellerBooksReadDailySnapshots` and four call sites to `sellerBooksWriteDailySnapshots` (including the declaration). No separate consumer relies on the overwritten implementation.
