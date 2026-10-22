@@ -142,3 +142,9 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Moved the `sbPiutangText` language helper script to `js/modules/receivables/piutang-language.js`, preserving its exact contents and the script's original position in `index.html`.
 - Kept it as a classic script so its `window.sbPiutangText` API remains available to later receivables scripts. The legacy source is retained as an unreferenced rollback copy.
+
+
+## Receivables local module extraction (2026-10-22)
+
+- Moved the local receivables storage/rendering script to `js/modules/receivables/piutang-local.js` and changed the HTML reference in place, preserving order before the cloud/realtime receivables script.
+- Source is copied verbatim and remains a classic script. Local storage keys, migration behavior, calculations, rendering, and global API were not intentionally changed; the old file remains as a rollback copy.
