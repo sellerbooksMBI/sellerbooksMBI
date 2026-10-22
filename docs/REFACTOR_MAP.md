@@ -333,3 +333,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Shared store arrays, selected marketplace state, editing state, and integration connection/realtime state remain in `main.js`.
 - Store OAuth/integration workers and API request logic remain in `main.js` and were not rewritten. Packing-cost calculation helpers also remain in the main engine.
 - Function bodies were relocated unchanged; the structure audit checks module ownership and load order.
+
+
+## Dashboard view preference extraction (2026-10-22, continued)
+
+- Moved eight Dashboard and independent-view preference helpers into `js/modules/dashboard/view-preferences.js`.
+- The local cache state remains module-owned; the active dashboard filter state, daily rollover orchestration, date-period controls, and dashboard rendering remain in `main.js`.
+- The helpers keep their existing keys, per-user localStorage behavior, legacy cloud-state fallback, and cache semantics. Their bodies were relocated unchanged.
+- The new classic script is loaded immediately before `main.js`; no function is invoked during module loading. The main engine still performs the existing initialization at its original point.
+- CI checks all eight functions' ownership and verifies they are absent from `main.js`.

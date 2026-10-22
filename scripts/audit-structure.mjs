@@ -196,6 +196,15 @@ for (const name of storeManagementFunctions) {
 }
 if (!failures.some((message) => message.includes("Store management function"))) pass("Store management functions are isolated from main.js");
 
+
+const dashboardViewPreferencesModule = read("js/modules/dashboard/view-preferences.js");
+const dashboardViewPreferenceFunctions = ["sellerBooksDashboardPreferenceKey","sellerBooksReadDashboardPreferences","sellerBooksWriteDashboardPreferences","sellerBooksGetDashboardPreference","sellerBooksIndependentViewPreferenceKey","sellerBooksReadIndependentViewPreferences","sellerBooksWriteIndependentViewPreferences","sellerBooksGetIndependentViewPreference"];
+for (const name of dashboardViewPreferenceFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(dashboardViewPreferencesModule)) fail(`Missing dashboard view preference function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Dashboard view preference function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Dashboard view preference function"))) pass("Dashboard view preference functions are isolated from main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
