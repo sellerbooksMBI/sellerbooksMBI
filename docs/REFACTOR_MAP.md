@@ -107,3 +107,11 @@ Next, before extraction: (1) inspect the two `loadScript` implementations and al
 - All 14 IDs flagged by the HTML-vs-JavaScript scan are present as string literals in JavaScript. The approval UI, Blibli help/modal, and import-progress overlay appear to be created dynamically. They are not confirmed missing DOM elements; keep them in the dynamic-DOM map.
 - `sellerBooksReadDailySnapshots` is declared twice at top level in `legacy-02.js`. The second declaration is the cache-enhanced version and overwrites the first in classic-script scope. The first implementation appears redundant, but removal is deferred until the function and cache write/invalidation call sites are verified.
 - A lightweight CSS selector scan covered approximately 499 selector strings and flagged cross-file duplicates for `#reports .content-section` (legacy-01/02) and `.product-analysis-filter-grid` (legacy-01/03). This scanner is approximate because nested at-rules, grouped selectors, and comments can distort parsing; these are review targets, not instructions to delete rules.
+
+
+## First code extraction (2026-10-22)
+
+- Extracted the packing-cost modal script into `js/modules/sales/packing-settings.js` and updated the single HTML script reference to load the new file at the same position in the original script sequence.
+- The extracted file remains a **classic script**, so `openPackingModal`, `closePackingModal`, `updatePackingPreview`, and `savePackingSettings` continue to be global functions for inline handlers. No module/bundler conversion was introduced.
+- The old `js/legacy-03.js` file is intentionally retained as an unreferenced rollback copy for this stage; it is not loaded by `index.html`.
+- Logic and calculations were copied verbatim; this is a path/ownership extraction only. Static verification checks are required before considering it ready for user acceptance testing.
