@@ -148,3 +148,9 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Moved the local receivables storage/rendering script to `js/modules/receivables/piutang-local.js` and changed the HTML reference in place, preserving order before the cloud/realtime receivables script.
 - Source is copied verbatim and remains a classic script. Local storage keys, migration behavior, calculations, rendering, and global API were not intentionally changed; the old file remains as a rollback copy.
+
+
+## Receivables cloud module extraction (2026-10-22)
+
+- Moved the receivables Supabase/cloud synchronization and realtime script to `js/modules/receivables/piutang-cloud.js`, preserving its original script position after the local receivables module.
+- The script contents are copied verbatim and remain classic JavaScript. Supabase calls, realtime subscriptions, polling, migration, and data shape are not intentionally changed. The legacy file remains as a rollback copy.
