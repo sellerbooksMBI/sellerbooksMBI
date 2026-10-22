@@ -509,3 +509,10 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved the existing per-store busy-state helper and TikTok, Shopee, Lazada, and Blibli order-pull handlers into `js/modules/marketplaces/order-pull.js`.
 - All moved function bodies are unchanged. Marketplace endpoints, request headers, time windows, response parsing, store identity checks, queue rules, deduplication behavior, and manual-import engine logic were not edited.
 - The modules load before `main.js`; CI checks ownership, script order, and syntax. Because these functions sit on the marketplace API/import boundary, live multi-client and representative-order regression tests remain required before final production sign-off.
+
+
+## Marketplace OAuth result extraction (2026-10-22)
+
+- Moved `handleShopeeOAuthResult()` into `js/modules/marketplaces/oauth-result.js`.
+- The function body is unchanged, including query-string parsing, redirect cleanup, localized status messages, and the existing callback/message handling.
+- No OAuth URL, redirect target, connection state, or credential flow was modified. CI checks function ownership, load order, and syntax; an actual Shopee OAuth round-trip remains a required runtime check.

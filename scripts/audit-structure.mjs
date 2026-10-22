@@ -457,6 +457,15 @@ const marketplaceOrderPullPosition = index.indexOf('src="/js/modules/marketplace
 const marketplaceOrderPullMainPosition = index.indexOf('src="/js/main.js"');
 if (marketplaceOrderPullPosition < 0 || marketplaceOrderPullMainPosition < 0 || marketplaceOrderPullPosition > marketplaceOrderPullMainPosition) fail("SELLERBOOKS MARKETPLACE ORDER PULL module must load before main.js");
 
+
+const marketplaceOAuthResultModule = read("js/modules/marketplaces/oauth-result.js");
+if (!/function\s+handleShopeeOAuthResult\s*\(/.test(marketplaceOAuthResultModule)) fail("Missing Shopee OAuth result handler");
+if (/function\s+handleShopeeOAuthResult\s*\(/.test(mainSource)) fail("Shopee OAuth result handler still declared in main.js");
+if (!failures.some((message) => message.includes("Shopee OAuth result"))) pass("Shopee OAuth result handler is isolated from main.js");
+const marketplaceOAuthResultPosition = index.indexOf('src="/js/modules/marketplaces/oauth-result.js"');
+const marketplaceOAuthResultMainPosition = index.indexOf('src="/js/main.js"');
+if (marketplaceOAuthResultPosition < 0 || marketplaceOAuthResultMainPosition < 0 || marketplaceOAuthResultPosition > marketplaceOAuthResultMainPosition) fail("Marketplace OAuth result module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
