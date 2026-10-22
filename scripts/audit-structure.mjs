@@ -32,17 +32,17 @@ if (!failures.some((message) => message.startsWith("Missing local asset:"))) {
 
 // Ensure the path-only moves remain byte-for-byte identical to their rollback copies.
 const movedPairs = [
-  ["js/legacy-01.js", "js/modules/reports/report-filters-and-dialogs.js"],
-  ["js/legacy-02.js", "js/modules/reports/report-engine-legacy.js"],
-  ["js/legacy-03.js", "js/modules/sales/packing-settings.js"],
-  ["js/legacy-04.js", "js/services/library-loader.js"],
-  ["js/legacy-05.js", "js/modules/analytics/client-analytics.js"],
-  ["js/legacy-06.js", "js/modules/receivables/piutang-language.js"],
-  ["js/legacy-07.js", "js/modules/receivables/piutang-local.js"],
-  ["js/legacy-08.js", "js/modules/receivables/piutang-cloud.js"],
-  ["js/legacy-09.js", "js/modules/support/contact-modal.js"],
-  ["css/legacy-02.css", "css/modules/reports/report-overrides.css"],
-  ["css/legacy-03.css", "css/modules/reports/product-analysis.css"],
+  ["archive/rollback/js/legacy-01.js", "js/modules/reports/report-filters-and-dialogs.js"],
+  ["archive/rollback/js/legacy-02.js", "js/modules/reports/report-engine-legacy.js"],
+  ["archive/rollback/js/legacy-03.js", "js/modules/sales/packing-settings.js"],
+  ["archive/rollback/js/legacy-04.js", "js/services/library-loader.js"],
+  ["archive/rollback/js/legacy-05.js", "js/modules/analytics/client-analytics.js"],
+  ["archive/rollback/js/legacy-06.js", "js/modules/receivables/piutang-language.js"],
+  ["archive/rollback/js/legacy-07.js", "js/modules/receivables/piutang-local.js"],
+  ["archive/rollback/js/legacy-08.js", "js/modules/receivables/piutang-cloud.js"],
+  ["archive/rollback/js/legacy-09.js", "js/modules/support/contact-modal.js"],
+  ["archive/rollback/css/legacy-02.css", "css/modules/reports/report-overrides.css"],
+  ["archive/rollback/css/legacy-03.css", "css/modules/reports/product-analysis.css"],
 ];
 for (const [rollbackPath, movedPath] of movedPairs) {
   if (!fs.existsSync(path.join(root, rollbackPath)) || !fs.existsSync(path.join(root, movedPath))) {

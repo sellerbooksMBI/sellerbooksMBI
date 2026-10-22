@@ -1,13 +1,13 @@
 # SellerBooks source refactor map
 
-Status: staged refactor. The deployed runtime remains the classic-script app in root `index.html`; moved modules are loaded directly by that page, and legacy source copies remain as rollback files. Do not remove or reorder script tags as part of a blind cleanup.
+Status: staged refactor. The deployed runtime remains the classic-script app in root `index.html`; moved modules are loaded directly by that page. Rollback copies are isolated under `archive/rollback/` and are not loaded by production. Do not remove or reorder script tags as part of a blind cleanup.
 
 ## Current inventory (verified against main, 2026-10-22)
 
 - `index.html`: 5,161 lines; active production entry point using classic scripts and inline handlers.
 - Active styles in load order: `css/legacy-01.css`, `css/modules/reports/report-overrides.css`, `css/modules/reports/product-analysis.css`, `css/legacy-04.css`, `css/legacy-05.css`, `css/legacy-06.css`.
-- `css/legacy-02.css` and `css/legacy-03.css` are rollback copies for the two organized report CSS modules; they are not loaded by active HTML.
-- `js/legacy-01.js` … `js/legacy-09.js` are rollback copies; active HTML loads the organized module/service paths instead.
+- `archive/rollback/css/legacy-02.css` and `archive/rollback/css/legacy-03.css` are rollback copies for the two organized report CSS modules; they are not loaded by active HTML.
+- `archive/rollback/js/legacy-01.js` … `archive/rollback/js/legacy-09.js` are rollback copies; active HTML loads the organized module/service paths instead.
 - `js/main.js`: 2,003 lines at the inspected commit. It still owns shared Supabase/auth/cloud state and global functions used by the classic-script modules.
 - The root HTML loads 46 local JS files plus three external script libraries: SheetJS/XLSX, ExcelJS, and Supabase JS. The 46 local scripts include 42 files under `js/modules/`, three under `js/services/`, and `js/main.js`.
 - The tree contains 109 files, 59 JavaScript files and 9 CSS files. Thirteen JS files are not referenced by active HTML: nine rollback copies and four Vite scaffold/config files. Three CSS files are unreferenced: two rollback copies and `src/styles/main.css`.
@@ -103,15 +103,15 @@ The following is the first-pass domain map from named section markers/functions 
 
 | Current file | Confirmed role | Suggested target |
 |---|---|---|
-| `js/legacy-01.js` | Custom dialog queue + report marketplace/store filters and report initialization (12 named functions) | `js/modules/ui/dialogs.js`, `js/modules/reports/report-filters.js` (split only after checking shared dialog dependencies) |
-| `js/legacy-02.js` | Report transaction data, caches, date helpers, report rendering/deletion, fees/costs, daily snapshots (65 named functions) | `js/modules/reports/*`, `js/modules/snapshots/daily-snapshots.js`, `js/services/report-data.js` |
-| `js/legacy-03.js` | Packing material modal/settings: `openPackingModal`, `closePackingModal`, `updatePackingPreview`, `savePackingSettings` | `js/modules/sales/packing-settings.js` |
-| `js/legacy-04.js` | Dynamic library loader/fallback (`loadScript`) for Excel libraries | `js/services/library-loader.js` |
-| `js/legacy-05.js` | Client/device/browser/referrer/session analytics and tracking | `js/modules/analytics/client-analytics.js` |
-| `js/legacy-06.js` | Large ID/EN translation map and language-driven UI text updates (no named function declarations found; likely executes as a script) | `js/modules/settings/translations.js` with a small compatibility entry point |
-| `js/legacy-07.js` | Piutang/receivables local storage, totals, rendering, payment form helpers, dashboard refresh | `js/modules/receivables/receivables-ui.js` |
-| `js/legacy-08.js` | Piutang cloud data, local migration, Supabase/realtime polling and refresh | `js/modules/receivables/receivables-cloud.js`, `js/services/realtime.js` |
-| `js/legacy-09.js` | Contact/help modal language updates (`updateLanguage`) | `js/modules/ui/contact-modal.js` or merge into translations after checking selector ownership |
+| `archive/rollback/js/legacy-01.js` | Custom dialog queue + report marketplace/store filters and report initialization (12 named functions) | `js/modules/ui/dialogs.js`, `js/modules/reports/report-filters.js` (split only after checking shared dialog dependencies) |
+| `archive/rollback/js/legacy-02.js` | Report transaction data, caches, date helpers, report rendering/deletion, fees/costs, daily snapshots (65 named functions) | `js/modules/reports/*`, `js/modules/snapshots/daily-snapshots.js`, `js/services/report-data.js` |
+| `archive/rollback/js/legacy-03.js` | Packing material modal/settings: `openPackingModal`, `closePackingModal`, `updatePackingPreview`, `savePackingSettings` | `js/modules/sales/packing-settings.js` |
+| `archive/rollback/js/legacy-04.js` | Dynamic library loader/fallback (`loadScript`) for Excel libraries | `js/services/library-loader.js` |
+| `archive/rollback/js/legacy-05.js` | Client/device/browser/referrer/session analytics and tracking | `js/modules/analytics/client-analytics.js` |
+| `archive/rollback/js/legacy-06.js` | Large ID/EN translation map and language-driven UI text updates (no named function declarations found; likely executes as a script) | `js/modules/settings/translations.js` with a small compatibility entry point |
+| `archive/rollback/js/legacy-07.js` | Piutang/receivables local storage, totals, rendering, payment form helpers, dashboard refresh | `js/modules/receivables/receivables-ui.js` |
+| `archive/rollback/js/legacy-08.js` | Piutang cloud data, local migration, Supabase/realtime polling and refresh | `js/modules/receivables/receivables-cloud.js`, `js/services/realtime.js` |
+| `archive/rollback/js/legacy-09.js` | Contact/help modal language updates (`updateLanguage`) | `js/modules/ui/contact-modal.js` or merge into translations after checking selector ownership |
 | `js/main.js` | Main engine (2,003 lines at inspected commit; broad global state) | Extract by domain table above, not as one file |
 
 This pass confirms the roles from function names and section markers, not full runtime behavior. Some files contain many top-level variables created inside callbacks, so simple variable counts are not counts of true global declarations. A scope-aware parser pass is still required before code movement.
@@ -119,7 +119,7 @@ This pass confirms the roles from function names and section markers, not full r
 ## CSS inventory (first pass)
 
 - `css/legacy-01.css` (~50 KB / 4,524 lines): primary stylesheet with login, marketplace, and broad app styling.
-- `css/legacy-02.css` (~7 KB / 270 lines), `legacy-03.css` (~2.8 KB / 162 lines), `legacy-04.css` (~8.4 KB / 373 lines), `legacy-05.css` (~4.9 KB / 94 lines), and `legacy-06.css` (~2.7 KB / 18 lines): supplemental layers and/or late overrides. Exact selector ownership and duplicate rules still need a selector inventory. Keep the current order until that inventory is complete.
+- `archive/rollback/css/legacy-02.css` (~7 KB / 270 lines), `legacy-03.css` (~2.8 KB / 162 lines), `legacy-04.css` (~8.4 KB / 373 lines), `legacy-05.css` (~4.9 KB / 94 lines), and `legacy-06.css` (~2.7 KB / 18 lines): supplemental layers and/or late overrides. Exact selector ownership and duplicate rules still need a selector inventory. Keep the current order until that inventory is complete.
 
 ## Findings that affect the refactor
 
@@ -172,20 +172,20 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Extracted the packing-cost modal script into `js/modules/sales/packing-settings.js` and updated the single HTML script reference to load the new file at the same position in the original script sequence.
 - The extracted file remains a **classic script**, so `openPackingModal`, `closePackingModal`, `updatePackingPreview`, and `savePackingSettings` continue to be global functions for inline handlers. No module/bundler conversion was introduced.
-- The old `js/legacy-03.js` file is intentionally retained as an unreferenced rollback copy for this stage; it is not loaded by `index.html`.
+- The old `archive/rollback/js/legacy-03.js` file is intentionally retained as an unreferenced rollback copy for this stage; it is not loaded by `index.html`.
 - Logic and calculations were copied verbatim; this is a path/ownership extraction only. Static verification checks are required before considering it ready for user acceptance testing.
 
 
 ## Snapshot duplicate cleanup (2026-10-22)
 
-- Removed the first, uncached top-level declaration of `sellerBooksReadDailySnapshots` from `js/legacy-02.js`. The later cache-aware declaration has the same name and, as a top-level classic-script function declaration in the same scope, was the effective implementation already.
+- Removed the first, uncached top-level declaration of `sellerBooksReadDailySnapshots` from `archive/rollback/js/legacy-02.js`. The later cache-aware declaration has the same name and, as a top-level classic-script function declaration in the same scope, was the effective implementation already.
 - The retained implementation still reads the same storage key and synchronizes its read cache in `sellerBooksWriteDailySnapshots`. This cleanup does not change snapshot schema, formulas, day boundaries, or write behavior.
 - Static call-site inventory found seven calls to `sellerBooksReadDailySnapshots` and four call sites to `sellerBooksWriteDailySnapshots` (including the declaration). No separate consumer relies on the overwritten implementation.
 
 
 ## Library loader extraction (2026-10-22)
 
-- Moved the existing classic-script loader entry from `js/legacy-04.js` to `js/services/library-loader.js` and updated its HTML reference in place, preserving the original execution order.
+- Moved the existing classic-script loader entry from `archive/rollback/js/legacy-04.js` to `js/services/library-loader.js` and updated its HTML reference in place, preserving the original execution order.
 - The script still defines the same `window.sellerBooksOpenFilePicker`, `window.sellerBooksEnsureXLSX`, and `window.sellerBooksEnsureExcelJS` functions. Its internal Promise-based fallback loader remains inside the same IIFE.
 - The legacy file is retained as an unreferenced rollback copy. This is a file-ownership/path extraction only; library URLs, fallbacks, and alert messages were not changed.
 
@@ -193,7 +193,7 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 ## Analytics script extraction (2026-10-22)
 
 - Moved the client analytics/tracking script entry to `js/modules/analytics/client-analytics.js` and changed its HTML reference in place, preserving the script's original execution order.
-- The file remains a classic script and its contents are copied verbatim. The original `js/legacy-05.js` remains as an unreferenced rollback copy for this stage.
+- The file remains a classic script and its contents are copied verbatim. The original `archive/rollback/js/legacy-05.js` remains as an unreferenced rollback copy for this stage.
 - No analytics payload, event naming, storage behavior, or tracking conditions were intentionally changed.
 
 
@@ -218,7 +218,7 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 ## Contact modal script extraction (2026-10-22)
 
 - Moved the contact/help modal behavior to `js/modules/support/contact-modal.js`. Updated only the `src` attribute while preserving the script element ID and its location at the end of `index.html`.
-- The file is copied verbatim as a classic script. Modal open/close behavior and language text are not intentionally changed; `js/legacy-09.js` remains as a rollback copy.
+- The file is copied verbatim as a classic script. Modal open/close behavior and language text are not intentionally changed; `archive/rollback/js/legacy-09.js` remains as a rollback copy.
 
 
 ## Report filters and dialog helpers extraction (2026-10-22)
@@ -230,14 +230,14 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 ## Report engine file organization (2026-10-22)
 
 - Moved the large report/snapshot script to `js/modules/reports/report-engine-legacy.js`, keeping its exact location in the classic script execution sequence after the report filter/dialog helper.
-- Contents are copied verbatim from the current `js/legacy-02.js`, including profiler and report update handlers. This step does not redesign the report engine or change formulas; the old file is retained as a rollback copy. Further internal decomposition remains a separate, higher-risk task.
+- Contents are copied verbatim from the current `archive/rollback/js/legacy-02.js`, including profiler and report update handlers. This step does not redesign the report engine or change formulas; the old file is retained as a rollback copy. Further internal decomposition remains a separate, higher-risk task.
 
 
 ## CSS cascade audit (2026-10-22)
 
 - CSS files are loaded in a fixed order from `legacy-01.css` through `legacy-06.css`. Keep that order until the cascade is deliberately consolidated and visually tested.
-- Confirmed override: `css/legacy-01.css` has a mobile `#reports .content-section { overflow:hidden; }` rule around line 4485. `css/legacy-02.css` later applies `overflow: visible !important` to the same selector around line 21. This is an actual cascade override, not enough evidence to delete either rule; the later rule may intentionally keep report contents/filters visible.
-- `.product-analysis-filter-grid` has base layout rules in `css/legacy-03.css`, responsive rules near the end of `css/legacy-01.css`, and another responsive override in `css/legacy-03.css`. The overlap is breakpoint-specific and must be compared at each viewport before consolidation.
+- Confirmed override: `css/legacy-01.css` has a mobile `#reports .content-section { overflow:hidden; }` rule around line 4485. `archive/rollback/css/legacy-02.css` later applies `overflow: visible !important` to the same selector around line 21. This is an actual cascade override, not enough evidence to delete either rule; the later rule may intentionally keep report contents/filters visible.
+- `.product-analysis-filter-grid` has base layout rules in `archive/rollback/css/legacy-03.css`, responsive rules near the end of `css/legacy-01.css`, and another responsive override in `archive/rollback/css/legacy-03.css`. The overlap is breakpoint-specific and must be compared at each viewport before consolidation.
 - No CSS rules were changed in this pass because deleting/merging the overlapping selectors without runtime screenshots could change mobile report layout.
 
 ## Main engine domain map (first pass)
@@ -262,7 +262,7 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 
 ## Report CSS organization (2026-10-22)
 
-- Moved `css/legacy-02.css` to `css/modules/reports/report-overrides.css` and `css/legacy-03.css` to `css/modules/reports/product-analysis.css` with their contents copied verbatim.
+- Moved `archive/rollback/css/legacy-02.css` to `css/modules/reports/report-overrides.css` and `archive/rollback/css/legacy-03.css` to `css/modules/reports/product-analysis.css` with their contents copied verbatim.
 - Updated only the two stylesheet paths in `index.html`. Their relative cascade order remains unchanged: the general legacy layer loads first, then report overrides, then product analysis styles. Old CSS files remain unreferenced rollback copies.
 - Other CSS files remain in their existing order pending a fuller selector ownership audit; no rules were merged or deleted.
 
@@ -270,7 +270,7 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 ## Automated structure guard (2026-10-22)
 
 - Added `scripts/audit-structure.mjs` and the `npm run audit:structure` command.
-- The audit checks that local JS/CSS references in `index.html` are unique and resolve to files, that the nine relocated JS files and two relocated CSS files remain byte-for-byte identical to their rollback copies, and that `index.html` no longer points at `js/legacy-01.js` through `js/legacy-09.js`.
+- The audit checks that local JS/CSS references in `index.html` are unique and resolve to files, that the nine relocated JS files and two relocated CSS files remain byte-for-byte identical to their rollback copies, and that `index.html` no longer points at `archive/rollback/js/legacy-01.js` through `archive/rollback/js/legacy-09.js`.
 - The report engine currently has one declaration of `sellerBooksReadDailySnapshots` (around line 286); the other occurrences in that file are call sites, not duplicate declarations. Do not rewrite its cache behavior without tracing invalidation paths.
 - The `loadScript(src, done)` occurrence around line 3543 is nested inside the PDF-library loader's Promise callback; it is not the global Promise-based library loader in `js/services/library-loader.js`. Keep them separate unless a later scope audit proves a safe unification.
 - The structure audit is a static guard only. It does not replace a production Vite build, browser/WebView checks, marketplace OAuth tests, or financial/import regression tests.
@@ -596,7 +596,7 @@ This section supersedes older approximate file counts and records only checks ma
 - Repository tree: 109 files; 59 JavaScript files and 9 CSS files.
 - Root `index.html` is the active classic-script entry point (5,161 lines); `js/main.js` is 2,003 lines at this commit.
 - `index.html` references 46 local JavaScript files and 6 local CSS files. Static cross-check found no missing local JS/CSS references and no duplicate local references.
-- Nine `js/legacy-01.js` … `js/legacy-09.js` files are rollback copies and are not loaded by the active HTML. `css/legacy-02.css` and `css/legacy-03.css` are also rollback copies; the active HTML uses their organized module paths.
+- Nine `archive/rollback/js/legacy-01.js` … `archive/rollback/js/legacy-09.js` files are rollback copies and are not loaded by the active HTML. `archive/rollback/css/legacy-02.css` and `archive/rollback/css/legacy-03.css` are also rollback copies; the active HTML uses their organized module paths.
 - Unreferenced JS also includes the Vite scaffold `src/main.js`, `src/core/config.js`, `src/services/supabase.js`, and `vite.config.js`; `src/styles/main.css` is likewise not linked by the root HTML. Do not treat `src/` as the active production runtime.
 - The CI workflow `.github/workflows/structure-audit.yml` runs `npm run build`, JavaScript syntax checks, and `scripts/audit-structure.mjs`. The Vite build exercises the separate `src/main.js` scaffold; it does not bundle the active root `index.html`. Syntax and path checks do cover the classic-script runtime. CI passing therefore does not establish feature-level correctness.
 - Keep script order and global classic-script functions intact. Inline handlers in `index.html` depend on them.
