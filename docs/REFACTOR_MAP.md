@@ -494,3 +494,10 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Both function bodies are unchanged. They continue to use the existing Supabase profile operations, owner setup UI, approval/session state, and localized messages.
 - The module is loaded before `main.js`; no profile schema, approval status, login session, or owner identity policy was modified.
 - CI verifies function ownership and script order. Manual verification of owner setup, saving a name, and resetting identity remains necessary before final production sign-off.
+
+
+## Store connection actions extraction (2026-10-22)
+
+- Moved four existing functions into `js/modules/marketplaces/store-connection-actions.js`: store disconnection, ensuring the cloud store record, manual Blibli connection, and generic marketplace account integration.
+- Function bodies were relocated unchanged. No Blibli signature/header, OAuth, connection ownership, multi-client lookup, API request, or marketplace state logic was edited.
+- The new classic script is loaded before `main.js`; CI checks function ownership, script order, and JavaScript syntax. Live multi-account Blibli and concurrent-client tests remain mandatory before final production sign-off.

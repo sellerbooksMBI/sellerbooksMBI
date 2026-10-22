@@ -420,6 +420,18 @@ const profileManagementPosition = index.indexOf('src="/js/modules/auth/profile-m
 const profileManagementMainPosition = index.indexOf('src="/js/main.js"');
 if (profileManagementPosition < 0 || profileManagementMainPosition < 0 || profileManagementPosition > profileManagementMainPosition) fail("Profile management module must load before main.js");
 
+
+const storeConnectionActionsModule = read("js/modules/marketplaces/store-connection-actions.js");
+const storeConnectionActionFunctions = ["disconnectStoreAccount","sellerBooksEnsureCloudStore","connectBlibliStoreManually","integrateStoreAccount"];
+for (const name of storeConnectionActionFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(storeConnectionActionsModule)) fail(`Missing store connection action: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Store connection action still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Store connection action"))) pass("Store connection actions are isolated from main.js");
+const storeConnectionActionsPosition = index.indexOf('src="/js/modules/marketplaces/store-connection-actions.js"');
+const storeConnectionActionsMainPosition = index.indexOf('src="/js/main.js"');
+if (storeConnectionActionsPosition < 0 || storeConnectionActionsMainPosition < 0 || storeConnectionActionsPosition > storeConnectionActionsMainPosition) fail("Store connection actions module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
