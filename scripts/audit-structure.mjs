@@ -311,6 +311,21 @@ const salesImportParserModulePosition = index.indexOf('src="/js/modules/sales/im
 const salesImportParserMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (salesImportParserModulePosition < 0 || salesImportParserMainScriptPosition < 0 || salesImportParserModulePosition > salesImportParserMainScriptPosition) fail("Sales import parser module must load before main.js");
 
+
+const masterProductCacheModule = read("js/services/master-product-cache.js");
+for (const name of ["sellerBooksGetMasterProductsCache","sellerBooksGetRuntimeMasterProductsCache","getMasterProductBySku"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(masterProductCacheModule)) fail(`Missing master product cache function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Master product cache function still declared in main.js: ${name}`);
+}
+for (const name of ["sellerBooksMasterProductsCacheRaw","sellerBooksMasterProductsCacheMap","sellerBooksRuntimeProductsCacheSource","sellerBooksRuntimeProductsCacheMap"]) {
+  if (!new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(masterProductCacheModule)) fail(`Missing master product cache state: ${name}`);
+  if (new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(mainSource)) fail(`Master product cache state still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Master product cache"))) pass("Master product lookup cache is isolated from main.js");
+const masterProductCachePosition = index.indexOf('src="/js/services/master-product-cache.js"');
+const masterProductCacheMainPosition = index.indexOf('src="/js/main.js"');
+if (masterProductCachePosition < 0 || masterProductCacheMainPosition < 0 || masterProductCachePosition > masterProductCacheMainPosition) fail("Master product cache module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

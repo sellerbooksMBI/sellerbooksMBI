@@ -423,3 +423,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The parser bodies and marketplace alias rules are unchanged. Master Product lookup caches, stock reduction/restoration, import fingerprinting, deduplication, preview confirmation, transaction persistence, and marketplace API request workers remain in their existing modules/locations.
 - The module loads before `main.js`, so the same classic-script global names are initialized before the Sales Import engine uses them.
 - CI verifies all seven parser functions, four config/state declarations, and script order. Browser regression checks are still needed with representative Excel files from each marketplace.
+
+
+## Master Product lookup cache extraction (2026-10-22, continued)
+
+- Moved the four existing Master Product lookup-cache state variables and three lookup/cache functions into `js/services/master-product-cache.js`.
+- The same raw/runtime cache sources, map-building behavior, and SKU lookup logic are preserved unchanged. Stock reduction/restoration and Sales Import transaction processing remain in `main.js`.
+- The module initializes only cache variables and declarations before `main.js`; the same global function names remain available to the import and report code.
+- CI checks function/state ownership and load order.
