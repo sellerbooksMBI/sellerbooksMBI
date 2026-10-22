@@ -479,3 +479,10 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - All function bodies were copied unchanged. The Supabase client initialization, shared auth/cloud state declarations, and both top-level `onAuthStateChange` subscriptions remain in `main.js` at their original execution points. This avoids moving initialization side effects ahead of the Supabase client.
 - The new classic script is loaded immediately before `main.js`; CI verifies all 17 functions have one owner and that load order is correct.
 - Static checks cannot prove OAuth redirects or realtime timing in a live session; those remain required runtime regression tests.
+
+
+## Packing cost helper extraction (2026-10-22)
+
+- Moved `getPackingCostPerOrder()` and `getTotalPackingCost()` into `js/modules/sales/packing-costs.js`.
+- Both functions were relocated unchanged: the first reads the configured per-order packing cost, and the second totals the saved import records' existing `totalPackingCost` values.
+- No packing-cost formula, transaction data, HPP, profit, or snapshot behavior was changed. CI verifies function ownership and script order.

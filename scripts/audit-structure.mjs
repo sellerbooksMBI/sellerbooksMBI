@@ -398,6 +398,17 @@ const authSessionPosition = index.indexOf('src="/js/modules/auth/session-lifecyc
 const authSessionMainPosition = index.indexOf('src="/js/main.js"');
 if (authSessionPosition < 0 || authSessionMainPosition < 0 || authSessionPosition > authSessionMainPosition) fail("Auth/session module must load before main.js");
 
+
+const packingCostsModule = read("js/modules/sales/packing-costs.js");
+for (const name of ["getPackingCostPerOrder", "getTotalPackingCost"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(packingCostsModule)) fail(`Missing packing cost helper: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Packing cost helper still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Packing cost helper"))) pass("Packing cost helpers are isolated from main.js");
+const packingCostsPosition = index.indexOf('src="/js/modules/sales/packing-costs.js"');
+const packingCostsMainPosition = index.indexOf('src="/js/main.js"');
+if (packingCostsPosition < 0 || packingCostsMainPosition < 0 || packingCostsPosition > packingCostsMainPosition) fail("Packing costs module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
