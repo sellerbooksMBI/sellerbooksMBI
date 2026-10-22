@@ -229,8 +229,8 @@ for (const name of salesImportProgressFunctions) {
 }
 if (!failures.some((message) => message.includes("Sales import progress function"))) pass("Sales import progress UI helpers are isolated from main.js");
 const salesImportProgressPosition = index.indexOf('src="/js/modules/sales/import-progress.js"');
-const mainScriptPosition = index.indexOf('src="/js/main.js"');
-if (salesImportProgressPosition < 0 || mainScriptPosition < 0 || salesImportProgressPosition > mainScriptPosition) fail("Sales import progress module must load before main.js");
+const salesImportProgressMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (salesImportProgressPosition < 0 || salesImportProgressMainScriptPosition < 0 || salesImportProgressPosition > salesImportProgressMainScriptPosition) fail("Sales import progress module must load before main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
