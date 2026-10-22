@@ -4,10 +4,10 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 ## Current inventory (main)
 
-- `index.html`: 5,133 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,134 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
 - `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~528 KB / 18,198 lines after extracting Cost management, Notifications, language text dictionaries/UI appliers, business-logo settings, data backup/restore, and settings core; it remains the largest application engine with global functions/state.
+- `js/main.js`: ~490 KB / 16,854 lines after extracting Cost management, Notifications, language text dictionaries/UI appliers, business-logo settings, data backup/restore, settings core, and Product Analysis; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -284,3 +284,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The functions retain their existing global names and are loaded before `main.js`, so existing dashboard formatters, settings navigation, and startup callbacks can still call them.
 - Shared state, storage adapter, language persistence, currency formula, exchange-rate values, and UI labels were not rewritten.
 - The automated structure audit verifies the seven function declarations are in the new module and absent from `main.js`.
+
+
+## Product Analysis extraction (2026-10-22, continued)
+
+- Moved 18 Product Analysis functions to `js/modules/reports/product-analysis.js`, covering period filtering, marketplace/store filters, transaction selection, row calculations, rendering, pagination, PDF download, and product-analysis filter UI.
+- The functions were relocated without rewriting their bodies. Existing report-date helpers, daily snapshot reads, products/transactions state, and shared UI functions remain in their original owners.
+- `productAnalysisPage`, `productAnalysisPageSize`, and `productAnalysisPaginationFilterKey` remain in `main.js` as shared state.
+- The module is loaded before `main.js`; the audit verifies all 18 function declarations are in the new module and absent from the main engine.
+- Because this feature includes financial analysis, the move must still be followed by targeted browser regression checks of date periods, marketplace/store filters, row totals, and PDF output before declaring the refactor fully finished.
