@@ -5,7 +5,7 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 ## Current inventory (verified against main, 2026-10-22)
 
 - `index.html`: 5,161 lines; active production entry point using classic scripts and inline handlers.
-- Active styles in load order: `css/legacy-01.css`, `css/modules/reports/report-overrides.css`, `css/modules/reports/product-analysis.css`, `css/legacy-04.css`, `css/legacy-05.css`, `css/legacy-06.css`.
+- Active styles in load order (legacy base chunks are isolated under `css/legacy/`): `css/legacy/legacy-01.css`, `css/modules/reports/report-overrides.css`, `css/modules/reports/product-analysis.css`, `css/legacy/legacy-04.css`, `css/legacy/legacy-05.css`, `css/legacy/legacy-06.css`.
 - `archive/rollback/css/legacy-02.css` and `archive/rollback/css/legacy-03.css` are rollback copies for the two organized report CSS modules; they are not loaded by active HTML.
 - `archive/rollback/js/legacy-01.js` … `archive/rollback/js/legacy-09.js` are rollback copies; active HTML loads the organized module/service paths instead.
 - `js/main.js`: 2,003 lines at the inspected commit. It still owns shared Supabase/auth/cloud state and global functions used by the classic-script modules.
@@ -17,12 +17,12 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 The active HTML loads these six styles in this exact order:
 
-1. `/css/legacy-01.css`
+1. `/css/legacy/legacy-01.css`
 2. `/css/modules/reports/report-overrides.css`
 3. `/css/modules/reports/product-analysis.css`
-4. `/css/legacy-04.css`
-5. `/css/legacy-05.css`
-6. `/css/legacy-06.css`
+4. `/css/legacy/legacy-04.css`
+5. `/css/legacy/legacy-05.css`
+6. `/css/legacy/legacy-06.css`
 
 The active HTML loads 49 script tags in this exact order (46 local scripts and three external libraries):
 
@@ -118,7 +118,7 @@ This pass confirms the roles from function names and section markers, not full r
 
 ## CSS inventory (first pass)
 
-- `css/legacy-01.css` (~50 KB / 4,524 lines): primary stylesheet with login, marketplace, and broad app styling.
+- `css/legacy/legacy-01.css` (~50 KB / 4,524 lines): primary stylesheet with login, marketplace, and broad app styling.
 - `archive/rollback/css/legacy-02.css` (~7 KB / 270 lines), `legacy-03.css` (~2.8 KB / 162 lines), `legacy-04.css` (~8.4 KB / 373 lines), `legacy-05.css` (~4.9 KB / 94 lines), and `legacy-06.css` (~2.7 KB / 18 lines): supplemental layers and/or late overrides. Exact selector ownership and duplicate rules still need a selector inventory. Keep the current order until that inventory is complete.
 
 ## Findings that affect the refactor
@@ -236,8 +236,8 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 ## CSS cascade audit (2026-10-22)
 
 - CSS files are loaded in a fixed order from `legacy-01.css` through `legacy-06.css`. Keep that order until the cascade is deliberately consolidated and visually tested.
-- Confirmed override: `css/legacy-01.css` has a mobile `#reports .content-section { overflow:hidden; }` rule around line 4485. `archive/rollback/css/legacy-02.css` later applies `overflow: visible !important` to the same selector around line 21. This is an actual cascade override, not enough evidence to delete either rule; the later rule may intentionally keep report contents/filters visible.
-- `.product-analysis-filter-grid` has base layout rules in `archive/rollback/css/legacy-03.css`, responsive rules near the end of `css/legacy-01.css`, and another responsive override in `archive/rollback/css/legacy-03.css`. The overlap is breakpoint-specific and must be compared at each viewport before consolidation.
+- Confirmed override: `css/legacy/legacy-01.css` has a mobile `#reports .content-section { overflow:hidden; }` rule around line 4485. `archive/rollback/css/legacy-02.css` later applies `overflow: visible !important` to the same selector around line 21. This is an actual cascade override, not enough evidence to delete either rule; the later rule may intentionally keep report contents/filters visible.
+- `.product-analysis-filter-grid` has base layout rules in `archive/rollback/css/legacy-03.css`, responsive rules near the end of `css/legacy/legacy-01.css`, and another responsive override in `archive/rollback/css/legacy-03.css`. The overlap is breakpoint-specific and must be compared at each viewport before consolidation.
 - No CSS rules were changed in this pass because deleting/merging the overlapping selectors without runtime screenshots could change mobile report layout.
 
 ## Main engine domain map (first pass)
@@ -646,7 +646,7 @@ No application code, database schema, data, or marketplace credentials were modi
 
 A lightweight selector scan across the six active styles found approximately 470 unique selectors and two cross-file selector collisions. They are review targets, not safe deletion candidates:
 
-- `#reports .content-section`: primary rule in `css/legacy-01.css` around line 4485 sets `overflow:hidden` inside a mobile media query. `css/modules/reports/report-overrides.css` later applies `overflow:visible !important` around line 21. The later override is intentional to prevent report content from being clipped; preserve cascade order.
-- `.product-analysis-filter-grid`: responsive rules in `css/legacy-01.css` around lines 4497–4503 set two columns at narrower widths and one column on small screens. `css/modules/reports/product-analysis.css` provides the base three-column grid and an additional responsive rule near line 142. Preserve the base/responsive combination until viewport tests confirm any consolidation.
+- `#reports .content-section`: primary rule in `css/legacy/legacy-01.css` around line 4485 sets `overflow:hidden` inside a mobile media query. `css/modules/reports/report-overrides.css` later applies `overflow:visible !important` around line 21. The later override is intentional to prevent report content from being clipped; preserve cascade order.
+- `.product-analysis-filter-grid`: responsive rules in `css/legacy/legacy-01.css` around lines 4497–4503 set two columns at narrower widths and one column on small screens. `css/modules/reports/product-analysis.css` provides the base three-column grid and an additional responsive rule near line 142. Preserve the base/responsive combination until viewport tests confirm any consolidation.
 
 This scan is regex-based, so nested at-rules and grouped selectors can affect counts. It identifies ownership and likely overrides; it does not replace visual checks at desktop, tablet, and mobile widths.
