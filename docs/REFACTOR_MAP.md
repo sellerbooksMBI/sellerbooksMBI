@@ -391,3 +391,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The actual state declarations, initial synchronization call, rollover interval registration, and custom-date confirmation state remain in `main.js` at their original execution points.
 - The moved functions are unchanged. Cloud refresh reads, cache refresh, period selection, daily reset, and cross-view reset behavior were not redesigned.
 - CI now checks the additional function declarations in the Dashboard module and confirms they no longer remain in `main.js`.
+
+
+## Authentication approval UI extraction (2026-10-22, continued)
+
+- Moved five access/approval presentation helpers into `js/modules/auth/approval-ui.js`: view visibility, localized approval text, approval-language application, approval page selection, and approval display.
+- The authentication session, profile reads, approval decision logic, and login/logout flows remain in `main.js`; only the existing UI helper declarations were relocated unchanged.
+- The module loads before `main.js` and is declaration-only at load time, so the existing auth callbacks can call it after shared state is initialized.
+- CI verifies function ownership and load order. No account approval policy or auth data access was modified.

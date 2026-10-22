@@ -255,6 +255,18 @@ const productManagementModulePosition = index.indexOf('src="/js/modules/products
 const productManagementMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (productManagementModulePosition < 0 || productManagementMainScriptPosition < 0 || productManagementModulePosition > productManagementMainScriptPosition) fail("Product management module must load before main.js");
 
+
+const approvalUiModule = read("js/modules/auth/approval-ui.js");
+const approvalUiFunctions = ["sellerBooksShowOnly","sellerBooksAccessText","sellerBooksApplyApprovalLanguage","sellerBooksGetApprovalPage","sellerBooksShowApproval"];
+for (const name of approvalUiFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(approvalUiModule)) fail(`Missing approval UI function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Approval UI function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Approval UI function"))) pass("Approval UI helpers are isolated from main.js");
+const approvalUiModulePosition = index.indexOf('src="/js/modules/auth/approval-ui.js"');
+const approvalUiMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (approvalUiModulePosition < 0 || approvalUiMainScriptPosition < 0 || approvalUiModulePosition > approvalUiMainScriptPosition) fail("Approval UI module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
