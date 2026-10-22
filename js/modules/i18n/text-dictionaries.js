@@ -663,3 +663,223 @@ function sellerBooksDetailsText(key){
     };
     return translations[language]?.[key] ?? translations.id[key] ?? key;
 }
+
+
+function sellerBooksProductText(key){
+    const language = sellerBooksCurrentLanguage();
+    const translations = {
+        id:{
+            pageTitle:"Master Produk", pageSubtitle:"Kelola seluruh produk, SKU, modal, dan data dasar produk bisnis Anda.",
+            count:"Produk", importExcel:"Import Excel", exportExcel:"Export Excel", addProduct:"Tambah Produk",
+            deleteSelected:"Hapus Terpilih", searchPlaceholder:"🔍 Cari SKU atau nama produk...", allStatus:"Semua Status",
+            active:"Aktif", inactive:"Tidak Aktif", sku:"SKU", productName:"Nama Produk", category:"Kategori",
+            sellingPrice:"Harga Jual", cost:"HPP / Modal", adminSku:"Admin % SKU", stock:"Stok", status:"Status", actions:"Aksi",
+            rowsLabel:"Tampilkan", rowsSuffix:"baris", rowsAria:"Jumlah baris Master Produk", noProducts:"Belum Ada Produk",
+            noProductsText:"Tambahkan produk secara manual atau import menggunakan Excel.", disable:"Nonaktifkan", enable:"Aktifkan",
+            edit:"Edit", delete:"Hapus", range:"{start}-{end} dari {total}", previous:"Halaman sebelumnya", next:"Halaman berikutnya",
+            addTitle:"Tambah Produk", editTitle:"Edit Produk", skuLabel:"SKU Produk *", skuPlaceholder:"Contoh: TAS-BIRU-001",
+            nameLabel:"Nama Produk *", namePlaceholder:"Contoh: Tas Biru Premium", categoryLabel:"Kategori", categoryPlaceholder:"Contoh: Tas",
+            priceLabel:"Harga Jual", pricePlaceholder:"Contoh: 50000", costLabel:"HPP / Modal Produk *", costPlaceholder:"Contoh: 25000",
+            stockLabel:"Stok Produk", stockPlaceholder:"Contoh: 100", adminLabel:"Admin % SKU", adminPlaceholder:"Contoh: 15",
+            statusLabel:"Status Produk", optional:"Opsional", cancel:"Batal", save:"Simpan Produk",
+            adminInvalid:"Admin % SKU harus antara 0 sampai 100.", skuRequired:"SKU produk wajib diisi.", nameRequired:"Nama produk wajib diisi.",
+            costRequired:"HPP / Modal produk wajib diisi.", duplicateEdit:"SKU sudah digunakan oleh produk lain.", duplicateAdd:"SKU sudah terdaftar.",
+            deleteSelectedConfirm:"Hapus {count} produk yang dipilih?\n\nData yang dihapus tidak dapat dikembalikan.", deleteConfirm:"Hapus produk",
+            importEmpty:"File Excel tidak memiliki data.", importDone:"Import selesai.\n\nBerhasil: {success}\nDuplikat SKU: {duplicate}\nData tidak valid: {error}",
+            importError:"Terjadi kesalahan saat membaca file Excel.", exportError:"Export Excel gagal. Silakan coba lagi.",
+            exportSuccessTitle:"Export Berhasil", exportSuccess:"File Excel Master Produk berhasil dibuat dan diunduh ke perangkat Anda.",
+            exportMaster:"MASTER PRODUK", exportInstructions:"PETUNJUK PENGISIAN", exportReadme:"README", exportColumn:"KOLOM",
+            exportGuide:"PETUNJUK PENGISIAN", exportRules:"ATURAN IMPORT", exportTemplateTitle:"SELLERBOOKS MASTER PRODUK TEMPLATE",
+            exportTemplateDescription:"File ini digunakan untuk menambah atau memperbarui data Master Produk di SellerBooks.",
+            howTo:"CARA PENGGUNAAN", importantNotes:"CATATAN PENTING", requiredSku:"Wajib diisi. SKU adalah kode unik produk dan tidak boleh sama dengan produk lain.",
+            requiredName:"Wajib diisi. Masukkan nama produk dengan jelas.", optionalCategory:"Opsional. Contoh: Fashion, Elektronik, Aksesoris, Rumah Tangga.",
+            priceGuide:"Isi angka saja tanpa tulisan Rp atau tanda titik. Contoh: 25000", costGuide:"Isi angka biaya modal produk tanpa tulisan Rp. Contoh: 12000",
+            stockGuide:"Isi jumlah stok awal produk dalam angka. Contoh: 100.", statusGuide:"Pilih dari dropdown: Aktif atau Tidak Aktif.",
+            rule1:"Jangan mengubah nama kolom pada sheet MASTER PRODUK.", rule2:"SKU tidak boleh kosong dan tidak boleh duplikat.",
+            rule3:"Harga Jual dan HPP / Modal harus berupa angka.", rule4:"Stok harus berupa angka. Jika belum memiliki stok, isi 0.",
+            rule5:"Status Produk cukup dipilih dari dropdown Aktif atau Tidak Aktif.", rule6:"Isi data hanya pada sheet MASTER PRODUK.",
+            how1:"Buka sheet MASTER PRODUK.", how2:"Isi data produk sesuai kolom yang tersedia.", how3:"Jangan mengubah nama header atau urutan kolom.",
+            how4:"Isi stok dengan angka. Jika belum ada stok, gunakan 0.", how5:"Untuk Status Produk, pilih Aktif atau Tidak Aktif dari dropdown.",
+            how6:"Simpan file setelah selesai diisi.", how7:"Kembali ke SellerBooks.", how8:"Buka menu Master Produk.", how9:"Klik Import Excel.", how10:"Pilih file yang sudah diisi.",
+            note1:"• SKU harus unik.", note2:"• Harga diisi dalam angka.", note3:"• Stok diisi dalam angka.", note4:"• Status Produk menggunakan dropdown Aktif atau Tidak Aktif.",
+            statusInvalidTitle:"Status tidak valid", statusInvalid:"Silakan pilih Aktif atau Tidak Aktif.", statusPromptTitle:"Status Produk", statusPrompt:"Pilih Aktif atau Tidak Aktif."
+        },
+        en:{
+            pageTitle:"Master Products", pageSubtitle:"Manage all products, SKUs, costs, and basic product data for your business.",
+            count:"Products", importExcel:"Import Excel", exportExcel:"Export Excel", addProduct:"Add Product",
+            deleteSelected:"Delete Selected", searchPlaceholder:"🔍 Search SKU or product name...", allStatus:"All Statuses",
+            active:"Active", inactive:"Inactive", sku:"SKU", productName:"Product Name", category:"Category", sellingPrice:"Selling Price",
+            cost:"Cost", adminSku:"Admin % SKU", stock:"Stock", status:"Status", actions:"Actions", rowsLabel:"Show", rowsSuffix:"rows",
+            rowsAria:"Master Products rows per page", noProducts:"No Products Yet", noProductsText:"Add products manually or import them using Excel.",
+            disable:"Disable", enable:"Enable", edit:"Edit", delete:"Delete", range:"{start}-{end} of {total}", previous:"Previous page", next:"Next page",
+            addTitle:"Add Product", editTitle:"Edit Product", skuLabel:"Product SKU *", skuPlaceholder:"Example: TAS-BIRU-001",
+            nameLabel:"Product Name *", namePlaceholder:"Example: Premium Blue Bag", categoryLabel:"Category", categoryPlaceholder:"Example: Bags",
+            priceLabel:"Selling Price", pricePlaceholder:"Example: 50000", costLabel:"Product Cost *", costPlaceholder:"Example: 25000",
+            stockLabel:"Product Stock", stockPlaceholder:"Example: 100", adminLabel:"Admin % SKU", adminPlaceholder:"Example: 15",
+            statusLabel:"Product Status", optional:"Optional", cancel:"Cancel", save:"Save Product",
+            adminInvalid:"Admin % SKU must be between 0 and 100.", skuRequired:"Product SKU is required.", nameRequired:"Product name is required.",
+            costRequired:"Product cost is required.", duplicateEdit:"This SKU is already used by another product.", duplicateAdd:"This SKU is already registered.",
+            deleteSelectedConfirm:"Delete {count} selected products?\n\nDeleted data cannot be recovered.", deleteConfirm:"Delete product",
+            importEmpty:"The Excel file contains no data.", importDone:"Import completed.\n\nSuccessful: {success}\nDuplicate SKUs: {duplicate}\nInvalid data: {error}",
+            importError:"An error occurred while reading the Excel file.", exportError:"Excel export failed. Please try again.",
+            exportSuccessTitle:"Export Successful", exportSuccess:"The Master Products Excel file was successfully created and downloaded to your device.", exportMaster:"MASTER PRODUCTS", exportInstructions:"FILLING INSTRUCTIONS",
+            exportReadme:"README", exportColumn:"COLUMN", exportGuide:"FILLING INSTRUCTIONS", exportRules:"IMPORT RULES",
+            exportTemplateTitle:"SELLERBOOKS MASTER PRODUCTS TEMPLATE", exportTemplateDescription:"This file is used to add or update Master Products data in SellerBooks.",
+            howTo:"HOW TO USE", importantNotes:"IMPORTANT NOTES", requiredSku:"Required. SKU is the unique product code and must not duplicate another product.",
+            requiredName:"Required. Enter the product name clearly.", optionalCategory:"Optional. Example: Fashion, Electronics, Accessories, Home & Living.",
+            priceGuide:"Enter numbers only without Rp or separators. Example: 25000", costGuide:"Enter the product cost as a number without Rp. Example: 12000",
+            stockGuide:"Enter the initial product stock as a number. Example: 100.", statusGuide:"Select from the dropdown: Active or Inactive.",
+            rule1:"Do not change the column names in the MASTER PRODUCTS sheet.", rule2:"SKU cannot be empty or duplicated.", rule3:"Selling Price and Cost must be numeric.",
+            rule4:"Stock must be numeric. If there is no stock yet, enter 0.", rule5:"Select Product Status from the Active or Inactive dropdown.", rule6:"Enter data only in the MASTER PRODUCTS sheet.",
+            how1:"Open the MASTER PRODUCTS sheet.", how2:"Enter product data according to the available columns.", how3:"Do not change the header names or column order.",
+            how4:"Enter stock as a number. If there is no stock, use 0.", how5:"For Product Status, select Active or Inactive from the dropdown.",
+            how6:"Save the file after completing the data.", how7:"Return to SellerBooks.", how8:"Open the Master Products menu.", how9:"Click Import Excel.", how10:"Select the completed file.",
+            note1:"• SKU must be unique.", note2:"• Enter prices as numbers.", note3:"• Enter stock as a number.", note4:"• Product Status uses the Active or Inactive dropdown.",
+            statusInvalidTitle:"Invalid status", statusInvalid:"Please select Active or Inactive.", statusPromptTitle:"Product Status", statusPrompt:"Select Active or Inactive."
+        }
+    };
+    return translations[language]?.[key] ?? translations.id[key] ?? key;
+}
+
+
+function sellerBooksProductCountText(count){ return (Number(count)||0) + " " + sellerBooksProductText("count"); }
+
+
+function sellerBooksSalesImportText(key){
+    const language=sellerBooksCurrentLanguage();
+    const id={
+        pageTitle:"Import Penjualan",
+        pageSubtitle:"Upload laporan penjualan marketplace. SellerBooks akan membaca struktur file dan mencari SKU serta QTY secara otomatis.",
+        analyzerTitle:"SellerBooks Smart File Analyzer",
+        analyzerDescription:"Upload file dari marketplace tanpa perlu memilih marketplace terlebih dahulu. Sistem akan menganalisis struktur data secara otomatis.",
+        uploadTitle:"Upload Laporan Penjualan", uploadDescription:"Klik di sini untuk memilih file", chooseFile:"+ Pilih File",
+        analysisTitle:"Hasil Analisis File", analysisDescription:"SellerBooks telah membaca struktur file Anda.", waitingAnalysis:"Menunggu Analisis", readingFile:"Sedang membaca file...",
+        fileName:"Nama File", format:"Format", rowCount:"Jumlah Baris", columnCount:"Jumlah Kolom",
+        skuRecognition:"SKU Recognition", qtyRecognition:"QTY Recognition", sellingPriceRecognition:"Harga Jual Recognition",
+        notFound:"Belum ditemukan", waiting:"Menunggu analisis", skuNotRecognized:"Kolom SKU belum dikenali", qtyNotRecognized:"Kolom QTY belum dikenali",
+        autoDetected:"Terdeteksi otomatis • ", matchSuffix:"% kecocokan", lazadaQty:"sellerSku • hitung kemunculan", lazadaQtyInfo:"Khusus Lazada • QTY = jumlah kemunculan sellerSku",
+        shopeeQty:"1 pcs / baris", shopeeQtyInfo:"Khusus Shopee • file tidak memiliki kolom Jumlah, setiap baris SKU = 1 pcs",
+        lazadaPrice:"unitPrice • Kolom AV", lazadaPriceInfo:"Khusus Lazada • Harga Jual = unitPrice kolom AV",
+        foundColumns:"Kolom yang Ditemukan", cancel:"✕ Batalkan", continueImport:"Lanjutkan Import →",
+        previewTitle:"Preview & Konfirmasi Data", previewDescription:"Pastikan SellerBooks membaca kolom SKU dan QTY dengan benar sebelum melanjutkan.",
+        file:"File", dataCount:"Jumlah Data", selectSku:"🏷️ Pilih Kolom SKU", selectQty:"📦 Pilih Kolom QTY",
+        chooseSku:"-- Pilih Kolom SKU --", chooseQty:"-- Pilih Kolom QTY --", skuHelp:"Pilih kolom yang berisi SKU atau kode produk.", qtyHelp:"Pilih kolom yang berisi jumlah produk terjual.",
+        detectedMarketplace:"🏪 Marketplace Terdeteksi", notDetected:"Belum terdeteksi", marketplaceHelp:"SellerBooks menentukan marketplace dari struktur/header file.",
+        selectStore:"👤 Pilih Akun Toko", chooseStore:"-- Pilih Akun Toko --", storeRequired:"Akun toko wajib dipilih sebelum data disimpan.",
+        packingCost:"📦 Biaya Packing / 1 Order", packingPlaceholder:"Contoh: 1500", packingHelp:"Nominal dapat diubah dan disimpan untuk import berikutnya.",
+        packingResult:"🧮 Hasil Perhitungan Packing", uniquePacking:"Order/Resi unik:", totalPacking:"Total biaya packing:",
+        packingIdentifier:"Identitas packing akan dipilih otomatis sesuai marketplace.", validationChoose:"Pilih kolom SKU dan QTY untuk melanjutkan.",
+        allRows:"Semua baris transaksi ditampilkan.", back:"← Kembali", confirmData:"✓ Konfirmasi Data",
+        statusFound:"SKU & QTY ditemukan ✓", statusManual:"Perlu konfirmasi manual",
+        lazadaReady:"✓ Lazada: sellerSku dikenali dan QTY akan dihitung dari jumlah kemunculan sellerSku. Data siap dikonfirmasi.",
+        shopeeReady:"✓ Shopee: setiap baris SKU dihitung 1 pcs. Tidak perlu memilih kolom QTY. Data siap dikonfirmasi.",
+        columnsReady:"✓ Kolom SKU dan QTY sudah dipilih. Data siap dikonfirmasi.",
+        sameColumns:"Kolom SKU dan QTY tidak boleh sama.", noFile:"Belum ada file yang dianalisis.",
+        noImportData:"Data import tidak ditemukan. Silakan upload file kembali.", chooseSkuFirst:"Silakan pilih kolom SKU terlebih dahulu.",
+        chooseQtyFirst:"Silakan pilih kolom QTY terlebih dahulu.", marketplaceUnknown:"Marketplace file belum dapat dikenali otomatis.",
+        chooseStoreFirst:"Silakan pilih akun toko terlebih dahulu sebelum menyimpan.", packingRequired:"Silakan isi biaya packing per 1 order terlebih dahulu.",
+        saveFailed:"Data penjualan gagal disimpan.", saveError:"Data penjualan gagal disimpan.\n\n", saved:"Import berhasil disimpan ✓",
+        marketplace:"Marketplace:", store:"Akun:", transactions:"Data transaksi:", uniquePackingLabel:"Packing unik:", packingCostLabel:"Biaya packing:",
+        confirmed:"Kolom SKU dan QTY berhasil dikonfirmasi.", unsupported:"Format file tidak didukung.\n\nGunakan:\nXLSX\nXLS\nCSV",
+        insufficient:"File tidak memiliki data yang cukup.", unreadable:"SellerBooks tidak dapat membaca file ini.\n\nPeriksa format dan isi file lalu coba lagi.",
+        packingIdentity:"Identitas packing:", uniquePackingSuffix:" • 1 packing dihitung 1 ID unik.", packingNotFound:"Identitas packing belum ditemukan pada file."
+    };
+    const en={
+        pageTitle:"Sales Import",
+        pageSubtitle:"Upload marketplace sales reports. SellerBooks will read the file structure and automatically find SKU and QTY.",
+        analyzerTitle:"SellerBooks Smart File Analyzer",
+        analyzerDescription:"Upload a marketplace file without selecting the marketplace first. The system will analyze the data structure automatically.",
+        uploadTitle:"Upload Sales Report", uploadDescription:"Click here to select a file", chooseFile:"+ Choose File",
+        analysisTitle:"File Analysis Result", analysisDescription:"SellerBooks has read your file structure.", waitingAnalysis:"Waiting for Analysis", readingFile:"Reading file...",
+        fileName:"File Name", format:"Format", rowCount:"Rows", columnCount:"Columns",
+        skuRecognition:"SKU Recognition", qtyRecognition:"QTY Recognition", sellingPriceRecognition:"Selling Price Recognition",
+        notFound:"Not found", waiting:"Waiting for analysis", skuNotRecognized:"SKU column not recognized", qtyNotRecognized:"QTY column not recognized",
+        autoDetected:"Automatically detected • ", matchSuffix:"% match", lazadaQty:"sellerSku • count occurrences", lazadaQtyInfo:"Lazada only • QTY = number of sellerSku occurrences",
+        shopeeQty:"1 pc / row", shopeeQtyInfo:"Shopee only • file has no Quantity column, each SKU row = 1 pc",
+        lazadaPrice:"unitPrice • Column AV", lazadaPriceInfo:"Lazada only • Selling Price = unitPrice in column AV",
+        foundColumns:"Detected Columns", cancel:"✕ Cancel", continueImport:"Continue Import →",
+        previewTitle:"Preview & Confirm Data", previewDescription:"Make sure SellerBooks reads the SKU and QTY columns correctly before continuing.",
+        file:"File", dataCount:"Data Count", selectSku:"🏷️ Select SKU Column", selectQty:"📦 Select QTY Column",
+        chooseSku:"-- Select SKU Column --", chooseQty:"-- Select QTY Column --", skuHelp:"Select the column containing the SKU or product code.", qtyHelp:"Select the column containing the quantity sold.",
+        detectedMarketplace:"🏪 Detected Marketplace", notDetected:"Not detected", marketplaceHelp:"SellerBooks determines the marketplace from the file structure/header.",
+        selectStore:"👤 Select Store Account", chooseStore:"-- Select Store Account --", storeRequired:"A store account must be selected before the data can be saved.",
+        packingCost:"📦 Packing Cost / Order", packingPlaceholder:"Example: 1500", packingHelp:"This amount can be changed and saved for the next import.",
+        packingResult:"🧮 Packing Calculation", uniquePacking:"Unique Order/Tracking ID:", totalPacking:"Total packing cost:",
+        packingIdentifier:"The packing identifier will be selected automatically based on the marketplace.", validationChoose:"Select SKU and QTY columns to continue.",
+        allRows:"All transaction rows are displayed.", back:"← Back", confirmData:"✓ Confirm Data",
+        statusFound:"SKU & QTY found ✓", statusManual:"Manual confirmation required",
+        lazadaReady:"✓ Lazada: sellerSku was recognized and QTY will be calculated from sellerSku occurrences. Data is ready to confirm.",
+        shopeeReady:"✓ Shopee: each SKU row counts as 1 pc. No QTY column is required. Data is ready to confirm.",
+        columnsReady:"✓ SKU and QTY columns are selected. Data is ready to confirm.",
+        sameColumns:"SKU and QTY columns cannot be the same.", noFile:"No analyzed file is available.",
+        noImportData:"Import data was not found. Please upload the file again.", chooseSkuFirst:"Please select the SKU column first.",
+        chooseQtyFirst:"Please select the QTY column first.", marketplaceUnknown:"The file marketplace could not be detected automatically.",
+        chooseStoreFirst:"Please select a store account before saving.", packingRequired:"Please enter the packing cost per order first.",
+        saveFailed:"Sales data could not be saved.", saveError:"Sales data could not be saved.\n\n", saved:"Import saved successfully ✓",
+        marketplace:"Marketplace:", store:"Account:", transactions:"Transactions:", uniquePackingLabel:"Unique packing IDs:", packingCostLabel:"Packing cost:",
+        confirmed:"SKU and QTY columns confirmed.", unsupported:"Unsupported file format.\n\nUse:\nXLSX\nXLS\nCSV",
+        insufficient:"The file does not contain enough data.", unreadable:"SellerBooks could not read this file.\n\nCheck the file format and contents, then try again.",
+        packingIdentity:"Packing identifier:", uniquePackingSuffix:" • 1 packing ID counted as one unique ID.", packingNotFound:"No packing identifier was found in the file."
+    };
+    const source=language==="en"?en:id;
+    return source[key] ?? id[key] ?? key;
+}
+
+
+function sellerBooksPullOrderIsEN(){
+    return String(typeof sellerBooksCurrentLanguage === "function" ? sellerBooksCurrentLanguage() : "id").toLowerCase() === "en";
+}
+
+
+function sellerBooksPullOrderText(key, marketplace, value){
+    const en = sellerBooksPullOrderIsEN();
+    const name = ({TikTok:"TikTok Shop",Shopee:"Shopee",Lazada:"Lazada",Blibli:"Blibli"})[marketplace] || marketplace || "marketplace";
+    const copy = {
+        missingStore: en ? name+" store account was not found." : "Akun toko "+name+" tidak ditemukan.",
+        wrongMarketplace: en ? "This store account is not "+name+"." : "Akun toko ini bukan "+name+".",
+        notConnected: en ? name+" account is not integrated." : "Akun "+name+" belum terintegrasi.",
+        noSession: en ? "SellerBooks session is unavailable. Please log in again." : "Sesi SellerBooks tidak tersedia. Silakan login kembali.",
+        loading: en ? "Fetching "+name+" orders from the last 7 days...\n\nThe API only retrieves raw order data.\nThe data will then be processed by the same Sales Import engine used for manual Excel uploads." : "Sedang mengambil order "+name+" 7 hari terakhir...\n\nAPI hanya mengambil data mentah.\nSetelah itu data masuk ke mesin Import Penjualan yang sama seperti upload Excel manual.",
+        failedFetch: en ? "Failed to fetch "+name+" data." : "Pengambilan data "+name+" gagal.",
+        failedOrders: en ? "Failed to fetch "+name+" orders." : "Tarik order "+name+" gagal.",
+        noOrders: en ? "No "+name+" orders were found in the checked period.\n\nOrders found: "+value : "Tidak ada order "+name+" pada periode yang diperiksa.\n\nOrder ditemukan: "+value,
+        resultTitle: en ? name+" Order Fetch Results" : "Hasil Tarik Order "+name,
+        loadingTitle: en ? "Fetching "+name+" Orders" : "Tarik Order "+name,
+        errorTitle: en ? name+" Synchronization" : "Sinkronisasi "+name,
+        noFile: en ? name+" connection did not produce a data file." : "Koneksi "+name+" tidak menghasilkan file data.",
+        apiError: en ? name+" API returned an error." : name+" API mengembalikan error.",
+        status: en ? "Data fetch finished with status: " : "Pengambilan data selesai dengan status: ",
+        unexpected: en ? "An error occurred while fetching data." : "Terjadi kesalahan saat mengambil data."
+    };
+    return copy[key] || key;
+}
+
+
+function sellerBooksResetIdentityText(key){
+    const language = sellerBooksCurrentLanguage();
+    const translations = {
+        id:{
+            mobile:"⚠️ Reset Identitas hanya dapat dilakukan melalui komputer/laptop.",
+            confirm:"Reset Nama Pemilik?\n\nNama Pemilik akan dikosongkan dan Anda akan kembali ke halaman pengisian Nama Pemilik.\n\nAkun Gmail dan status persetujuan Core Adiimasa tetap tersimpan.",
+            session:"Sesi login tidak ditemukan. Silakan login kembali.",
+            success:"✅ Nama Pemilik berhasil direset.\n\nAkun Gmail dan persetujuan Core Adiimasa tetap tersimpan.\n\nSilakan masukkan Nama Pemilik yang baru.",
+            failed:"❌ Nama Pemilik gagal direset.",
+            confirmTitle:"Konfirmasi Reset Identitas",
+            successTitle:"Reset Identitas Berhasil",
+            failedTitle:"Reset Identitas Gagal",
+            sessionTitle:"Sesi Tidak Ditemukan"
+        },
+        en:{
+            mobile:"⚠️ Reset Identity is only available on a desktop or laptop.",
+            confirm:"Reset Owner Name?\n\nThe Owner Name will be cleared and you will return to the Owner Name setup page.\n\nYour Gmail account and Core Adiimasa approval status will remain unchanged.",
+            session:"Login session not found. Please log in again.",
+            success:"✅ Owner Name was successfully reset.\n\nYour Gmail account and Core Adiimasa approval remain unchanged.\n\nPlease enter a new Owner Name.",
+            failed:"❌ Failed to reset the Owner Name.",
+            confirmTitle:"Reset Identity Confirmation",
+            successTitle:"Identity Reset Successful",
+            failedTitle:"Identity Reset Failed",
+            sessionTitle:"Session Not Found"
+        }
+    };
+    return translations[language]?.[key] ?? translations.id[key] ?? key;
+}

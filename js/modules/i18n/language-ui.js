@@ -842,3 +842,127 @@ function sellerBooksApplyDetailsLanguage(){
     }
     updateProductAnalysisFilterInfo();
 }
+
+
+function sellerBooksApplyProductLanguage(){
+    const view=document.getElementById("products"); if(!view) return;
+    const title=view.querySelector(".page-header h2"), subtitle=view.querySelector(".page-header p");
+    if(title) title.textContent=sellerBooksProductText("pageTitle");
+    if(subtitle) subtitle.textContent=sellerBooksProductText("pageSubtitle");
+    const buttons=view.querySelectorAll(".product-toolbar-right button");
+    if(buttons[0]) buttons[0].textContent="📥 "+sellerBooksProductText("importExcel");
+    if(buttons[1]) buttons[1].textContent="📤 "+sellerBooksProductText("exportExcel");
+    if(buttons[2]) buttons[2].textContent="+ "+sellerBooksProductText("addProduct");
+    const bulk=document.getElementById("deleteSelectedProductsButton");
+    if(bulk) bulk.innerHTML="🗑️ "+sellerBooksProductText("deleteSelected")+' (<span id="selectedProductCount">'+getSelectedProductIds().length+"</span>)";
+    const search=document.getElementById("productSearch"); if(search) search.placeholder=sellerBooksProductText("searchPlaceholder");
+    const filter=document.getElementById("productStatusFilter");
+    if(filter){
+        const all=filter.querySelector('option[value="all"]'), active=filter.querySelector('option[value="active"]'), inactive=filter.querySelector('option[value="inactive"]');
+        if(all) all.textContent=sellerBooksProductText("allStatus"); if(active) active.textContent=sellerBooksProductText("active"); if(inactive) inactive.textContent=sellerBooksProductText("inactive");
+    }
+    const headers=view.querySelectorAll(".product-table thead th");
+    ["sku","productName","category","sellingPrice","cost","adminSku","stock","status","actions"].forEach(function(key,index){ if(headers[index+1]) headers[index+1].textContent=sellerBooksProductText(key); });
+    const pageSize=document.getElementById("productPageSize"); if(pageSize) pageSize.setAttribute("aria-label",sellerBooksProductText("rowsAria"));
+    const pageWrap=view.querySelector(".product-page-size");
+    if(pageWrap){ const spans=pageWrap.querySelectorAll("span"); if(spans[0]) spans[0].textContent=sellerBooksProductText("rowsLabel"); if(spans[1]) spans[1].textContent=sellerBooksProductText("rowsSuffix"); }
+    const modal=document.getElementById("productModal");
+    if(modal){
+        const titleEl=document.getElementById("productModalTitle"); if(titleEl) titleEl.textContent=editingProductId?sellerBooksProductText("editTitle"):sellerBooksProductText("addTitle");
+        const labels=modal.querySelectorAll(".form-group label"), keys=["skuLabel","nameLabel","categoryLabel","priceLabel","costLabel","stockLabel","adminLabel","statusLabel"];
+        labels.forEach(function(label,index){ const key=keys[index]; if(!key)return; const optional=["categoryLabel","priceLabel","adminLabel"].includes(key)?' <span style="color:#94a3b8;">('+sellerBooksProductText("optional")+')</span>':""; label.innerHTML=sellerBooksProductText(key)+optional; });
+        [["productSKU","skuPlaceholder"],["productName","namePlaceholder"],["productCategory","categoryPlaceholder"],["productPrice","pricePlaceholder"],["productCost","costPlaceholder"],["productStock","stockPlaceholder"],["productAdminFeePercent","adminPlaceholder"]].forEach(function(item){const el=document.getElementById(item[0]);if(el)el.placeholder=sellerBooksProductText(item[1]);});
+        const status=document.getElementById("productStatus");
+        if(status){const active=status.querySelector('option[value="active"]'), inactive=status.querySelector('option[value="inactive"]'); if(active)active.textContent=sellerBooksProductText("active"); if(inactive)inactive.textContent=sellerBooksProductText("inactive");}
+        const footer=modal.querySelectorAll(".modal-footer button"); if(footer[0])footer[0].textContent=sellerBooksProductText("cancel"); if(footer[1])footer[1].textContent=sellerBooksProductText("save");
+        const close=modal.querySelector(".modal-close"); if(close)close.setAttribute("aria-label",sellerBooksProductText("cancel"));
+    }
+    const topTitle=document.getElementById("topTitle"), topSubtitle=document.getElementById("topSubtitle");
+    if(topTitle&&view.classList.contains("active")){topTitle.textContent=sellerBooksProductText("pageTitle");topSubtitle.textContent=sellerBooksProductText("pageSubtitle");}
+}
+
+
+function sellerBooksApplySalesImportLanguage(){
+    const root=document.getElementById("import");
+    const topTitle=document.getElementById("topTitle");
+    const topSubtitle=document.getElementById("topSubtitle");
+    const modal=document.getElementById("salesPreviewModal");
+    if(!root && !modal)return;
+    const t=sellerBooksSalesImportText;
+
+    /*
+       Hanya ubah topbar jika Sales Import memang sedang aktif.
+       Saat bahasa diganti dari Settings, halaman aktif harus tetap Settings
+       dan topbar tidak boleh berpindah sementara ke Sales Import.
+    */
+    const importViewActive = document.getElementById("import")?.classList.contains("active");
+    if(importViewActive){
+        if(topTitle) topTitle.textContent=t("pageTitle");
+        if(topSubtitle) topSubtitle.textContent=t("pageSubtitle");
+    }
+
+    if(root){
+        const q=(s)=>root.querySelector(s);
+        if(q(".page-header h2"))q(".page-header h2").textContent=t("pageTitle");
+        if(q(".page-header p"))q(".page-header p").textContent=t("pageSubtitle");
+        if(q(".import-info-card h3"))q(".import-info-card h3").textContent=t("analyzerTitle");
+        if(q(".import-info-card p"))q(".import-info-card p").textContent=t("analyzerDescription");
+        if(q(".import-upload-box h3"))q(".import-upload-box h3").textContent=t("uploadTitle");
+        if(q(".import-upload-box p"))q(".import-upload-box p").textContent=t("uploadDescription");
+        if(q(".import-upload-box .primary-button"))q(".import-upload-box .primary-button").textContent=t("chooseFile");
+        if(q(".analysis-header h3"))q(".analysis-header h3").textContent=t("analysisTitle");
+        if(q(".analysis-header p"))q(".analysis-header p").textContent=t("analysisDescription");
+        const labels=root.querySelectorAll(".file-info-item span");
+        [t("fileName"),t("format"),t("rowCount"),t("columnCount")].forEach((v,i)=>{if(labels[i])labels[i].textContent=v;});
+        const recognition=root.querySelectorAll(".recognition-title");
+        [t("skuRecognition"),t("qtyRecognition"),t("sellingPriceRecognition")].forEach((v,i)=>{if(recognition[i]){const icon=recognition[i].querySelector(".recognition-icon"); recognition[i].lastChild.textContent=" "+v; if(icon)recognition[i].prepend(icon);}});
+        const recognitionResults=[
+            document.getElementById("skuRecognitionResult"),
+            document.getElementById("qtyRecognitionResult"),
+            document.getElementById("lazadaPriceRecognitionResult")
+        ];
+        recognitionResults.forEach(el=>{
+            if(el && el.textContent.trim()==="Belum ditemukan"){
+                el.textContent=t("notFound");
+            }
+        });
+        if(q(".headers-section h4"))q(".headers-section h4").textContent=t("foundColumns");
+        const foot=root.querySelectorAll(".analysis-footer button");
+        if(foot[0])foot[0].textContent=t("cancel");
+        if(foot[1])foot[1].textContent=t("continueImport");
+        const status=document.getElementById("analysisStatus");
+        if(status && !currentSalesImport)status.textContent=t("waitingAnalysis");
+    }
+
+    if(modal){
+        const q=(s)=>modal.querySelector(s);
+        if(q(".sales-preview-header h2"))q(".sales-preview-header h2").textContent=t("previewTitle");
+        if(q(".sales-preview-header p"))q(".sales-preview-header p").textContent=t("previewDescription");
+        const info=modal.querySelectorAll(".preview-file-info span");
+        if(info[0])info[0].textContent=t("file"); if(info[1])info[1].textContent=t("dataCount");
+        const cards=modal.querySelectorAll(".column-selection-card");
+        const cardData=[
+            ["selectSku","skuHelp"],["selectQty","qtyHelp"],["detectedMarketplace","marketplaceHelp"],
+            ["selectStore","storeRequired"],["packingCost","packingHelp"],["packingResult","packingIdentifier"]
+        ];
+        cards.forEach((card,i)=>{
+            if(!card||!cardData[i])return;
+            const label=card.querySelector("label"), small=card.querySelector("small");
+            if(label)label.textContent=t(cardData[i][0]);
+            if(small)small.textContent=t(cardData[i][1]);
+        });
+        const uniquePackingLabel=document.getElementById("uniquePackingLabelText"); if(uniquePackingLabel)uniquePackingLabel.textContent=t("uniquePacking");
+        const totalPackingLabel=document.getElementById("totalPackingLabelText"); if(totalPackingLabel)totalPackingLabel.textContent=t("totalPacking");
+        const input=document.getElementById("packingCostPerOrder"); if(input)input.placeholder=t("packingPlaceholder");
+        const sku=document.getElementById("manualSkuColumn"), qty=document.getElementById("manualQtyColumn");
+        if(sku && sku.options[0])sku.options[0].textContent=t("chooseSku");
+        if(qty && qty.options[0])qty.options[0].textContent=t("chooseQty");
+        const store=document.getElementById("salesStoreAccount"); if(store&&store.options[0])store.options[0].textContent=t("chooseStore");
+        const storeInfo=document.getElementById("salesStoreAccountInfo"); if(storeInfo && !storeInfo.dataset.runtimeMessage)storeInfo.textContent=t("storeRequired");
+        const market=document.getElementById("detectedMarketplaceName"); if(market&&!currentSalesImport)market.value=t("notDetected");
+        const validation=document.getElementById("previewValidationStatus"); if(validation&&!currentSalesImport)validation.textContent=t("validationChoose");
+        const th=modal.querySelectorAll(".preview-table th"); if(th[0])th[0].textContent="No"; if(th[1])th[1].textContent="SKU"; if(th[2])th[2].textContent="QTY";
+        const limit=modal.querySelector(".preview-limit-info"); if(limit)limit.textContent=t("allRows");
+        const buttons=modal.querySelectorAll(".sales-preview-footer button"); if(buttons[0])buttons[0].textContent=t("back"); if(buttons[1])buttons[1].textContent=t("confirmData");
+    }
+}
