@@ -172,3 +172,30 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Moved the large report/snapshot script to `js/modules/reports/report-engine-legacy.js`, keeping its exact location in the classic script execution sequence after the report filter/dialog helper.
 - Contents are copied verbatim from the current `js/legacy-02.js`, including profiler and report update handlers. This step does not redesign the report engine or change formulas; the old file is retained as a rollback copy. Further internal decomposition remains a separate, higher-risk task.
+
+
+## CSS cascade audit (2026-10-22)
+
+- CSS files are loaded in a fixed order from `legacy-01.css` through `legacy-06.css`. Keep that order until the cascade is deliberately consolidated and visually tested.
+- Confirmed override: `css/legacy-01.css` has a mobile `#reports .content-section { overflow:hidden; }` rule around line 4485. `css/legacy-02.css` later applies `overflow: visible !important` to the same selector around line 21. This is an actual cascade override, not enough evidence to delete either rule; the later rule may intentionally keep report contents/filters visible.
+- `.product-analysis-filter-grid` has base layout rules in `css/legacy-03.css`, responsive rules near the end of `css/legacy-01.css`, and another responsive override in `css/legacy-03.css`. The overlap is breakpoint-specific and must be compared at each viewport before consolidation.
+- No CSS rules were changed in this pass because deleting/merging the overlapping selectors without runtime screenshots could change mobile report layout.
+
+## Main engine domain map (first pass)
+
+The current `js/main.js` is about 655 KB / 21,685 lines. It contains roughly 259 ordinary function declarations plus async functions, so extraction needs dependency boundaries rather than moving arbitrary line ranges.
+
+| Approx. lines | Domain block | Refactor caution |
+|---|---|---|
+| 1–1,450 | Supabase auth/cloud state, cache, realtime and account guards | High risk: shared session/config globals |
+| 1,450–3,290 | Navigation, product analysis and page/sidebar state | High risk: inline handlers and shared DOM |
+| 3,290–5,620 | Marketplace registry, marketplace UI and store account state | High risk: OAuth and integration state |
+| 5,620–8,740 | Store integration, OAuth callbacks, status and rendering | High risk: callbacks from external marketplace flows |
+| 8,740–10,320 | Packing, master product data, product CRUD | Medium/high risk: shared product state |
+| 10,320–11,710 | Product import/export and import progress UI | High risk: file inputs and generated DOM IDs |
+| 11,710–16,210 | Sales import engine, marketplace parsing/rules, deduplication, stock and preview | Very high risk: core business rules; do not move or rewrite until isolated tests exist |
+| 16,210–17,570 | App initialization, logout, identity reset and dashboard preferences | High risk: session and lifecycle order |
+| 17,570–18,000 | Notifications and low-stock checks | Medium risk: shared dashboard/product state |
+| 18,000–end | Other costs, daily snapshots and additional report helpers | High risk: snapshot immutability and financial totals |
+
+These ranges are approximate section boundaries from comments, not safe cut-and-paste boundaries. The next substantive refactor should first identify exact top-level declarations, references, and state dependencies for one low-risk domain. No business engine was extracted or rewritten in this pass.
