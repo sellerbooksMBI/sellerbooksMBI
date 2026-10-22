@@ -342,3 +342,12 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The helpers keep their existing keys, per-user localStorage behavior, legacy cloud-state fallback, and cache semantics. Their bodies were relocated unchanged.
 - The new classic script is loaded immediately before `main.js`; no function is invoked during module loading. The main engine still performs the existing initialization at its original point.
 - CI checks all eight functions' ownership and verifies they are absent from `main.js`.
+
+
+## Dashboard period controls extraction (2026-10-22, continued)
+
+- Moved eight Dashboard date-range and period-control functions into `js/modules/dashboard/period-controls.js`.
+- Kept the shared `dashboardCustomDateConfirmed` state, period selection state, dashboard refresh lifecycle, day-rollover handling, and initialization callback in `main.js`.
+- The moved function bodies are unchanged. Date validation, WIB date helpers, period matching, alerts, local preference writes, and dashboard refresh calls retain the same dependencies and behavior.
+- The new classic script is loaded before `main.js`; the functions are declarations only and are not executed at module load.
+- CI verifies the eight function declarations are in the new module and absent from `main.js`.

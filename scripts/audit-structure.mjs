@@ -205,6 +205,15 @@ for (const name of dashboardViewPreferenceFunctions) {
 }
 if (!failures.some((message) => message.includes("Dashboard view preference function"))) pass("Dashboard view preference functions are isolated from main.js");
 
+
+const dashboardPeriodControlsModule = read("js/modules/dashboard/period-controls.js");
+const dashboardPeriodControlFunctions = ["getDashboardDateRange","updateDashboardCustomDateUI","changeDashboardCustomDateRange","confirmDashboardCustomDateRange","loadDashboardCustomDates","changeDashboardPeriod","isDateInPeriod","updateDashboardByPeriod"];
+for (const name of dashboardPeriodControlFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(dashboardPeriodControlsModule)) fail(`Missing dashboard period control function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Dashboard period control function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Dashboard period control function"))) pass("Dashboard period controls are isolated from main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
