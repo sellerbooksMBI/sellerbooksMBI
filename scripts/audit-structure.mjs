@@ -120,7 +120,7 @@ for (const name of notificationFunctions) {
 if (!failures.some((message) => message.includes("Notification function"))) pass("Notification functions are isolated from main.js");
 
 const textDictionaryModule = read("js/modules/i18n/text-dictionaries.js");
-const textDictionaryFunctions = ["sellerBooksLoginText","sellerBooksStoreText","sellerBooksStoreCountText","sellerBooksMarketplaceText","sellerBooksMarketplaceCountText","sellerBooksDashboardText","sellerBooksDashboardPeriodText","sellerBooksReportsText","sellerBooksReportPeriodText","sellerBooksSettingsText","sellerBooksOwnerSetupText"];
+const textDictionaryFunctions = ["sellerBooksLoginText","sellerBooksStoreText","sellerBooksStoreCountText","sellerBooksMarketplaceText","sellerBooksMarketplaceCountText","sellerBooksDashboardText","sellerBooksDashboardPeriodText","sellerBooksReportsText","sellerBooksReportPeriodText","sellerBooksSettingsText","sellerBooksOwnerSetupText","sellerBooksDetailsText"];
 for (const name of textDictionaryFunctions) {
   if (!new RegExp(`function\\s+${name}\\s*\\(`).test(textDictionaryModule)) fail(`Missing language text function in module: ${name}`);
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Language text function still declared in main.js: ${name}`);
@@ -128,7 +128,7 @@ for (const name of textDictionaryFunctions) {
 if (!failures.some((message) => message.includes("Language text function"))) pass("Language text dictionaries are isolated from main.js");
 
 const languageUiModule = read("js/modules/i18n/language-ui.js");
-const languageUiFunctions = ["sellerBooksApplyLoginLanguage","sellerBooksApplyStoreLanguage","sellerBooksApplyMarketplaceLanguage","sellerBooksApplyDashboardLanguage","sellerBooksApplyReportsLanguage","sellerBooksApplySettingsLanguage","sellerBooksApplyOwnerSetupLanguage","sellerBooksApplyDateInputLanguage"];
+const languageUiFunctions = ["sellerBooksApplyLoginLanguage","sellerBooksApplyStoreLanguage","sellerBooksApplyMarketplaceLanguage","sellerBooksApplyDashboardLanguage","sellerBooksApplyReportsLanguage","sellerBooksApplySettingsLanguage","sellerBooksApplyOwnerSetupLanguage","sellerBooksApplyDateInputLanguage","sellerBooksApplyDetailsLanguage"];
 for (const name of languageUiFunctions) {
   if (!new RegExp(`function\\s+${name}\\s*\\(`).test(languageUiModule)) fail(`Missing language UI function in module: ${name}`);
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Language UI function still declared in main.js: ${name}`);

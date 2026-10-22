@@ -779,3 +779,66 @@ function sellerBooksApplyDateInputLanguage(){
         input.setAttribute("dir","ltr");
     });
 }
+
+
+function sellerBooksApplyDetailsLanguage(){
+    sellerBooksApplyDateInputLanguage();
+
+    const view=document.getElementById("productAnalysis");
+    if(!view)return;
+    const t=sellerBooksDetailsText;
+    const header=view.querySelector(".page-header");
+    if(header){
+        const h=header.querySelector("h2"), p=header.querySelector("p");
+        if(h)h.textContent=t("sectionTitle");
+        if(p)p.textContent=t("sectionSubtitle");
+    }
+    const filter=view.querySelector(".product-analysis-filter-card");
+    if(filter){
+        const h=filter.querySelector("h3"), p=filter.querySelector("p");
+        if(h)h.textContent=t("filterTitle");
+        if(p)p.textContent=t("filterSubtitle");
+        const labels=filter.querySelectorAll(".product-analysis-filter-grid > div > label");
+        if(labels[0])labels[0].textContent=t("period");
+        if(labels[1])labels[1].textContent=t("marketplace");
+        if(labels[2])labels[2].textContent=t("storeAccount");
+        const dateLabels=filter.querySelectorAll("#productAnalysisCustomDateRange label");
+        if(dateLabels[0])dateLabels[0].textContent=t("fromDate");
+        if(dateLabels[1])dateLabels[1].textContent=t("toDate");
+        const period=document.getElementById("productAnalysisPeriod");
+        if(period){
+            const keys={today:"today",yesterday:"yesterday",week:"week",lastWeek:"lastWeek",month:"month",lastMonth:"lastMonth",last3Months:"last3Months",year:"year",custom:"custom",all:"all"};
+            Array.from(period.options).forEach(o=>{if(keys[o.value])o.textContent=t(keys[o.value]);});
+        }
+        const m=document.querySelector("#productAnalysisMarketplace option[value='all']");
+        const s=document.querySelector("#productAnalysisStore option[value='all']");
+        if(m)m.textContent=t("allMarketplaces");
+        if(s)s.textContent=t("allStoreAccounts");
+    }
+    const pdfButton=document.getElementById("downloadProductAnalysisPDFButton");
+    if(pdfButton)pdfButton.textContent=t("downloadPdf");
+    const summary=view.querySelectorAll(".product-analysis-summary-card span");
+    [t("totalProducts"),t("profitProducts"),t("lossProducts"),t("totalProfit")].forEach((v,i)=>{if(summary[i])summary[i].textContent=v;});
+    const section=view.querySelector(".content-section:not(.product-analysis-filter-card)");
+    if(section){
+        const h=section.querySelector(".section-header h3"),p=section.querySelector(".section-header p");
+        if(h)h.textContent=t("salesPerProduct");
+        if(p)p.textContent=t("salesPerProductSubtitle");
+        const th=section.querySelectorAll("thead th");
+        [t("no"),t("sku"),t("productName"),t("qty"),t("sellingPrice"),t("totalSales"),t("hpp"),t("marketplaceAdmin"),t("productProfit"),t("status"),t("actions")]
+          .forEach((v,i)=>{if(th[i])th[i].textContent=v;});
+        const ps=document.getElementById("productAnalysisPageSize");
+        if(ps){
+            const spans=ps.parentElement?.querySelectorAll("span")||[];
+            if(spans[0])spans[0].textContent=t("show");
+            if(spans[1])spans[1].textContent=t("rows");
+            ps.setAttribute("aria-label",t("show")+" "+t("rows"));
+        }
+    }
+    const topTitle=document.getElementById("topTitle"),topSubtitle=document.getElementById("topSubtitle");
+    if(topTitle&&view.classList.contains("active")){
+        topTitle.textContent=t("pageTitle");
+        topSubtitle.textContent=t("pageSubtitle");
+    }
+    updateProductAnalysisFilterInfo();
+}

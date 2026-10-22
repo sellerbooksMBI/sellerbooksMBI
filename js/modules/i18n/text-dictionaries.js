@@ -627,3 +627,39 @@ function sellerBooksOwnerSetupText(key){
     };
     return translations[language]?.[key] ?? translations.id[key] ?? key;
 }
+
+
+function sellerBooksDetailsText(key){
+    const language = sellerBooksCurrentLanguage();
+    const translations = {
+        id:{
+            pageTitle:"Rincian",pageSubtitle:"Analisis laba dan kerugian setiap produk",
+            sectionTitle:"Rincian Produk",sectionSubtitle:"Analisis laba setiap SKU untuk mendeteksi produk yang minus dan mengetahui produk mana yang perlu diperbaiki.",
+            filterTitle:"Filter Rincian",filterSubtitle:"Pilih periode, marketplace, dan akun toko untuk mengetahui produk minus secara lebih spesifik.",
+            period:"Periode",marketplace:"Marketplace",storeAccount:"Akun Toko",
+            today:"Hari Ini",yesterday:"Kemarin",week:"Minggu Ini",lastWeek:"Minggu Lalu",month:"Bulan Ini",lastMonth:"Bulan Lalu",last3Months:"3 Bulan Terakhir",year:"Tahun Ini",custom:"Pilih Tanggal",all:"Semua Periode",
+            allMarketplaces:"Semua Marketplace",allStoreAccounts:"Semua Akun Toko",fromDate:"Dari Tanggal",toDate:"Sampai Dengan",
+            filterPeriod:"Periode",filterMarketplace:"Marketplace",filterStore:"Akun",
+            downloadPdf:"📄 Download PDF Produk",totalProducts:"Total Produk",profitProducts:"Produk Untung",lossProducts:"Produk Minus",totalProfit:"Total Laba Produk",
+            salesPerProduct:"Rincian Penjualan Per Produk",salesPerProductSubtitle:"Produk minus ditampilkan paling atas agar mudah diperbaiki.",
+            no:"No",sku:"SKU",productName:"Nama Produk",qty:"QTY",sellingPrice:"Harga Jual",totalSales:"Total Penjualan",hpp:"HPP",marketplaceAdmin:"Admin Marketplace",productProfit:"Laba Produk",status:"Status",actions:"Aksi",
+            loss:"⚠️ MINUS",profit:"✓ UNTUNG",fix:"✏️ Perbaiki",noMaster:"Belum ada master",noTransactions:"Belum ada transaksi pada periode yang dipilih.",
+            show:"Tampilkan",rows:"baris",previous:"Halaman sebelumnya",next:"Halaman berikutnya",nextButton:"Next ›",dateSeparator:"s/d",dateEllipsis:"...",rangeInvalid:"Tanggal awal tidak boleh lebih besar dari tanggal akhir.",rangeTitle:"Validasi Tanggal"
+        },
+        en:{
+            pageTitle:"Details",pageSubtitle:"Profit and loss analysis for each product",
+            sectionTitle:"Product Details",sectionSubtitle:"Analyze profit for each SKU to identify loss-making products and determine which products need improvement.",
+            filterTitle:"Details Filter",filterSubtitle:"Select a period, marketplace, and store account to identify loss-making products more specifically.",
+            period:"Period",marketplace:"Marketplace",storeAccount:"Store Account",
+            today:"Today",yesterday:"Yesterday",week:"This Week",lastWeek:"Last Week",month:"This Month",lastMonth:"Last Month",last3Months:"Last 3 Months",year:"This Year",custom:"Custom Date",all:"All Periods",
+            allMarketplaces:"All Marketplaces",allStoreAccounts:"All Store Accounts",fromDate:"From Date",toDate:"To Date",
+            filterPeriod:"Period",filterMarketplace:"Marketplace",filterStore:"Store Account",
+            downloadPdf:"📄 Download PDF Product",totalProducts:"Total Products",profitProducts:"Profitable Products",lossProducts:"Loss-Making Products",totalProfit:"Total Product Profit",
+            salesPerProduct:"Sales Details by Product",salesPerProductSubtitle:"Loss-making products are shown first so they can be improved easily.",
+            no:"No.",sku:"SKU",productName:"Product Name",qty:"QTY",sellingPrice:"Selling Price",totalSales:"Total Sales",hpp:"COGS",marketplaceAdmin:"Marketplace Admin Fee",productProfit:"Product Profit",status:"Status",actions:"Actions",
+            loss:"⚠️ LOSS",profit:"✓ PROFIT",fix:"✏️ Fix",noMaster:"No master product",noTransactions:"No transactions for the selected period.",
+            show:"Show",rows:"rows",previous:"Previous page",next:"Next page",nextButton:"Next ›",dateSeparator:"to",dateEllipsis:"...",rangeInvalid:"The start date cannot be later than the end date.",rangeTitle:"Date Validation"
+        }
+    };
+    return translations[language]?.[key] ?? translations.id[key] ?? key;
+}
