@@ -524,3 +524,60 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Both function bodies were moved unchanged from `js/main.js`; they remain classic-script globals and are loaded before the main engine.
 - This is a path/ownership refactor only. Cloud-save confirmation, dirty-key verification, progress states, error handling, and timing are unchanged.
 - CI checks the module declarations, script ordering, JavaScript syntax, and Vite build. Runtime deletion and cloud persistence still require a real account smoke test.
+
+
+
+## Verified runtime and backend contract audit (2026-10-22)
+
+This section supersedes older approximate file counts and records only checks made against the current `main` tree and the connected SellerBooks Supabase project. It is a mapping, not a claim that live feature tests passed.
+
+### Runtime inventory at inspected commit
+
+- Inspected repository tree commit: `2957f56d8e75f4d5de3c689de2035fb1190240d5`.
+- Repository tree: 109 files; 59 JavaScript files and 9 CSS files.
+- Root `index.html` is the active classic-script entry point (5,161 lines); `js/main.js` is 2,003 lines at this commit.
+- `index.html` references 46 local JavaScript files and 6 local CSS files. Static cross-check found no missing local JS/CSS references and no duplicate local references.
+- Nine `js/legacy-01.js` … `js/legacy-09.js` files are rollback copies and are not loaded by the active HTML. `css/legacy-02.css` and `css/legacy-03.css` are also rollback copies; the active HTML uses their organized module paths.
+- Unreferenced JS also includes the Vite scaffold `src/main.js`, `src/core/config.js`, `src/services/supabase.js`, and `vite.config.js`; `src/styles/main.css` is likewise not linked by the root HTML. Do not treat `src/` as the active production runtime.
+- The CI workflow `.github/workflows/structure-audit.yml` runs `npm run build`, JavaScript syntax checks, and `scripts/audit-structure.mjs`. The Vite build exercises the separate `src/main.js` scaffold; it does not bundle the active root `index.html`. Syntax and path checks do cover the classic-script runtime. CI passing therefore does not establish feature-level correctness.
+- Keep script order and global classic-script functions intact. Inline handlers in `index.html` depend on them.
+
+### SellerBooks Supabase project and access foundation
+
+- The active client URL `https://vrgiwzxwnfjhpmxcahwo.supabase.co` matches the connected project `sellerbooks Production` (project ref `vrgiwzxwnfjhpmxcahwo`, active/healthy). It is separate from the AMASA production project ref `fysaxpqpqexjnlpkbwap`.
+- The public schema currently includes the following SellerBooks tables: `sellerbooks_marketplaces`, `sellerbooks_profiles`, `sellerbooks_user_data`, `sellerbooks_user_language`, `sellerbooks_language_settings`, `sellerbooks_operator_language_settings`, `sellerbooks_operator_workspaces`, `sellerbooks_stores`, `sellerbooks_api_connections`, `sellerbooks_api_import_queue`, `sellerbooks_api_oauth_states`, `sellerbooks_orders`, `sellerbooks_order_items`, `sellerbooks_sync_runs`, `sellerbooks_core_admins`, `sellerbooks_client_access`, `sellerbooks_access_logs`, `sellerbooks_operator_access`, and `sellerbooks_deleted_client_archives`. RLS is enabled on these tables.
+- Auth registration trigger `sellerbooks_create_profile_for_new_auth_user` creates a pending SellerBooks profile, an empty `sellerbooks_user_data` row, and a pending `sellerbooks_client_access` request. The active session check calls `sellerbooks_is_core_admin`; that function checks the SellerBooks project's own `sellerbooks_core_admins` table. This is an active SellerBooks Core check, not a call to the old AMASA project.
+- `js/main.js` stores the classic app's full cloud state as per-user JSON in `sellerbooks_user_data`, with optimistic `updated_at` conflict checks and dirty-state merge logic. Keep this state model intact until every data domain has a tested migration plan.
+
+### Confirmed backend contract mismatches — blockers before feature acceptance
+
+1. **Language persistence is not per account in the active code.** `js/modules/i18n/language-state.js` reads, updates, and verifies `sellerbooks_language_settings` at `id = 1`. That table currently has zero rows, and its write policy only permits Core admins. The project also has `sellerbooks_user_language(user_id, language)`, but this active module does not use it. Login/session storage currently provides a temporary fallback, not proof of persisted per-user preference. Fix the read/write contract and access policy deliberately; do not silently change the table or policy during a file-only refactor.
+2. **Marketplace connection RPCs are referenced but absent from the project's current public function inventory.** Active source references `sellerbooks_api_list_connections`, `sellerbooks_api_upsert_connection`, `sellerbooks_api_set_secret`, and `sellerbooks_api_disconnect_marketplace`. These functions must be created/deployed or the frontend contract must be reconciled before connection management can be considered operational.
+3. **Order-pull Edge Function names do not match deployed functions.** Active `js/modules/marketplaces/order-pull.js` calls `sellerbooks-tiktok-sync-orders`, `sellerbooks-shopee-sync-orders`, `sellerbooks-lazada-sync-orders`, and `sellerbooks-blibli-sync-orders`. The connected project currently lists only `sellerbooks-auto-sync` and `sellerbooks-api-test-connection` as active Edge Functions. `sellerbooks-auto-sync` explicitly returns HTTP 410 with `AUTO_SYNC_DISABLED_MANUAL_ONLY`. The frontend also calls `sellerbooks-blibli-test-connection`, but that slug is not deployed; the deployed `sellerbooks-api-test-connection` implementation is specifically for Shopee. Do not change order parsing or manual-import behavior while resolving this contract gap.
+4. **Piutang cloud RPCs are referenced but absent.** `js/modules/receivables/piutang-cloud.js` calls `piutang_list_entries`, `piutang_list_payments`, `piutang_add_entry`, `piutang_add_payment`, `piutang_delete_entry`, and `piutang_delete_payment`. None appears in the connected project's function inventory, and the project table/policy inventory contains no Piutang tables. The module also maintains email-suffixed localStorage fallback keys and a realtime channel. Cloud Piutang cannot be marked verified until its intended database/RPC contract is restored or the module is explicitly designed to remain local-only.
+5. **Brand copy is stale.** The login/approval strings in `js/modules/auth/approval-ui.js` and a comment in `js/modules/auth/session-lifecycle.js` still say “Core Adiimasa”, although the active approval function is backed by the SellerBooks project. This is a copy/documentation correction, separate from changing authorization logic. The company footer in `index.html` also still names PT Adiimasa Distribusi Indonesia; confirm whether that legal/company branding should remain before changing it.
+
+### Dependency map by active domain
+
+| Domain | Active source / backend contract | Audit status |
+|---|---|---|
+| Auth, profile, approval | `js/modules/auth/session-lifecycle.js`, `js/modules/auth/profile-management.js`, `js/modules/auth/approval-ui.js`; `sellerbooks_profiles`, `sellerbooks_client_access`, `sellerbooks_core_admins` | Project boundary confirmed; OAuth and real-user approval flow still need runtime tests. |
+| Main cloud state | `js/main.js`; `sellerbooks_user_data` | Optimistic update/conflict path identified; data isolation and large-payload tests remain. |
+| Language ID/EN | `js/modules/i18n/language-state.js`, `language-ui.js`, `text-dictionaries.js`; code uses `sellerbooks_language_settings` while per-user table exists | Confirmed contract mismatch; blocker. |
+| Marketplace/store management | `js/modules/marketplaces/*`, `js/modules/stores/store-management.js`; store and API connection tables plus API RPCs | RPC/Edge Function mismatch; blocker. |
+| Marketplace order pull | `js/modules/marketplaces/order-pull.js`; four marketplace-specific Edge Function URLs | Required deployed endpoints missing from current project inventory; blocker. |
+| Manual import and dispatch | `js/modules/sales/import-workflow.js`, `import-parsers.js`, `transaction-processing.js`, `import-dispatch-queue.js` | Keep manual import as authoritative dedupe/calculation engine; regression tests required. |
+| Reports, snapshots, profit/HPP | `js/modules/reports/*`, `js/main.js`, rollback report copies | No business formulas changed in this mapping pass; numeric regression tests required. |
+| Piutang | `js/modules/receivables/piutang-*.js`; six Piutang RPC calls and local fallback | Backend objects absent in current project inventory; blocker for cloud behavior. |
+| Build/runtime | root `index.html` classic scripts vs separate Vite `src/` scaffold | Keep separate; current Vite build is not a substitute for browser/WebView regression. |
+
+### Required order before calling the refactor ready for user testing
+
+1. Reconcile the missing marketplace RPC/Edge Function contracts with the intended SellerBooks backend.
+2. Decide and implement account-scoped language persistence using `sellerbooks_user_language` (including the correct policy for pending users) and verify read-after-write under a normal client session.
+3. Restore or formally scope the Piutang backend; do not assume local fallback equals cloud persistence.
+4. Correct SellerBooks Core wording without altering the `sellerbooks_is_core_admin` authorization check.
+5. Re-run CI and the structural audit, then run authenticated browser/WebView tests for Google OAuth, email/password, profile setup, language persistence, marketplace connect/test/pull, manual import, cloud save/conflict, and Piutang.
+6. Keep HPP/profit/snapshot/import/deduplication rules unchanged during these repairs unless a separate, evidence-based bug fix is approved and tested.
+
+No application code, database schema, data, or marketplace credentials were modified as part of this audit section.
