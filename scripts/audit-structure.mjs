@@ -295,6 +295,22 @@ const productExcelModulePosition = index.indexOf('src="/js/modules/products/prod
 const productExcelMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (productExcelModulePosition < 0 || productExcelMainScriptPosition < 0 || productExcelModulePosition > productExcelMainScriptPosition) fail("Product Excel module must load before main.js");
 
+
+const salesImportParsersModule = read("js/modules/sales/import-parsers.js");
+const salesImportParserFunctions = ["findAliasColumn","detectSalesMarketplace","getPackingColumn","getFirstValue","parseSalesNumber","parseLazadaUnitPrice","parseSalesDate"];
+for (const name of salesImportParserFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(salesImportParsersModule)) fail(`Missing sales import parser: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Sales import parser still declared in main.js: ${name}`);
+}
+for (const name of ["SKU_KEYWORDS","QTY_KEYWORDS","SALES_MARKETPLACE_RULES","currentSalesImport"]) {
+  if (!new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(salesImportParsersModule)) fail(`Missing sales import parser/config state: ${name}`);
+  if (new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(mainSource)) fail(`Sales import parser/config state still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Sales import parser"))) pass("Sales import configuration and parser helpers are isolated from main.js");
+const salesImportParserModulePosition = index.indexOf('src="/js/modules/sales/import-parsers.js"');
+const salesImportParserMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (salesImportParserModulePosition < 0 || salesImportParserMainScriptPosition < 0 || salesImportParserModulePosition > salesImportParserMainScriptPosition) fail("Sales import parser module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

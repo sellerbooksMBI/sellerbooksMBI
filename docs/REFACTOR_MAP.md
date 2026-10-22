@@ -415,3 +415,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The original `parseExcelPrice()` declaration remains nested inside `importProducts()`, preserving its original scope; the Sales Import engine state begins immediately after the extracted block and remains in `main.js`.
 - The code was relocated unchanged. No order deduplication, stock reduction/restoration, HPP, profit, transaction snapshots, or marketplace API logic was modified.
 - CI verifies module ownership and load order. Browser regression testing is still needed for product Excel import/export.
+
+
+## Sales import config and parser extraction (2026-10-22, continued)
+
+- Moved the Sales Import working-state variable, SKU/QTY keyword lists, marketplace column rules, and seven parser helpers into `js/modules/sales/import-parsers.js`.
+- The parser bodies and marketplace alias rules are unchanged. Master Product lookup caches, stock reduction/restoration, import fingerprinting, deduplication, preview confirmation, transaction persistence, and marketplace API request workers remain in their existing modules/locations.
+- The module loads before `main.js`, so the same classic-script global names are initialized before the Sales Import engine uses them.
+- CI verifies all seven parser functions, four config/state declarations, and script order. Browser regression checks are still needed with representative Excel files from each marketplace.
