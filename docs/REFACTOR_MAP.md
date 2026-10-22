@@ -166,3 +166,9 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Moved the existing report filters/dialog helper script to `js/modules/reports/report-filters-and-dialogs.js`; its HTML reference stays at the same point before the second report script and CSS layer order is untouched.
 - The classic script contents are copied verbatim, including the DOMContentLoaded initialization for reports. This is a path/ownership change only; the legacy file is retained as a rollback copy.
+
+
+## Report engine file organization (2026-10-22)
+
+- Moved the large report/snapshot script to `js/modules/reports/report-engine-legacy.js`, keeping its exact location in the classic script execution sequence after the report filter/dialog helper.
+- Contents are copied verbatim from the current `js/legacy-02.js`, including profiler and report update handlers. This step does not redesign the report engine or change formulas; the old file is retained as a rollback copy. Further internal decomposition remains a separate, higher-risk task.
