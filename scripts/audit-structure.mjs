@@ -366,6 +366,15 @@ const storeIntegrationPosition = index.indexOf('src="/js/modules/marketplaces/st
 const storeIntegrationMainPosition = index.indexOf('src="/js/main.js"');
 if (storeIntegrationPosition < 0 || storeIntegrationMainPosition < 0 || storeIntegrationPosition > storeIntegrationMainPosition) fail("Store integration module must load before main.js");
 
+
+const sidebarOwnerModule = read("js/modules/navigation/sidebar-owner.js");
+if (!/function\\s+updateSidebarOwner\\s*\\(/.test(sidebarOwnerModule)) fail("Missing sidebar owner UI function");
+if (/function\\s+updateSidebarOwner\\s*\\(/.test(mainSource)) fail("Sidebar owner UI function still declared in main.js");
+if (!failures.some((message) => message.includes("sidebar owner"))) pass("Sidebar owner UI helper is isolated from main.js");
+const sidebarOwnerPosition = index.indexOf('src="/js/modules/navigation/sidebar-owner.js"');
+const sidebarOwnerMainPosition = index.indexOf('src="/js/main.js"');
+if (sidebarOwnerPosition < 0 || sidebarOwnerMainPosition < 0 || sidebarOwnerPosition > sidebarOwnerMainPosition) fail("Sidebar owner module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

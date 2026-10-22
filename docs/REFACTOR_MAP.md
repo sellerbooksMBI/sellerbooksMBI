@@ -456,3 +456,10 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - API order-pull functions, OAuth callback parsing, and marketplace request payloads remain in `main.js`; no API semantics or multi-client behavior was intentionally changed.
 - The module is loaded immediately before `main.js`, after the other domain modules. The functions continue to use the existing global classic-script environment.
 - CI checks all moved function/state declarations and verifies script order. Live OAuth/realtime behavior still needs runtime regression testing.
+
+
+## Sidebar owner UI extraction (2026-10-22)
+
+- Moved the presentation-only `updateSidebarOwner()` helper into `js/modules/navigation/sidebar-owner.js`.
+- The function body is unchanged. It still displays the owner name from the active SellerBooks profile and the signed-in user's email/avatar; authentication state and profile-loading logic remain in `main.js`.
+- The classic script is loaded before `main.js`; CI verifies function ownership and load order.
