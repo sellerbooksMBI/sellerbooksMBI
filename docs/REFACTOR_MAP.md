@@ -4,10 +4,10 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 ## Current inventory (main)
 
-- `index.html`: 5,135 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,136 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
 - `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~414 KB / 15,136 lines after extracting Cost management, Notifications, language text/UI helpers, settings/logo/backup functions, settings core, Product Analysis, and Dashboard analytics; it remains the largest application engine with global functions/state.
+- `js/main.js`: ~403 KB / 14,677 lines after extracting Cost management, Notifications, language text/UI helpers, settings/logo/backup functions, settings core, Product Analysis, Dashboard analytics, and marketplace management; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -317,3 +317,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Function bodies were relocated unchanged. No net-profit formula, cost aggregation, transaction date rule, currency formatter, or snapshot calculation was rewritten.
 - The module is loaded before `main.js` and the CI audit verifies all 11 functions are in the new module and absent from the main engine.
 - Because this area displays financial results, targeted browser regression tests are still required before calling the entire refactor finished.
+
+
+## Marketplace management extraction (2026-10-22, continued)
+
+- Moved nine marketplace management functions to `js/modules/marketplaces/marketplace-management.js`: data save, logo rendering, marketplace list rendering, modal open/close, create/edit/delete, and enable/disable.
+- Shared `marketplaces` and `editingMarketplaceId` state remain in `main.js`; integration/OAuth request workers and store connection state were not moved or rewritten.
+- Function bodies were relocated unchanged. No marketplace API request, OAuth callback, connection status, or deduplication logic was modified.
+- The structure audit checks all nine function declarations and ensures the module loads before `main.js`.
