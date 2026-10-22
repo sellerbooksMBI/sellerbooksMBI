@@ -4196,7 +4196,7 @@ async function sellerBooksDeleteProgressFinish(){
    IMPORT EXCEL
 ===================================================== */
 
-function logoutSellerBooks(){
+async function logoutSellerBooks(){
 
     if(window.sellerBooksImportInProgress){
         const isEN=typeof sellerBooksCurrentLanguage==="function"&&sellerBooksCurrentLanguage()==="EN";
