@@ -407,3 +407,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Login-language override locking, local/session handoff keys, Supabase language reads/writes, fallback behavior, and the global language application orchestrator were relocated unchanged.
 - The final startup listener and SellerBooks settings constants remain in `main.js`; the new module loads before `main.js` so early auth/cloud callbacks still resolve language-state symbols.
 - This is a relocation only; it does not change the ID/EN language policy or the existing Supabase persistence behavior. CI checks function ownership, constant ownership, and script order.
+
+
+## Product Excel import/export extraction (2026-10-22, continued)
+
+- Moved the existing product Excel import/export operations into `js/modules/products/product-excel.js`, including the nested price parser, product export, export row counting, and Excel blob download.
+- The original `parseExcelPrice()` declaration remains nested inside `importProducts()`, preserving its original scope; the Sales Import engine state begins immediately after the extracted block and remains in `main.js`.
+- The code was relocated unchanged. No order deduplication, stock reduction/restoration, HPP, profit, transaction snapshots, or marketplace API logic was modified.
+- CI verifies module ownership and load order. Browser regression testing is still needed for product Excel import/export.

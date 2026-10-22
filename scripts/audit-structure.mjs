@@ -283,6 +283,18 @@ const languageStateModulePosition = index.indexOf('src="/js/modules/i18n/languag
 const languageStateMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (languageStateModulePosition < 0 || languageStateMainScriptPosition < 0 || languageStateModulePosition > languageStateMainScriptPosition) fail("Language-state module must load before main.js");
 
+
+const productExcelModule = read("js/modules/products/product-excel.js");
+const productExcelFunctions = ["importProducts","parseExcelPrice","exportProducts","rowsForExportCount","sellerBooksDownloadExcelBlob"];
+for (const name of productExcelFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(productExcelModule)) fail(`Missing product Excel function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Product Excel function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Product Excel function"))) pass("Product Excel import/export helpers are isolated from main.js");
+const productExcelModulePosition = index.indexOf('src="/js/modules/products/product-excel.js"');
+const productExcelMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (productExcelModulePosition < 0 || productExcelMainScriptPosition < 0 || productExcelModulePosition > productExcelMainScriptPosition) fail("Product Excel module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
