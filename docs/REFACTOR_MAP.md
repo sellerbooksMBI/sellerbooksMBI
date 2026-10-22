@@ -122,3 +122,10 @@ Next, before extraction: (1) inspect the two `loadScript` implementations and al
 - Removed the first, uncached top-level declaration of `sellerBooksReadDailySnapshots` from `js/legacy-02.js`. The later cache-aware declaration has the same name and, as a top-level classic-script function declaration in the same scope, was the effective implementation already.
 - The retained implementation still reads the same storage key and synchronizes its read cache in `sellerBooksWriteDailySnapshots`. This cleanup does not change snapshot schema, formulas, day boundaries, or write behavior.
 - Static call-site inventory found seven calls to `sellerBooksReadDailySnapshots` and four call sites to `sellerBooksWriteDailySnapshots` (including the declaration). No separate consumer relies on the overwritten implementation.
+
+
+## Library loader extraction (2026-10-22)
+
+- Moved the existing classic-script loader entry from `js/legacy-04.js` to `js/services/library-loader.js` and updated its HTML reference in place, preserving the original execution order.
+- The script still defines the same `window.sellerBooksOpenFilePicker`, `window.sellerBooksEnsureXLSX`, and `window.sellerBooksEnsureExcelJS` functions. Its internal Promise-based fallback loader remains inside the same IIFE.
+- The legacy file is retained as an unreferenced rollback copy. This is a file-ownership/path extraction only; library URLs, fallbacks, and alert messages were not changed.
