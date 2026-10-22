@@ -71,11 +71,13 @@ if (!failures.some((message) => message.includes("cost formatter"))) pass("Cost 
 const formatterScriptPosition = index.indexOf('src="/js/modules/costs/cost-formatters.js"');
 const costManagementScriptPosition = index.indexOf('src="/js/modules/costs/cost-management.js"');
 const notificationsScriptPosition = index.indexOf('src="/js/modules/notifications/notifications.js"');
+const textDictionaryPosition = index.indexOf('src="/js/modules/i18n/text-dictionaries.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
-if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 || mainScriptPosition < 0 ||
-    formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition || notificationsScriptPosition > mainScriptPosition) {
-  fail("Cost and notification modules must load in order before main.js");
-} else pass("Cost and notification modules load in order before main.js");
+if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 || textDictionaryPosition < 0 || mainScriptPosition < 0 ||
+    formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
+    notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > mainScriptPosition) {
+  fail("Cost, notification, and language dictionary modules must load in order before main.js");
+} else pass("Cost, notification, and language dictionary modules load in order before main.js");
 
 const costManagement = read("js/modules/costs/cost-management.js");
 const costFunctions = [
@@ -106,6 +108,14 @@ for (const name of notificationFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Notification function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Notification function"))) pass("Notification functions are isolated from main.js");
+
+const textDictionaryModule = read("js/modules/i18n/text-dictionaries.js");
+const textDictionaryFunctions = ["sellerBooksLoginText","sellerBooksStoreText","sellerBooksStoreCountText","sellerBooksMarketplaceText","sellerBooksMarketplaceCountText","sellerBooksDashboardText","sellerBooksDashboardPeriodText","sellerBooksReportsText","sellerBooksReportPeriodText","sellerBooksSettingsText","sellerBooksOwnerSetupText"];
+for (const name of textDictionaryFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(textDictionaryModule)) fail(`Missing language text function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Language text function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Language text function"))) pass("Language text dictionaries are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
