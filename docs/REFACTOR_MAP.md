@@ -100,7 +100,7 @@ This pass confirms the roles from function names and section markers, not full r
 
 Completed: inventory of HTML/CSS/JS files; script/style load order; first-pass domain mapping for the large engine; role mapping for all nine legacy scripts; initial static ID/function reference scan; documented refactor guardrails.
 
-Next, before extraction: (1) inspect the two `loadScript` implementations and all call sites; (2) map the two `sellerBooksReadDailySnapshots` declarations and determine whether one is nested or intentionally shadowed; (3) inspect dynamic DOM creation for the 14 flagged IDs; (4) build a scope-aware global/function dependency inventory; (5) map CSS selector duplication and ownership. Then propose the first low-risk extraction without changing deployed behavior.
+Completed after initial mapping: inspected both `loadScript` implementations and confirmed the legacy-02 callback loader is nested inside the PDF loader, so it does not collide with the legacy-04 Promise loader; removed the shadowed uncached snapshot-reader declaration after confirming the cache-aware implementation was already effective; confirmed the 14 flagged IDs are dynamically created/referenced; and extracted packing settings plus the library loader while preserving their script positions. Remaining audit work: expand scope-aware function/global dependency mapping for `main.js`, inspect CSS selector ownership/overrides, and continue only with low-risk classic-script extractions before any high-risk domain migration.
 
 ## Follow-up checks on initial scan
 
