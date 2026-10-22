@@ -220,6 +220,18 @@ if (!/function\s+sellerBooksScheduleDeferredRender\s*\(/.test(deferredRenderModu
 if (/function\s+sellerBooksScheduleDeferredRender\s*\(/.test(mainSource)) fail("Deferred-render helper still declared in main.js");
 if (!failures.some((message) => message.includes("Deferred-render helper"))) pass("Deferred rendering helper is isolated from main.js");
 
+
+const salesImportProgressModule = read("js/modules/sales/import-progress.js");
+const salesImportProgressFunctions = ["sellerBooksImportProgressCopy","sellerBooksImportProgressShow","sellerBooksImportProgressUpdate","sellerBooksImportProgressHide","sellerBooksImportProgressFailure"];
+for (const name of salesImportProgressFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(salesImportProgressModule)) fail(`Missing sales import progress function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Sales import progress function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Sales import progress function"))) pass("Sales import progress UI helpers are isolated from main.js");
+const salesImportProgressPosition = index.indexOf('src="/js/modules/sales/import-progress.js"');
+const mainScriptPosition = index.indexOf('src="/js/main.js"');
+if (salesImportProgressPosition < 0 || mainScriptPosition < 0 || salesImportProgressPosition > mainScriptPosition) fail("Sales import progress module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

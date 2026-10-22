@@ -359,3 +359,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The cancellation token, zero-delay scheduling, exception handling, and console message are unchanged.
 - The classic script loads before `main.js`, so Dashboard and other handlers can continue to call the same global function.
 - CI verifies that the helper lives in the service file and is absent from `main.js`.
+
+
+## Sales import progress UI extraction (2026-10-22, continued)
+
+- Moved five progress-overlay UI functions into `js/modules/sales/import-progress.js`: copy/text selection, show, update, hide, and failure display.
+- The existing global progress flags, delete start/finish flow, cloud persistence/verification steps, Excel import engine, before-unload protection, and progress calls remain semantically unchanged; only the UI helper definitions and before-unload listener were relocated.
+- The module loads before `main.js` so both the existing product-deletion workflow and Excel import workflow continue to resolve the same global function names.
+- CI checks module ownership and load order. No import parsing, deduplication, stock, HPP, or profit calculations were changed.
