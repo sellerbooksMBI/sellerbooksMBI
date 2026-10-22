@@ -207,7 +207,7 @@ if (!failures.some((message) => message.includes("Dashboard view preference func
 
 
 const dashboardPeriodControlsModule = read("js/modules/dashboard/period-controls.js");
-const dashboardPeriodControlFunctions = ["getDashboardDateRange","updateDashboardCustomDateUI","changeDashboardCustomDateRange","confirmDashboardCustomDateRange","loadDashboardCustomDates","changeDashboardPeriod","isDateInPeriod","updateDashboardByPeriod"];
+const dashboardPeriodControlFunctions = ["getDashboardDateRange","updateDashboardCustomDateUI","changeDashboardCustomDateRange","confirmDashboardCustomDateRange","loadDashboardCustomDates","changeDashboardPeriod","isDateInPeriod","updateDashboardByPeriod","getSellerBooksDayKey","sellerBooksSyncDashboardFilterState","sellerBooksSetDashboardFilterState","prepareDailyViewState","sellerBooksCheckWibDayRollover","sellerBooksManualRefreshDashboard","refreshDashboard"];
 for (const name of dashboardPeriodControlFunctions) {
   if (!new RegExp(`function\\s+${name}\\s*\\(`).test(dashboardPeriodControlsModule)) fail(`Missing dashboard period control function in module: ${name}`);
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Dashboard period control function still declared in main.js: ${name}`);

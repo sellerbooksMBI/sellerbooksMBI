@@ -383,3 +383,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The 13 function bodies were relocated unchanged. Product state, product persistence helpers, packing-cost helpers, shared formatters, import-progress flags, and notification functions remain in their current owners.
 - The module is loaded before `main.js`; it contains declarations only, so existing global handlers and product actions resolve dependencies after the main engine has initialized.
 - Product save/delete/stock behavior was not rewritten. CI checks all function names and load order; browser regression testing is still needed for product CRUD and deletion confirmation/progress.
+
+
+## Dashboard lifecycle extraction (2026-10-22, continued)
+
+- Moved seven Dashboard lifecycle helpers into the existing `js/modules/dashboard/period-controls.js`: Indonesia day key, shared filter-state sync/set, daily view reset, WIB day-rollover handler, manual cloud refresh, and Dashboard refresh.
+- The actual state declarations, initial synchronization call, rollover interval registration, and custom-date confirmation state remain in `main.js` at their original execution points.
+- The moved functions are unchanged. Cloud refresh reads, cache refresh, period selection, daily reset, and cross-view reset behavior were not redesigned.
+- CI now checks the additional function declarations in the Dashboard module and confirms they no longer remain in `main.js`.
