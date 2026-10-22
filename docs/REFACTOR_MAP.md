@@ -4,10 +4,10 @@ Status: staged refactor. The deployed runtime remains the classic-script app in 
 
 ## Current inventory (main)
 
-- `index.html`: 5,136 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,137 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
 - `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~403 KB / 14,677 lines after extracting Cost management, Notifications, language text/UI helpers, settings/logo/backup functions, settings core, Product Analysis, Dashboard analytics, and marketplace management; it remains the largest application engine with global functions/state.
+- `js/main.js`: ~379 KB / 13,385 lines after extracting Cost management, Notifications, language text/UI helpers, settings/logo/backup functions, settings core, Product Analysis, Dashboard analytics, marketplace management, and store management; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -325,3 +325,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Shared `marketplaces` and `editingMarketplaceId` state remain in `main.js`; integration/OAuth request workers and store connection state were not moved or rewritten.
 - Function bodies were relocated unchanged. No marketplace API request, OAuth callback, connection status, or deduplication logic was modified.
 - The structure audit checks all nine function declarations and ensures the module loads before `main.js`.
+
+
+## Store management extraction (2026-10-22, continued)
+
+- Moved 16 store-management functions to `js/modules/stores/store-management.js`: store navigation, data persistence, marketplace selectors/filters, store rendering and CRUD, and marketplace/store counts.
+- Shared store arrays, selected marketplace state, editing state, and integration connection/realtime state remain in `main.js`.
+- Store OAuth/integration workers and API request logic remain in `main.js` and were not rewritten. Packing-cost calculation helpers also remain in the main engine.
+- Function bodies were relocated unchanged; the structure audit checks module ownership and load order.
