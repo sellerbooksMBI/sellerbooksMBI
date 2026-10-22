@@ -267,6 +267,22 @@ const approvalUiModulePosition = index.indexOf('src="/js/modules/auth/approval-u
 const approvalUiMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (approvalUiModulePosition < 0 || approvalUiMainScriptPosition < 0 || approvalUiModulePosition > approvalUiMainScriptPosition) fail("Approval UI module must load before main.js");
 
+
+const languageStateModule = read("js/modules/i18n/language-state.js");
+const languageStateFunctions = ["sellerBooksLoadGlobalLanguage","sellerBooksSaveGlobalLanguage","sellerBooksNormalizeLanguage","sellerBooksGetLoginLanguagePreference","sellerBooksSetLoginLanguage","sellerBooksCurrentLanguage","sellerBooksLanguageName","sellerBooksApplyAllLanguage","sellerBooksSyncLanguageControl","sellerBooksSaveLanguage","sellerBooksEnsureDefaultLanguage"];
+for (const name of languageStateFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(languageStateModule)) fail(`Missing language-state function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Language-state function still declared in main.js: ${name}`);
+}
+for (const name of ["SELLERBOOKS_LANGUAGE_KEY","SELLERBOOKS_DEFAULT_LANGUAGE","SELLERBOOKS_SESSION_LANGUAGE_KEY","SELLERBOOKS_LOGIN_LANGUAGE_KEY","SELLERBOOKS_LOGIN_LANGUAGE_TOUCHED_KEY"]) {
+  if (!new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(languageStateModule)) fail(`Missing language-state constant: ${name}`);
+  if (new RegExp(`(?:const|let|var)\\s+${name}\\b`).test(mainSource)) fail(`Language-state constant still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Language-state"))) pass("Language persistence state and functions are isolated from main.js");
+const languageStateModulePosition = index.indexOf('src="/js/modules/i18n/language-state.js"');
+const languageStateMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (languageStateModulePosition < 0 || languageStateMainScriptPosition < 0 || languageStateModulePosition > languageStateMainScriptPosition) fail("Language-state module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

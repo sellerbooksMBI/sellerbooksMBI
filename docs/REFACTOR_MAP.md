@@ -399,3 +399,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The authentication session, profile reads, approval decision logic, and login/logout flows remain in `main.js`; only the existing UI helper declarations were relocated unchanged.
 - The module loads before `main.js` and is declaration-only at load time, so the existing auth callbacks can call it after shared state is initialized.
 - CI verifies function ownership and load order. No account approval policy or auth data access was modified.
+
+
+## Language state and persistence extraction (2026-10-22, continued)
+
+- Moved the central language state, five language storage/session constants, and 11 language state/persistence functions into `js/modules/i18n/language-state.js`.
+- Login-language override locking, local/session handoff keys, Supabase language reads/writes, fallback behavior, and the global language application orchestrator were relocated unchanged.
+- The final startup listener and SellerBooks settings constants remain in `main.js`; the new module loads before `main.js` so early auth/cloud callbacks still resolve language-state symbols.
+- This is a relocation only; it does not change the ID/EN language policy or the existing Supabase persistence behavior. CI checks function ownership, constant ownership, and script order.
