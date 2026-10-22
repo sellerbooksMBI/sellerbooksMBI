@@ -375,3 +375,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Navigation history, page title/subtitle behavior, responsive sidebar closing, deferred render dispatch, language application, and existing view refresh calls were moved unchanged.
 - Shared page metadata and application state remain in `main.js`. The module is loaded before `main.js`; its listener only registers at load and runs on later user interaction.
 - CI checks both function declarations and the module's load order. No data calculations or marketplace API flows were changed.
+
+
+## Product management extraction (2026-10-22, continued)
+
+- Moved 13 product-management functions into `js/modules/products/product-management.js`: table rendering, pagination, product modal, save/edit/enable-disable, multi-select, and deletion workflows.
+- The 13 function bodies were relocated unchanged. Product state, product persistence helpers, packing-cost helpers, shared formatters, import-progress flags, and notification functions remain in their current owners.
+- The module is loaded before `main.js`; it contains declarations only, so existing global handlers and product actions resolve dependencies after the main engine has initialized.
+- Product save/delete/stock behavior was not rewritten. CI checks all function names and load order; browser regression testing is still needed for product CRUD and deletion confirmation/progress.

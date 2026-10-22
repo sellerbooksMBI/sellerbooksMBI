@@ -243,6 +243,18 @@ const navigationModulePosition = index.indexOf('src="/js/modules/navigation/view
 const navigationMainScriptPosition = index.indexOf('src="/js/main.js"');
 if (navigationModulePosition < 0 || navigationMainScriptPosition < 0 || navigationModulePosition > navigationMainScriptPosition) fail("Navigation module must load before main.js");
 
+
+const productManagementModule = read("js/modules/products/product-management.js");
+const productManagementFunctions = ["renderProducts","goToProductPage","changeProductPageSize","openProductModal","closeProductModal","saveProduct","editProduct","toggleProduct","getSelectedProductIds","updateSelectedProductUI","toggleSelectAllProducts","deleteSelectedProducts","deleteProduct"];
+for (const name of productManagementFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(productManagementModule)) fail(`Missing product management function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Product management function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Product management function"))) pass("Product management functions are isolated from main.js");
+const productManagementModulePosition = index.indexOf('src="/js/modules/products/product-management.js"');
+const productManagementMainScriptPosition = index.indexOf('src="/js/main.js"');
+if (productManagementModulePosition < 0 || productManagementMainScriptPosition < 0 || productManagementModulePosition > productManagementMainScriptPosition) fail("Product management module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
