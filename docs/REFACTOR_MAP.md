@@ -1,13 +1,13 @@
 # SellerBooks source refactor map
 
-Status: audit/mapping only. The legacy files remain the current runtime source until each extraction is verified. Do not remove or reorder script tags as part of a blind cleanup.
+Status: staged refactor. The deployed runtime remains the classic-script app in root `index.html`; moved modules are loaded directly by that page, and legacy source copies remain as rollback files. Do not remove or reorder script tags as part of a blind cleanup.
 
 ## Current inventory (main)
 
-- `index.html`: 5,125 lines; contains the page markup and loads styles/scripts in a deliberate order.
+- `index.html`: 5,127 lines; contains the page markup and loads styles/scripts in a deliberate order.
 - `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
-- `js/legacy-01.js` ... `js/legacy-09.js`: nine ordered legacy scripts. These are not yet a clean domain-module layout.
-- `js/main.js`: ~656 KB, the largest application engine; contains several unrelated feature areas and global functions/state.
+- `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
+- `js/main.js`: ~628 KB / 20,684 lines after extracting the Cost management feature; it remains the largest application engine with global functions/state.
 - External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
 - Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
 
@@ -224,3 +224,13 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The currency helper still delegates to the existing `formatRupiah(value)` implementation. Currency conversion, rounding, date formatting, cost calculations, and snapshot rules were not rewritten.
 - The structure audit now asserts that these two functions exist in the new file and are no longer declared in `main.js`.
 - This is the first internal extraction from the main engine. Continue with similarly small, dependency-light helpers before attempting any data, snapshot, import, or marketplace logic.
+
+
+## Cost module extraction (2026-10-22, continued)
+
+- Moved the full Cost management function group (18 functions and its DOMContentLoaded initializer; about 25.5 KB) to `js/modules/costs/cost-management.js`.
+- Kept the shared state declarations `costs` and `editingCostId` in `main.js` because Dashboard/cache refresh code and Cost handlers share them.
+- Loaded `cost-formatters.js` and `cost-management.js` before `main.js`. This preserves classic-script global functions, inline `onclick` handlers, Dashboard references to `renderCosts`, and language-switch calls to `sellerBooksApplyCostLanguage`.
+- No Cost formulas, IDR conversion, date lock, snapshot logic, data keys, or storage writes were rewritten; function bodies were relocated as-is.
+- The static structure audit now checks that the Cost management functions exist in their module, are absent from `main.js`, and that both Cost modules load before `main.js`.
+- CI now runs the Vite build as well as the static structure audit. A successful build is not a substitute for browser/WebView and financial/import regression tests.
