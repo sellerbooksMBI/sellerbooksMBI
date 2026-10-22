@@ -79,17 +79,18 @@ const settingsCorePosition = index.indexOf('src="/js/modules/settings/settings-c
 const productAnalysisPosition = index.indexOf('src="/js/modules/reports/product-analysis.js"');
 const dashboardAnalyticsPosition = index.indexOf('src="/js/modules/dashboard/dashboard-analytics.js"');
 const marketplaceManagementPosition = index.indexOf('src="/js/modules/marketplaces/marketplace-management.js"');
+const storeManagementPosition = index.indexOf('src="/js/modules/stores/store-management.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
 if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 ||
     textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 ||
     dataBackupPosition < 0 || settingsCorePosition < 0 || productAnalysisPosition < 0 ||
-    dashboardAnalyticsPosition < 0 || marketplaceManagementPosition < 0 || mainScriptPosition < 0 ||
+    dashboardAnalyticsPosition < 0 || marketplaceManagementPosition < 0 || storeManagementPosition < 0 || mainScriptPosition < 0 ||
     formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
     notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > languageUiPosition ||
     languageUiPosition > businessLogoPosition || businessLogoPosition > dataBackupPosition ||
     dataBackupPosition > settingsCorePosition || settingsCorePosition > productAnalysisPosition ||
     productAnalysisPosition > dashboardAnalyticsPosition || dashboardAnalyticsPosition > marketplaceManagementPosition ||
-    marketplaceManagementPosition > mainScriptPosition) {
+    marketplaceManagementPosition > storeManagementPosition || storeManagementPosition > mainScriptPosition) {
   fail("Organized feature modules must load in order before main.js");
 } else pass("Organized feature modules load in order before main.js");
 
@@ -186,6 +187,14 @@ for (const name of marketplaceManagementFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Marketplace management function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Marketplace management function"))) pass("Marketplace management functions are isolated from main.js");
+
+const storeManagementModule = read("js/modules/stores/store-management.js");
+const storeManagementFunctions = ["goToStores","saveStoreData","getActiveMarketplaces","renderStoreMarketplaceOptions","renderStoreMarketplaceFilter","toggleStoreMarketplaceFilter","selectStoreMarketplaceFilter","renderStores","openStoreModal","closeStoreModal","saveStore","editStore","toggleStore","deleteStore","renderMarketplaceStoreCounts","updateMarketplaceStoreCounts"];
+for (const name of storeManagementFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(storeManagementModule)) fail(`Missing store management function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Store management function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Store management function"))) pass("Store management functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
