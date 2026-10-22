@@ -74,14 +74,15 @@ const notificationsScriptPosition = index.indexOf('src="/js/modules/notification
 const textDictionaryPosition = index.indexOf('src="/js/modules/i18n/text-dictionaries.js"');
 const languageUiPosition = index.indexOf('src="/js/modules/i18n/language-ui.js"');
 const businessLogoPosition = index.indexOf('src="/js/modules/settings/business-logo.js"');
+const dataBackupPosition = index.indexOf('src="/js/modules/settings/data-backup.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
 if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 ||
-    textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 || mainScriptPosition < 0 ||
+    textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 || dataBackupPosition < 0 || mainScriptPosition < 0 ||
     formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
     notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > languageUiPosition ||
-    languageUiPosition > businessLogoPosition || businessLogoPosition > mainScriptPosition) {
-  fail("Cost, notification, language, and settings modules must load in order before main.js");
-} else pass("Cost, notification, language, and settings modules load in order before main.js");
+    languageUiPosition > businessLogoPosition || businessLogoPosition > dataBackupPosition || dataBackupPosition > mainScriptPosition) {
+  fail("Cost, notification, language, settings, and backup modules must load in order before main.js");
+} else pass("Cost, notification, language, settings, and backup modules load in order before main.js");
 
 const costManagement = read("js/modules/costs/cost-management.js");
 const costFunctions = [
@@ -136,6 +137,14 @@ for (const name of businessLogoFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Business-logo function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Business-logo function"))) pass("Business-logo functions are isolated from main.js");
+
+const dataBackupModule = read("js/modules/settings/data-backup.js");
+const dataBackupFunctions = ["backupSellerBooksData","restoreSellerBooksData"];
+for (const name of dataBackupFunctions) {
+  if (!new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(dataBackupModule)) fail(`Missing data backup function in module: ${name}`);
+  if (new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Data backup function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Data backup function"))) pass("Backup/restore functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
