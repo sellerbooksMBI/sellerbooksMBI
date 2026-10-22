@@ -160,3 +160,9 @@ Completed after initial mapping: inspected both `loadScript` implementations and
 
 - Moved the contact/help modal behavior to `js/modules/support/contact-modal.js`. Updated only the `src` attribute while preserving the script element ID and its location at the end of `index.html`.
 - The file is copied verbatim as a classic script. Modal open/close behavior and language text are not intentionally changed; `js/legacy-09.js` remains as a rollback copy.
+
+
+## Report filters and dialog helpers extraction (2026-10-22)
+
+- Moved the existing report filters/dialog helper script to `js/modules/reports/report-filters-and-dialogs.js`; its HTML reference stays at the same point before the second report script and CSS layer order is untouched.
+- The classic script contents are copied verbatim, including the DOMContentLoaded initialization for reports. This is a path/ownership change only; the legacy file is retained as a rollback copy.
