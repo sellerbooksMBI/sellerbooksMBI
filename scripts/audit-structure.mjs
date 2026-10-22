@@ -214,6 +214,12 @@ for (const name of dashboardPeriodControlFunctions) {
 }
 if (!failures.some((message) => message.includes("Dashboard period control function"))) pass("Dashboard period controls are isolated from main.js");
 
+
+const deferredRenderModule = read("js/services/deferred-render.js");
+if (!/function\\s+sellerBooksScheduleDeferredRender\\s*\\(/.test(deferredRenderModule)) fail("Missing deferred-render helper: sellerBooksScheduleDeferredRender");
+if (/function\\s+sellerBooksScheduleDeferredRender\\s*\\(/.test(mainSource)) fail("Deferred-render helper still declared in main.js");
+if (!failures.some((message) => message.includes("Deferred-render helper"))) pass("Deferred rendering helper is isolated from main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

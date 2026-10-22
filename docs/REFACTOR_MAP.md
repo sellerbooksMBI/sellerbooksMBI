@@ -351,3 +351,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The moved function bodies are unchanged. Date validation, WIB date helpers, period matching, alerts, local preference writes, and dashboard refresh calls retain the same dependencies and behavior.
 - The new classic script is loaded before `main.js`; the functions are declarations only and are not executed at module load.
 - CI verifies the eight function declarations are in the new module and absent from `main.js`.
+
+
+## Deferred rendering helper extraction (2026-10-22, continued)
+
+- Moved the render coalescing token and `sellerBooksScheduleDeferredRender(callback)` into `js/services/deferred-render.js`.
+- The cancellation token, zero-delay scheduling, exception handling, and console message are unchanged.
+- The classic script loads before `main.js`, so Dashboard and other handlers can continue to call the same global function.
+- CI verifies that the helper lives in the service file and is absent from `main.js`.
