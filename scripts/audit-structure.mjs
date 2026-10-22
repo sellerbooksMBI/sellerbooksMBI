@@ -69,9 +69,26 @@ for (const name of ["formatCostCurrency", "formatCostDate", "escapeCostHtml"]) {
 }
 if (!failures.some((message) => message.includes("cost formatter"))) pass("Cost formatting helpers are isolated from main.js");
 const formatterScriptPosition = index.indexOf('src="/js/modules/costs/cost-formatters.js"');
+const costManagementScriptPosition = index.indexOf('src="/js/modules/costs/cost-management.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
-if (formatterScriptPosition < 0 || mainScriptPosition < 0 || formatterScriptPosition > mainScriptPosition) fail("Cost formatter script must load before main.js");
-else pass("Cost formatter module loads before main.js");
+if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || mainScriptPosition < 0 ||
+    formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > mainScriptPosition) {
+  fail("Cost modules must load in order before main.js");
+} else pass("Cost modules load in order before main.js");
+
+const costManagement = read("js/modules/costs/cost-management.js");
+const costFunctions = [
+  "saveCostData", "getCostMarketplaceName", "getCostStoreName",
+  "isCostEditableToday", "isCostSnapshotLocked", "sellerBooksCostText",
+  "sellerBooksCostCategoryLabel", "sellerBooksApplyCostLanguage", "renderCosts",
+  "getCostMarketplacesData", "getCostStoresData", "loadCostMarketplaceOptions",
+  "loadCostStoreOptions", "openCostModal", "closeCostModal", "saveCost", "editCost", "deleteCost"
+];
+for (const name of costFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(costManagement)) fail(`Missing Cost management function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Cost management function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Cost management function"))) pass("Cost management functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
