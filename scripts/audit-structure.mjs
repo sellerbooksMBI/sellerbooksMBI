@@ -368,8 +368,8 @@ if (storeIntegrationPosition < 0 || storeIntegrationMainPosition < 0 || storeInt
 
 
 const sidebarOwnerModule = read("js/modules/navigation/sidebar-owner.js");
-if (!/function\\s+updateSidebarOwner\\s*\\(/.test(sidebarOwnerModule)) fail("Missing sidebar owner UI function");
-if (/function\\s+updateSidebarOwner\\s*\\(/.test(mainSource)) fail("Sidebar owner UI function still declared in main.js");
+if (!/function\s+updateSidebarOwner\s*\(/.test(sidebarOwnerModule)) fail("Missing sidebar owner UI function");
+if (/function\s+updateSidebarOwner\s*\(/.test(mainSource)) fail("Sidebar owner UI function still declared in main.js");
 if (!failures.some((message) => message.includes("sidebar owner"))) pass("Sidebar owner UI helper is isolated from main.js");
 const sidebarOwnerPosition = index.indexOf('src="/js/modules/navigation/sidebar-owner.js"');
 const sidebarOwnerMainPosition = index.indexOf('src="/js/main.js"');
