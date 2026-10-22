@@ -63,11 +63,15 @@ else pass("index.html uses organized paths for legacy JS modules");
 // A small, dependency-light helper extraction from the main engine.
 const mainSource = read("js/main.js");
 const costFormatters = read("js/modules/costs/cost-formatters.js");
-for (const name of ["formatCostCurrency", "formatCostDate"]) {
+for (const name of ["formatCostCurrency", "formatCostDate", "escapeCostHtml"]) {
   if (!new RegExp(`function\\s+${name}\\s*\\(`).test(costFormatters)) fail(`Missing cost formatter in its module: ${name}`);
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Cost formatter still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("cost formatter"))) pass("Cost formatting helpers are isolated from main.js");
+const formatterScriptPosition = index.indexOf('src="/js/modules/costs/cost-formatters.js"');
+const mainScriptPosition = index.indexOf('src="/js/main.js"');
+if (formatterScriptPosition < 0 || mainScriptPosition < 0 || formatterScriptPosition > mainScriptPosition) fail("Cost formatter script must load before main.js");
+else pass("Cost formatter module loads before main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
