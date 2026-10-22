@@ -516,3 +516,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved `handleShopeeOAuthResult()` into `js/modules/marketplaces/oauth-result.js`.
 - The function body is unchanged, including query-string parsing, redirect cleanup, localized status messages, and the existing callback/message handling.
 - No OAuth URL, redirect target, connection state, or credential flow was modified. CI checks function ownership, load order, and syntax; an actual Shopee OAuth round-trip remains a required runtime check.
+
+
+## Delete progress helper extraction
+
+- `js/modules/import/delete-progress.js` now owns `sellerBooksDeleteProgressStart` and `sellerBooksDeleteProgressFinish`.
+- Both function bodies were moved unchanged from `js/main.js`; they remain classic-script globals and are loaded before the main engine.
+- This is a path/ownership refactor only. Cloud-save confirmation, dirty-key verification, progress states, error handling, and timing are unchanged.
+- CI checks the module declarations, script ordering, JavaScript syntax, and Vite build. Runtime deletion and cloud persistence still require a real account smoke test.

@@ -466,6 +466,17 @@ const marketplaceOAuthResultPosition = index.indexOf('src="/js/modules/marketpla
 const marketplaceOAuthResultMainPosition = index.indexOf('src="/js/main.js"');
 if (marketplaceOAuthResultPosition < 0 || marketplaceOAuthResultMainPosition < 0 || marketplaceOAuthResultPosition > marketplaceOAuthResultMainPosition) fail("Marketplace OAuth result module must load before main.js");
 
+const deleteProgressModule = read("js/modules/import/delete-progress.js");
+for (const name of ["sellerBooksDeleteProgressStart", "sellerBooksDeleteProgressFinish"]) {
+  if (!new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(deleteProgressModule)) fail(`Missing delete progress function in module: ${name}`);
+  if (new RegExp(`(?:async\\s+)?function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Delete progress function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Delete progress function"))) pass("Delete progress functions are isolated from main.js");
+const deleteProgressPosition = index.indexOf('src="/js/modules/import/delete-progress.js"');
+const deleteProgressMainPosition = index.indexOf('src="/js/main.js"');
+if (deleteProgressPosition < 0 || deleteProgressMainPosition < 0 || deleteProgressPosition > deleteProgressMainPosition) fail("Delete progress module must load before main.js");
+else pass("Delete progress module loads before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
