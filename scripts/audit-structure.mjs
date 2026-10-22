@@ -60,6 +60,15 @@ const staleScriptRefs = [...index.matchAll(/(?:src)\s*=\s*["']\/?js\/legacy-0[1-
 if (staleScriptRefs.length) fail(`index.html still references legacy script paths: ${staleScriptRefs.join(", ")}`);
 else pass("index.html uses organized paths for legacy JS modules");
 
+// A small, dependency-light helper extraction from the main engine.
+const mainSource = read("js/main.js");
+const costFormatters = read("js/modules/costs/cost-formatters.js");
+for (const name of ["formatCostCurrency", "formatCostDate"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(costFormatters)) fail(`Missing cost formatter in its module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Cost formatter still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("cost formatter"))) pass("Cost formatting helpers are isolated from main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
