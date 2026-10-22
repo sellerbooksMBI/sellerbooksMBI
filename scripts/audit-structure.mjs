@@ -375,6 +375,17 @@ const sidebarOwnerPosition = index.indexOf('src="/js/modules/navigation/sidebar-
 const sidebarOwnerMainPosition = index.indexOf('src="/js/main.js"');
 if (sidebarOwnerPosition < 0 || sidebarOwnerMainPosition < 0 || sidebarOwnerPosition > sidebarOwnerMainPosition) fail("Sidebar owner module must load before main.js");
 
+
+const currencyFormattingModule = read("js/modules/settings/currency-formatting.js");
+for (const name of ["getSellerBooksExchangeRates", "formatRupiah"]) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(currencyFormattingModule)) fail(`Missing currency formatting function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Currency formatting function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Currency formatting"))) pass("Currency formatting helpers are isolated from main.js");
+const currencyFormattingPosition = index.indexOf('src="/js/modules/settings/currency-formatting.js"');
+const currencyFormattingMainPosition = index.indexOf('src="/js/main.js"');
+if (currencyFormattingPosition < 0 || currencyFormattingMainPosition < 0 || currencyFormattingPosition > currencyFormattingMainPosition) fail("Currency formatting module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);

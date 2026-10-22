@@ -463,3 +463,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - Moved the presentation-only `updateSidebarOwner()` helper into `js/modules/navigation/sidebar-owner.js`.
 - The function body is unchanged. It still displays the owner name from the active SellerBooks profile and the signed-in user's email/avatar; authentication state and profile-loading logic remain in `main.js`.
 - The classic script is loaded before `main.js`; CI verifies function ownership and load order.
+
+
+## Currency formatting extraction (2026-10-22)
+
+- Moved the existing `getSellerBooksExchangeRates()` and `formatRupiah(value)` functions into `js/modules/settings/currency-formatting.js`.
+- Function bodies are unchanged. The existing exchange-rate defaults, rounding order, IDR base-currency assumption, currency locales, and display formatting are preserved exactly.
+- The module is loaded before `main.js`; it continues to read the existing settings through `getSellerBooksSettings()`. No sales, HPP, profit, import, or snapshot formulas were changed.
+- CI checks function ownership and script order. Financial display still warrants manual verification for IDR/USD/SGD/MYR and each rounding setting.
