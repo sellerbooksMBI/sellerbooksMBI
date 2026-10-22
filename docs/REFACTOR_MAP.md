@@ -2,22 +2,81 @@
 
 Status: staged refactor. The deployed runtime remains the classic-script app in root `index.html`; moved modules are loaded directly by that page, and legacy source copies remain as rollback files. Do not remove or reorder script tags as part of a blind cleanup.
 
-## Current inventory (main)
+## Current inventory (verified against main, 2026-10-22)
 
-- `index.html`: 5,137 lines; contains the page markup and loads styles/scripts in a deliberate order.
-- `css/legacy-01.css` ... `css/legacy-06.css`: six ordered CSS layers; legacy-01 is the main stylesheet (~50 KB), while later files appear to be supplemental/override layers. Preserve cascade order during migration.
-- `js/legacy-01.js` ... `js/legacy-09.js`: retained rollback copies; `index.html` now loads the corresponding organized paths under `js/modules/` and `js/services/`.
-- `js/main.js`: ~379 KB / 13,385 lines after extracting Cost management, Notifications, language text/UI helpers, settings/logo/backup functions, settings core, Product Analysis, Dashboard analytics, marketplace management, and store management; it remains the largest application engine with global functions/state.
-- External browser libraries currently loaded by the page include SheetJS/XLSX, ExcelJS, and Supabase JS. Preserve availability and load order until imports are converted and verified.
-- Existing `package.json` uses Vite, but the currently deployed HTML references root-relative `/css/... ` and `/js/...` assets. Any bundling change must account for GitHub Pages root deployment and APK/WebView usage.
+- `index.html`: 5,161 lines; active production entry point using classic scripts and inline handlers.
+- Active styles in load order: `css/legacy-01.css`, `css/modules/reports/report-overrides.css`, `css/modules/reports/product-analysis.css`, `css/legacy-04.css`, `css/legacy-05.css`, `css/legacy-06.css`.
+- `css/legacy-02.css` and `css/legacy-03.css` are rollback copies for the two organized report CSS modules; they are not loaded by active HTML.
+- `js/legacy-01.js` … `js/legacy-09.js` are rollback copies; active HTML loads the organized module/service paths instead.
+- `js/main.js`: 2,003 lines at the inspected commit. It still owns shared Supabase/auth/cloud state and global functions used by the classic-script modules.
+- The root HTML loads 46 local JS files plus three external script libraries: SheetJS/XLSX, ExcelJS, and Supabase JS. The 46 local scripts include 42 files under `js/modules/`, three under `js/services/`, and `js/main.js`.
+- The tree contains 109 files, 59 JavaScript files and 9 CSS files. Thirteen JS files are not referenced by active HTML: nine rollback copies and four Vite scaffold/config files. Three CSS files are unreferenced: two rollback copies and `src/styles/main.css`.
+- The separate Vite scaffold under `src/` is not the active production runtime. Keep its build configuration separate from root HTML until a deliberate, fully tested bundling migration is approved.
 
 ## Current script/style load order
 
-Styles: `legacy-01.css`, `legacy-02.css`, `legacy-03.css`, `legacy-04.css`, `legacy-05.css`, `legacy-06.css`.
+The active HTML loads these six styles in this exact order:
 
-Scripts: `legacy-01.js`, `legacy-02.js`, `legacy-03.js`, external XLSX, external ExcelJS, `legacy-04.js`, external Supabase JS, `main.js`, `legacy-05.js`, `legacy-06.js`, `legacy-07.js`, `legacy-08.js`, `legacy-09.js`.
+1. `/css/legacy-01.css`
+2. `/css/modules/reports/report-overrides.css`
+3. `/css/modules/reports/product-analysis.css`
+4. `/css/legacy-04.css`
+5. `/css/legacy-05.css`
+6. `/css/legacy-06.css`
 
-Important: scripts are currently classic scripts, not ES modules. Inline HTML event handlers call globally available functions. A direct conversion to `type="module"` would change global scope and may break UI events. Keep classic-script compatibility during staged extraction or explicitly expose required functions on `window`.
+The active HTML loads 49 script tags in this exact order (46 local scripts and three external libraries):
+
+1. `/js/modules/reports/report-filters-and-dialogs.js`
+2. `/js/modules/reports/report-engine-legacy.js`
+3. `/js/modules/sales/packing-settings.js`
+4. `https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js`
+5. `https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js`
+6. `/js/services/library-loader.js`
+7. `https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2`
+8. `/js/modules/costs/cost-formatters.js`
+9. `/js/modules/costs/cost-management.js`
+10. `/js/modules/notifications/notifications.js`
+11. `/js/modules/i18n/text-dictionaries.js`
+12. `/js/modules/i18n/language-ui.js`
+13. `/js/modules/settings/business-logo.js`
+14. `/js/modules/settings/data-backup.js`
+15. `/js/modules/settings/settings-core.js`
+16. `/js/modules/reports/product-analysis.js`
+17. `/js/modules/dashboard/dashboard-analytics.js`
+18. `/js/modules/marketplaces/marketplace-management.js`
+19. `/js/modules/stores/store-management.js`
+20. `/js/modules/dashboard/view-preferences.js`
+21. `/js/modules/dashboard/period-controls.js`
+22. `/js/services/deferred-render.js`
+23. `/js/modules/sales/import-progress.js`
+24. `/js/modules/navigation/view-router.js`
+25. `/js/modules/products/product-management.js`
+26. `/js/modules/auth/approval-ui.js`
+27. `/js/modules/i18n/language-state.js`
+28. `/js/modules/products/product-excel.js`
+29. `/js/modules/sales/import-parsers.js`
+30. `/js/services/master-product-cache.js`
+31. `/js/modules/sales/transaction-processing.js`
+32. `/js/modules/sales/import-workflow.js`
+33. `/js/modules/marketplaces/store-integration-state.js`
+34. `/js/modules/navigation/sidebar-owner.js`
+35. `/js/modules/settings/currency-formatting.js`
+36. `/js/modules/auth/session-lifecycle.js`
+37. `/js/modules/sales/packing-costs.js`
+38. `/js/modules/auth/profile-management.js`
+39. `/js/modules/marketplaces/store-connection-actions.js`
+40. `/js/modules/sales/import-dispatch-queue.js`
+41. `/js/modules/marketplaces/order-pull.js`
+42. `/js/modules/marketplaces/oauth-result.js`
+43. `/js/modules/import/delete-progress.js`
+44. `/js/main.js`
+45. `/js/modules/analytics/client-analytics.js`
+46. `/js/modules/receivables/piutang-language.js`
+47. `/js/modules/receivables/piutang-local.js`
+48. `/js/modules/receivables/piutang-cloud.js`
+49. `/js/modules/support/contact-modal.js`
+
+These are classic scripts, not ES modules. Inline event attributes require globally visible function names. Do not add `async`, reorder scripts, or switch to `type="module"` without mapping and testing the dependency edges first.
 
 ## Mapping from current large application engine
 
@@ -53,7 +112,7 @@ The following is the first-pass domain map from named section markers/functions 
 | `js/legacy-07.js` | Piutang/receivables local storage, totals, rendering, payment form helpers, dashboard refresh | `js/modules/receivables/receivables-ui.js` |
 | `js/legacy-08.js` | Piutang cloud data, local migration, Supabase/realtime polling and refresh | `js/modules/receivables/receivables-cloud.js`, `js/services/realtime.js` |
 | `js/legacy-09.js` | Contact/help modal language updates (`updateLanguage`) | `js/modules/ui/contact-modal.js` or merge into translations after checking selector ownership |
-| `js/main.js` | Main engine (~21,685 lines; 318 named function declarations; broad global state) | Extract by domain table above, not as one file |
+| `js/main.js` | Main engine (2,003 lines at inspected commit; broad global state) | Extract by domain table above, not as one file |
 
 This pass confirms the roles from function names and section markers, not full runtime behavior. Some files contain many top-level variables created inside callbacks, so simple variable counts are not counts of true global declarations. A scope-aware parser pass is still required before code movement.
 
@@ -100,7 +159,7 @@ This pass confirms the roles from function names and section markers, not full r
 
 Completed: inventory of HTML/CSS/JS files; script/style load order; first-pass domain mapping for the large engine; role mapping for all nine legacy scripts; initial static ID/function reference scan; documented refactor guardrails.
 
-Completed after initial mapping: inspected both `loadScript` implementations and confirmed the legacy-02 callback loader is nested inside the PDF loader, so it does not collide with the legacy-04 Promise loader; removed the shadowed uncached snapshot-reader declaration after confirming the cache-aware implementation was already effective; confirmed the 14 flagged IDs are dynamically created/referenced; and extracted packing settings plus the library loader while preserving their script positions. Remaining audit work: expand scope-aware function/global dependency mapping for `main.js`, inspect CSS selector ownership/overrides, and continue only with low-risk classic-script extractions before any high-risk domain migration.
+Completed after initial mapping: inspected both `loadScript` implementations and confirmed the legacy-02 callback loader is nested inside the PDF loader, so it does not collide with the legacy-04 Promise loader; removed the shadowed uncached snapshot-reader declaration after confirming the cache-aware implementation was already effective; confirmed the 14 flagged IDs are dynamically created/referenced; and extracted packing settings plus the library loader while preserving their script positions. Remaining structural audit work: complete cross-file global/function dependency mapping and retain manual runtime regression as a release gate. A first-pass CSS selector ownership scan was performed on the six active styles; see the CSS selector ownership section below.
 
 ## Follow-up checks on initial scan
 
@@ -581,3 +640,13 @@ This section supersedes older approximate file counts and records only checks ma
 6. Keep HPP/profit/snapshot/import/deduplication rules unchanged during these repairs unless a separate, evidence-based bug fix is approved and tested.
 
 No application code, database schema, data, or marketplace credentials were modified as part of this audit section.
+
+
+## CSS selector ownership scan (2026-10-22)
+
+A lightweight selector scan across the six active styles found approximately 470 unique selectors and two cross-file selector collisions. They are review targets, not safe deletion candidates:
+
+- `#reports .content-section`: primary rule in `css/legacy-01.css` around line 4485 sets `overflow:hidden` inside a mobile media query. `css/modules/reports/report-overrides.css` later applies `overflow:visible !important` around line 21. The later override is intentional to prevent report content from being clipped; preserve cascade order.
+- `.product-analysis-filter-grid`: responsive rules in `css/legacy-01.css` around lines 4497–4503 set two columns at narrower widths and one column on small screens. `css/modules/reports/product-analysis.css` provides the base three-column grid and an additional responsive rule near line 142. Preserve the base/responsive combination until viewport tests confirm any consolidation.
+
+This scan is regex-based, so nested at-rules and grouped selectors can affect counts. It identifies ownership and likely overrides; it does not replace visual checks at desktop, tablet, and mobile widths.
