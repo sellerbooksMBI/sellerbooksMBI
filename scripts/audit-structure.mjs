@@ -77,15 +77,17 @@ const businessLogoPosition = index.indexOf('src="/js/modules/settings/business-l
 const dataBackupPosition = index.indexOf('src="/js/modules/settings/data-backup.js"');
 const settingsCorePosition = index.indexOf('src="/js/modules/settings/settings-core.js"');
 const productAnalysisPosition = index.indexOf('src="/js/modules/reports/product-analysis.js"');
+const dashboardAnalyticsPosition = index.indexOf('src="/js/modules/dashboard/dashboard-analytics.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
 if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 ||
     textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 ||
-    dataBackupPosition < 0 || settingsCorePosition < 0 || productAnalysisPosition < 0 || mainScriptPosition < 0 ||
+    dataBackupPosition < 0 || settingsCorePosition < 0 || productAnalysisPosition < 0 ||
+    dashboardAnalyticsPosition < 0 || mainScriptPosition < 0 ||
     formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
     notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > languageUiPosition ||
     languageUiPosition > businessLogoPosition || businessLogoPosition > dataBackupPosition ||
     dataBackupPosition > settingsCorePosition || settingsCorePosition > productAnalysisPosition ||
-    productAnalysisPosition > mainScriptPosition) {
+    productAnalysisPosition > dashboardAnalyticsPosition || dashboardAnalyticsPosition > mainScriptPosition) {
   fail("Organized feature modules must load in order before main.js");
 } else pass("Organized feature modules load in order before main.js");
 
@@ -166,6 +168,14 @@ for (const name of productAnalysisFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Product analysis function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Product analysis function"))) pass("Product analysis functions are isolated from main.js");
+
+const dashboardAnalyticsModule = read("js/modules/dashboard/dashboard-analytics.js");
+const dashboardAnalyticsFunctions = ["sellerBooksDashboardFormatShortRupiah","sellerBooksDashboardDateKey","sellerBooksRenderDashboardCharts","getDashboardTransactionsForPeriod","sellerBooksGetDashboardMasterArray","sellerBooksGetDashboardProductMap","sellerBooksGetDashboardStoresIndex","sellerBooksGetDashboardTransactionMarketplaceIndex","sellerBooksGetDashboardMarketplaceTransactions","sellerBooksGetDashboardMarketplaceCosts","renderMarketplacePerformance"];
+for (const name of dashboardAnalyticsFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(dashboardAnalyticsModule)) fail(`Missing dashboard analytics function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Dashboard analytics function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Dashboard analytics function"))) pass("Dashboard analytics functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
