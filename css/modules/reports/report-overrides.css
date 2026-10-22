@@ -1,0 +1,269 @@
+
+
+/* =========================================================
+   FIX TAMPILAN LAPORAN
+   - Kotak sudut lancip
+   - Judul tidak terpotong
+   - Margin Profit tidak terpotong
+========================================================= */
+
+/* Semua kotak/card di halaman laporan */
+#reports .content-section,
+#reports .report-filter-card,
+#reports .report-margin-card,
+#reports .report-card,
+#reports .stat-card,
+#reports .report-table-card {
+    border-radius: 0 !important;
+}
+
+/* Jangan potong isi card */
+#reports .content-section,
+#reports .report-filter-card,
+#reports .report-margin-card,
+#reports .report-card,
+#reports .report-table-card {
+    overflow: visible !important;
+}
+
+/* =========================================================
+   FILTER LAPORAN
+========================================================= */
+
+#reports .report-filter-card {
+    padding-top: 18px !important;
+}
+
+#reports .report-filter-card h3 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1.4 !important;
+}
+
+/* =========================================================
+   MARGIN PROFIT
+========================================================= */
+
+#reports .report-margin-card {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    min-height: 70px !important;
+}
+
+#reports .report-margin-card h2,
+#reports .report-margin-card h3 {
+    margin-top: 0 !important;
+    margin-bottom: 4px !important;
+    padding-top: 0 !important;
+    line-height: 1.35 !important;
+}
+
+#reports #reportProfitMargin {
+    line-height: 1.2 !important;
+    padding-top: 0 !important;
+}
+
+/* =========================================================
+   CARD STATISTIK
+========================================================= */
+
+#reports #reportStatsGrid > div {
+    border-radius: 0 !important;
+    overflow: visible !important;
+}
+
+/* =========================================================
+   TABEL LAPORAN
+========================================================= */
+
+#reports .report-table-card {
+    border-radius: 0 !important;
+    overflow: visible !important;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media screen and (max-width: 900px) {
+
+    #reports .report-filter-card {
+        padding-top: 16px !important;
+    }
+
+    #reports .report-margin-card {
+        min-height: 75px !important;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+
+    #reports .report-filter-card {
+        padding-top: 16px !important;
+    }
+
+    #reports .report-margin-card {
+        min-height: 80px !important;
+    }
+
+    #reports #reportProfitMargin {
+        font-size: 26px !important;
+    }
+
+}
+/* =====================================================
+   BIAYA LAIN - KOTAK SUDUT SIKU
+   Tidak ada sudut bulat / oval
+===================================================== */
+
+#costs .content-section,
+#costs .empty-state,
+#costs .product-table,
+#costs .product-table-wrapper,
+#costs .form-control,
+#costs .primary-button,
+#costs .secondary-button,
+#costs .modal,
+#costs .modal-overlay,
+#costs .modal-header,
+#costs .modal-body,
+#costs .modal-footer {
+    border-radius: 0 !important;
+}
+
+/* =====================================================
+   LAPORAN - SEMUA KOTAK SUDUT SIKU
+===================================================== */
+
+#reports .stat-card,
+#reports .content-section,
+#reports .report-card,
+#reports .margin-card,
+#reports .empty-state,
+#reports .table-wrapper,
+#reports .product-table,
+#reports .filter-card,
+#reports .chart-card {
+    border-radius: 0 !important;
+}
+/* =========================================================
+   DASHBOARD STATISTIK DIAGRAM - RESPONSIVE
+========================================================= */
+.dashboard-charts-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);
+    gap:18px;
+    margin:18px 0;
+}
+.dashboard-chart-card{
+    background:var(--card,#fff);
+    border:1px solid var(--border,#e2e8f0);
+    border-radius:14px;
+    padding:18px;
+    min-width:0;
+    overflow:hidden;
+}
+.dashboard-chart-header h3{margin:0;font-size:17px;}
+.dashboard-chart-header p{margin:5px 0 0;color:#64748b;font-size:12px;}
+.dashboard-chart-area{
+    display:flex;
+    height:250px;
+    margin-top:18px;
+    min-width:0;
+}
+.dashboard-y-axis{
+    width:66px;
+    flex:0 0 66px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:0 7px 28px 0;
+    color:#64748b;
+    font-size:10px;
+    text-align:right;
+}
+.dashboard-bar-chart{
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:flex-end;
+    gap:7px;
+    padding:0 2px 28px;
+    border-bottom:1px solid #cbd5e1;
+    background:repeating-linear-gradient(to bottom,transparent 0,transparent 48px,#eef2f7 49px);
+    overflow-x:auto;
+}
+.dashboard-bar-item{
+    flex:1 0 24px;
+    min-width:24px;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    position:relative;
+}
+.dashboard-bar{
+    width:min(34px,80%);
+    min-height:2px;
+    background:var(--primary,#2563eb);
+    border-radius:5px 5px 0 0;
+    transition:height .25s ease;
+}
+.dashboard-bar-label{
+    position:absolute;
+    bottom:-25px;
+    width:70px;
+    font-size:9px;
+    color:#64748b;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.dashboard-bar-value{
+    font-size:9px;
+    color:#334155;
+    margin-bottom:3px;
+    max-width:70px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.dashboard-chart-empty{
+    width:100%;
+    align-self:center;
+    text-align:center;
+    color:#94a3b8;
+    font-size:13px;
+}
+.dashboard-marketplace-chart{
+    margin-top:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+.dashboard-marketplace-row{display:grid;grid-template-columns:90px minmax(0,1fr) 82px;gap:9px;align-items:center;}
+.dashboard-marketplace-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dashboard-marketplace-track{height:13px;background:#f1f5f9;border-radius:10px;overflow:hidden;}
+.dashboard-marketplace-fill{height:100%;background:var(--primary,#2563eb);border-radius:10px;min-width:0;transition:width .25s ease;}
+.dashboard-marketplace-value{font-size:10px;text-align:right;color:#475569;white-space:nowrap;}
+@media screen and (max-width:900px){
+    .dashboard-charts-grid{grid-template-columns:1fr;}
+}
+@media screen and (max-width:600px){
+    .dashboard-chart-card{padding:14px;border-radius:10px;}
+    .dashboard-chart-area{height:210px;}
+    .dashboard-y-axis{width:58px;flex-basis:58px;font-size:9px;}
+    .dashboard-bar-chart{gap:5px;}
+    .dashboard-bar-item{flex-basis:20px;min-width:20px;}
+    .dashboard-bar{width:18px;}
+    .dashboard-marketplace-row{grid-template-columns:72px minmax(0,1fr) 72px;}
+}
+
+/* =========================================================
+   SELLERBOOKS REPORT ENGINE - TAHAP 2
+   TOTAL PENJUALAN + QTY + TRANSAKSI
+========================================================= */
+

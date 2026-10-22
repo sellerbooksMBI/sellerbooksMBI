@@ -199,3 +199,10 @@ The current `js/main.js` is about 655 KB / 21,685 lines. It contains roughly 259
 | 18,000–end | Other costs, daily snapshots and additional report helpers | High risk: snapshot immutability and financial totals |
 
 These ranges are approximate section boundaries from comments, not safe cut-and-paste boundaries. The next substantive refactor should first identify exact top-level declarations, references, and state dependencies for one low-risk domain. No business engine was extracted or rewritten in this pass.
+
+
+## Report CSS organization (2026-10-22)
+
+- Moved `css/legacy-02.css` to `css/modules/reports/report-overrides.css` and `css/legacy-03.css` to `css/modules/reports/product-analysis.css` with their contents copied verbatim.
+- Updated only the two stylesheet paths in `index.html`. Their relative cascade order remains unchanged: the general legacy layer loads first, then report overrides, then product analysis styles. Old CSS files remain unreferenced rollback copies.
+- Other CSS files remain in their existing order pending a fuller selector ownership audit; no rules were merged or deleted.
