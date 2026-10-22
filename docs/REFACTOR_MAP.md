@@ -439,3 +439,11 @@ These ranges are approximate section boundaries from comments, not safe cut-and-
 - The function bodies are unchanged. No SKU matching rules, deduplication criteria, stock formulas, transaction totals, packing costs, HPP, profit, or snapshot semantics were edited.
 - The module is declaration-only at load time and is loaded before `main.js`, preserving the existing global names used by the import preview and report code.
 - CI verifies function ownership and load order. This area remains a high-priority target for manual regression checks with imported marketplace files and deleted/re-imported transactions.
+
+
+## Sales Import workflow extraction (2026-10-22, continued)
+
+- Moved 12 existing Sales Import workflow functions into `js/modules/sales/import-workflow.js`: header/column analysis, file analysis, preview rendering, import continuation, column confirmation, duplicate checking, and preview closing.
+- Function bodies and current UI/event callback logic were relocated unchanged. Existing import state, marketplace column configuration, stock adjustment, transaction persistence, and marketplace API workers remain in their current owners.
+- No deduplication criteria, transaction totals, stock/HPP/profit formulas, or API request behavior was intentionally changed.
+- CI checks function ownership and script order. Because this module contains the import preview and duplicate-check flow, browser regression tests with representative marketplace Excel files are still required before final sign-off.

@@ -338,6 +338,18 @@ const salesTransactionProcessingPosition = index.indexOf('src="/js/modules/sales
 const salesTransactionProcessingMainPosition = index.indexOf('src="/js/main.js"');
 if (salesTransactionProcessingPosition < 0 || salesTransactionProcessingMainPosition < 0 || salesTransactionProcessingPosition > salesTransactionProcessingMainPosition) fail("Sales transaction processing module must load before main.js");
 
+
+const salesImportWorkflowModule = read("js/modules/sales/import-workflow.js");
+const salesImportWorkflowFunctions = ["normalizeHeader","findBestColumn","analyzeSalesFile","renderSalesAnalysis","resetSalesImport","continueSalesImport","openSalesPreview","updatePreviewColumns","renderPreviewTable","confirmSalesColumns","checkSalesImportDuplicate","closeSalesPreview"];
+for (const name of salesImportWorkflowFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(salesImportWorkflowModule)) fail(`Missing Sales Import workflow function: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Sales Import workflow function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Sales Import workflow function"))) pass("Sales Import workflow functions are isolated from main.js");
+const salesImportWorkflowPosition = index.indexOf('src="/js/modules/sales/import-workflow.js"');
+const salesImportWorkflowMainPosition = index.indexOf('src="/js/main.js"');
+if (salesImportWorkflowPosition < 0 || salesImportWorkflowMainPosition < 0 || salesImportWorkflowPosition > salesImportWorkflowMainPosition) fail("Sales Import workflow module must load before main.js");
+
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
   for (const message of failures) console.error(`- ${message}`);
