@@ -73,14 +73,15 @@ const costManagementScriptPosition = index.indexOf('src="/js/modules/costs/cost-
 const notificationsScriptPosition = index.indexOf('src="/js/modules/notifications/notifications.js"');
 const textDictionaryPosition = index.indexOf('src="/js/modules/i18n/text-dictionaries.js"');
 const languageUiPosition = index.indexOf('src="/js/modules/i18n/language-ui.js"');
+const businessLogoPosition = index.indexOf('src="/js/modules/settings/business-logo.js"');
 const mainScriptPosition = index.indexOf('src="/js/main.js"');
 if (formatterScriptPosition < 0 || costManagementScriptPosition < 0 || notificationsScriptPosition < 0 ||
-    textDictionaryPosition < 0 || languageUiPosition < 0 || mainScriptPosition < 0 ||
+    textDictionaryPosition < 0 || languageUiPosition < 0 || businessLogoPosition < 0 || mainScriptPosition < 0 ||
     formatterScriptPosition > costManagementScriptPosition || costManagementScriptPosition > notificationsScriptPosition ||
     notificationsScriptPosition > textDictionaryPosition || textDictionaryPosition > languageUiPosition ||
-    languageUiPosition > mainScriptPosition) {
-  fail("Cost, notification, and language modules must load in order before main.js");
-} else pass("Cost, notification, and language modules load in order before main.js");
+    languageUiPosition > businessLogoPosition || businessLogoPosition > mainScriptPosition) {
+  fail("Cost, notification, language, and settings modules must load in order before main.js");
+} else pass("Cost, notification, language, and settings modules load in order before main.js");
 
 const costManagement = read("js/modules/costs/cost-management.js");
 const costFunctions = [
@@ -127,6 +128,14 @@ for (const name of languageUiFunctions) {
   if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Language UI function still declared in main.js: ${name}`);
 }
 if (!failures.some((message) => message.includes("Language UI function"))) pass("Language UI application functions are isolated from main.js");
+
+const businessLogoModule = read("js/modules/settings/business-logo.js");
+const businessLogoFunctions = ["renderSettingsLogo","applyBusinessLogoToInterface","handleSettingsLogoUpload","removeSettingsLogo"];
+for (const name of businessLogoFunctions) {
+  if (!new RegExp(`function\\s+${name}\\s*\\(`).test(businessLogoModule)) fail(`Missing business-logo function in module: ${name}`);
+  if (new RegExp(`function\\s+${name}\\s*\\(`).test(mainSource)) fail(`Business-logo function still declared in main.js: ${name}`);
+}
+if (!failures.some((message) => message.includes("Business-logo function"))) pass("Business-logo functions are isolated from main.js");
 
 if (failures.length) {
   console.error("\nSTRUCTURE AUDIT FAILED");
